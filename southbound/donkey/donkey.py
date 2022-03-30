@@ -29,7 +29,7 @@ class Rule:
                     config.get("src_rse"),
                     config.get("dst_rse"),
                     config.get("priority"),
-                    config.get("size_GB")
+                    config.get("size_GB")/config.get("n_transfers")
                 )
                 self.transfers.append(new_transfer)
 
@@ -41,8 +41,8 @@ class Rule:
             self.transfers.remove(transfer)
 
 class Donkey:
-    def __init__(self):
-        with open("config.yaml", "r") as f_in:
+    def __init__(self, config_yaml):
+        with open(config_yaml, "r") as f_in:
             config = yaml.safe_load(f_in)
             # Extract Donkey configuration parameters
             donkey_config = config.get("donkey")
@@ -166,6 +166,7 @@ class Donkey:
                 response = client.recv()
 
             transfer.state = "SUBMITTED"
+        # TODO: ping PSNet about transfer submissions
 
     def poller(self, transfers):
         """
