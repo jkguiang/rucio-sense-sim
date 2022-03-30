@@ -1,0 +1,7 @@
+start_delay: 0
+rules:
+  - src_rse: XRD1
+    dst_rse: XRD2
+    size_GB: 100
+    n_transfers: 10
+    priority: 1
