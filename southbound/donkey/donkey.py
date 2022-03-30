@@ -8,7 +8,7 @@ from threading import Thread, Event, Lock
 
 class Transfer:
     def __init__(self, rule_id, src_rse, dst_rse, priority, size_GB):
-        self.id = uuid.uuid4()
+        self.id = uuid.uuid4().hex
         self.rule_id = rule_id
         self.src_rse = src_rse
         self.dst_rse = dst_rse
@@ -20,7 +20,7 @@ class Transfer:
 class Rule:
     def __init__(self, rule_config):
         self.transfers = []
-        self.rule_id = uuid.uuid4()
+        self.rule_id = uuid.uuid4().hex
         self.delay = rule_config.get("delay")
         for config in rule_config.get("rule"):
             for _ in range(config.get("n_transfers")):
