@@ -17,5 +17,3 @@ dmm:
   host: localhost
   port: 5000
   authkey: /Users/jguiang/Projects/rucio-sense-dmm/dummykey
-nonsense:
-  profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db
