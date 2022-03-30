@@ -5,14 +5,21 @@ donkey:
       rule:
       - src_rse: XRD1
         dst_rse: XRD2
-        size_GB: 100
+        size_GB: 1000
         n_transfers: 10
         priority: 2
       - src_rse: XRD2
         dst_rse: XRD3
-        size_GB: 10
-        n_transfers: 10
+        size_GB: 200
+        n_transfers: 20
         priority: 1
+    - delay: 15
+      rule:
+      - src_rse: XRD1
+        dst_rse: XRD2
+        size_GB: 500
+        n_transfers: 5
+        priority: 2
 dmm:
   host: localhost
   port: 5000
