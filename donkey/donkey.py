@@ -1,6 +1,12 @@
+import argparse
+import sys
+import yaml
+import json
+import signal
 import time
 import uuid
-import yaml
+import glob
+import logging
 from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
 
@@ -37,7 +43,7 @@ class Workflow:
         return [transfer for transfer in self.transfers if transfer.state == state]
 
     def clean(self):
-        for transfer in self.get_transfers("DONE"):
+        for transfer in self.get_transfers("DELETE"):
             self.transfers.remove(transfer)
 
 class Donkey:
@@ -51,6 +57,7 @@ class Donkey:
         self.workflow_runner = Thread(target=self.__run_workflows)
         self.lock = Lock()
         self.__stop_event = Event()
+        self.__heart = Event()
 
     def start(self):
         self.workflow_stager.start()
@@ -58,6 +65,7 @@ class Donkey:
 
     def stop(self):
         self.__stop_event.set()
+        self.__heart.set()
         self.workflow_stager.join()
         self.workflow_runner.join()
 
@@ -83,7 +91,7 @@ class Donkey:
                 workflow.clean()
             active_workflows = list(self.active_workflows)
             self.lock.release()
-            # Assemble transfers
+            # Collect transfers
             transfers = {
                 "WAITING": [],
                 "QUEUED": [],
@@ -93,12 +101,15 @@ class Donkey:
             for workflow in active_workflows:
                 for state in transfers.keys():
                     transfers[state] += workflow.get_transfers(state)
+            # Print transfers
+            for state, queue in transfers.items():
+                logging.debug(f"{state}: {len(queue)}")
             # Process transfers
             self.preparer(transfers["WAITING"])
             self.submitter(transfers["QUEUED"])
             self.poller(transfers["SUBMITTED"])
             self.finisher(transfers["DONE"])
-            time.sleep(self.heartbeat)
+            self.__heart.wait(self.heartbeat)
 
     def preparer(self, transfers):
         prepared_rules = {}
@@ -164,12 +175,13 @@ class Donkey:
 
     def finisher(self, all_transfers):
         organized_transfers = {}
-        # Organize transfers by rule ID
+        # Organize transfers by rule ID and stage them for deletion
         for transfer in all_transfers:
             rule_id = transfer.rule_id
             if rule_id not in organized_transfers.keys():
                 organized_transfers[rule_id] = []
             organized_transfers[rule_id].append(transfer)
+            transfer.state = "DELETE"
         # Parse organized transfers
         for rule_id, transfers in organized_transfers.items():
             finisher_reports = {}
@@ -186,6 +198,48 @@ class Donkey:
             with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
                 client.send(("FINISHER", {rule_id: finisher_reports}))
 
+def sigint_handler(donkey):
+    def actual_handler(sig, frame):
+        logging.info("Stopping Donkey (received SIGINT)")
+        donkey.stop()
+        sys.exit(0)
+    return actual_handler
+
 if __name__ == "__main__":
-    donkey = Donkey(["workflows/example.yaml"])
+    cli = argparse.ArgumentParser(description="Rucio-SENSE pseudo-Rucio client")
+    cli.add_argument(
+        "workflow_yaml", nargs="+", 
+        help="Space separted list of workflows (e.g. 'workflows/example.yaml')"
+    )
+    cli.add_argument(
+        "--loglevel", type=str, default="WARNING", 
+        help="log level: DEBUG, INFO, WARNING (default), or ERROR"
+    )
+    cli.add_argument(
+        "--logfile", type=str, default="donkey.log", 
+        help="path to log file (default: ./donkey.log)"
+    )
+    args = cli.parse_args()
+
+    # Set up logging handlers
+    handlers = [logging.FileHandler(filename=args.logfile)]
+    if args.loglevel.upper() == "DEBUG":
+        handlers.append(logging.StreamHandler(sys.stdout))
+    # Configure logging
+    logging.basicConfig(
+        format="(%(threadName)s) [%(asctime)s] %(levelname)s: %(message)s",
+        datefmt="%m-%d-%Y %H:%M:%S %p",
+        level=getattr(logging, args.loglevel.upper()),
+        handlers=handlers
+    )
+
+    # Glob any wildcards
+    workflow_yamls = []
+    for workflow_yaml in args.workflow_yaml:
+        workflow_yamls += glob.glob(workflow_yaml)
+
+    # Start Donkey
+    donkey = Donkey(workflow_yamls)
+    signal.signal(signal.SIGINT, sigint_handler(donkey))
+    logging.info("Starting Donkey")
     donkey.start()
