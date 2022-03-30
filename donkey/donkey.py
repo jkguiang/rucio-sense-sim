@@ -2,7 +2,6 @@ import yaml
 import json
 import time
 import uuid
-import glob
 import logging
 from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
@@ -18,23 +17,21 @@ class Transfer:
         self.byte_count = size_GB*10**9
         self.state = "WAITING"
 
-class Workflow:
-    def __init__(self, workflow_yaml):
+class Rule:
+    def __init__(self, rule_config):
         self.transfers = []
-        with open(workflow_yaml, "r") as f_in:
-            config = yaml.safe_load(f_in)
-            self.start_delay = config.get("start_delay")
-            for rule_config in config.get("rules"):
-                new_rule_id = uuid.uuid4()
-                for _ in range(rule_config.get("n_transfers")):
-                    new_transfer = Transfer(
-                        new_rule_id,
-                        rule_config.get("src_rse"),
-                        rule_config.get("dst_rse"),
-                        rule_config.get("priority"),
-                        rule_config.get("size_GB")
-                    )
-                    self.transfers.append(new_transfer)
+        self.rule_id = uuid.uuid4()
+        self.delay = rule_config.get("delay")
+        for config in rule_config.get("rule"):
+            for _ in range(config.get("n_transfers")):
+                new_transfer = Transfer(
+                    self.rule_id,
+                    config.get("src_rse"),
+                    config.get("dst_rse"),
+                    config.get("priority"),
+                    config.get("size_GB")
+                )
+                self.transfers.append(new_transfer)
 
     def get_transfers(self, state):
         return [transfer for transfer in self.transfers if transfer.state == state]
@@ -44,56 +41,61 @@ class Workflow:
             self.transfers.remove(transfer)
 
 class Donkey:
-    def __init__(self, workflow_yamls, heartbeat=10):
-        self.heartbeat = heartbeat
-        all_workflows = [Workflow(y) for y in workflow_yamls]
-        self.active_workflows = []
-        self.workflow_stager = Thread(target=self.__stage_workflows, args=(all_workflows,))
-        self.workflow_runner = Thread(target=self.__run_workflows)
+    def __init__(self):
+        with open("config.yaml", "r") as f_in:
+            config = yaml.safe_load(f_in)
+            # Extract Donkey configuration parameters
+            donkey_config = config.get("donkey")
+            self.heartbeat = donkey_config.get("heartbeat")
+            all_rules = [Rule(c) for c in donkey_config.get("rules")]
+            # Extract DMM configuration parameters
+            dmm_config = config.get("dmm")
+            dmm_host = dmm_config.get("host", "localhost")
+            dmm_port = dmm_config.get("port", 5000)
+            self.dmm_address = (dmm_host, dmm_port)
+            with open(dmm_config.get("authkey"), "rb") as f_in:
+                self.dmm_authkey = f_in.read()
+
+        self.active_rules = []
+        self.rule_stager = Thread(target=self.__stage_rules, args=(all_rules,))
+        self.rule_runner = Thread(target=self.__run_rules)
         self.lock = Lock()
         self.__stop_event = Event()
         self.__heart = Event()
-        with open("config.yaml", "r") as f_in:
-            dmm_host = dmm_config.get("host", "localhost")
-            dmm_port = dmm_config.get("port", 5000)
-            self.dmm_address (dmm_host, dmm_port)
-            dmm_authkey_file = dmm_config.get("authkey", "")
-        with open(dmm_authkey_file, "rb") as f_in:
-            self.dmm_authkey = f_in.read()
 
     def start(self):
-        self.workflow_stager.start()
-        self.workflow_runner.start()
+        self.rule_stager.start()
+        self.rule_runner.start()
 
     def stop(self):
         self.__stop_event.set()
         self.__heart.set()
-        self.workflow_stager.join()
-        self.workflow_runner.join()
+        self.rule_stager.join()
+        self.rule_runner.join()
 
-    def __stage_workflows(self, workflows):
+    def __stage_rules(self, rules):
         t_start = time.time()
-        remaining_workflows = list(workflows) # make a local copy
-        while not self.__stop_event.is_set() and len(remaining_workflows) > 0:
+        remaining_rules = list(rules) # make a local copy
+        while not self.__stop_event.is_set() and len(remaining_rules) > 0:
             t_now = time.time()
-            workflows_to_start = []
-            for workflow in remaining_workflows:
-                if (t_now - t_start) > workflow.start_delay:
-                    workflows_to_start.append(workflow)
+            rules_to_start = []
+            for rule in remaining_rules:
+                if (t_now - t_start) > rule.delay:
+                    rules_to_start.append(rule)
             self.lock.acquire()
-            for workflow in workflows_to_start:
-                self.active_workflows.append(workflow)
-                remaining_workflows.remove(workflow)
+            for rule in rules_to_start:
+                self.active_rules.append(rule)
+                remaining_rules.remove(rule)
             self.lock.release()
 
-    def __run_workflows(self):
+    def __run_rules(self):
         n_heartbeats = 0
         while not self.__stop_event.is_set():
             logging.debug(f"Starting heartbeat {n_heartbeats}")
             self.lock.acquire()
-            for workflow in self.active_workflows:
-                workflow.clean()
-            active_workflows = list(self.active_workflows)
+            for rule in self.active_rules:
+                rule.clean()
+            active_rules = list(self.active_rules)
             self.lock.release()
             # Collect transfers
             transfers = {
@@ -102,9 +104,9 @@ class Donkey:
                 "SUBMITTED": [],
                 "DONE": []
             }
-            for workflow in active_workflows:
+            for rule in active_rules:
                 for state in transfers.keys():
-                    transfers[state] += workflow.get_transfers(state)
+                    transfers[state] += rule.get_transfers(state)
             # Print transfers
             for state, queue in transfers.items():
                 logging.debug(f"{state}: {len(queue)}")

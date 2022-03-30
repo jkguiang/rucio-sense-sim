@@ -1,0 +1,21 @@
+donkey:
+  heartbeat: 10
+  rules:
+    - delay: 0
+      rule:
+      - src_rse: XRD1
+        dst_rse: XRD2
+        size_GB: 100
+        n_transfers: 10
+        priority: 2
+      - src_rse: XRD2
+        dst_rse: XRD3
+        size_GB: 10
+        n_transfers: 10
+        priority: 1
+dmm:
+  host: localhost
+  port: 5000
+  authkey: /Users/jguiang/Projects/rucio-sense-dmm/dummykey
+nonsense:
+  profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db

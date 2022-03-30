@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import glob
 import signal
 import logging
 from donkey.donkey import Donkey
@@ -15,10 +16,6 @@ def sigint_handler(donkey):
 
 if __name__ == "__main__":
     cli = argparse.ArgumentParser(description="Rucio-SENSE pseudo-Rucio client")
-    cli.add_argument(
-        "workflow_yaml", nargs="+", 
-        help="Space separted list of workflows (e.g. 'workflows/example.yaml')"
-    )
     cli.add_argument(
         "--loglevel", type=str, default="WARNING", 
         help="log level: DEBUG, INFO, WARNING (default), or ERROR"
@@ -40,14 +37,9 @@ if __name__ == "__main__":
         level=getattr(logging, args.loglevel.upper()),
         handlers=handlers
     )
-
-    # Glob any wildcards
-    workflow_yamls = []
-    for workflow_yaml in args.workflow_yaml:
-        workflow_yamls += glob.glob(workflow_yaml)
-
+    
     # Start Donkey
-    donkey = Donkey(workflow_yamls)
+    donkey = Donkey()
     signal.signal(signal.SIGINT, sigint_handler(donkey))
     logging.info("Starting Donkey")
     donkey.start()
