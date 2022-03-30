@@ -1,8 +1,5 @@
-import argparse
-import sys
 import yaml
 import json
-import signal
 import time
 import uuid
 import glob
@@ -49,8 +46,6 @@ class Workflow:
 class Donkey:
     def __init__(self, workflow_yamls, heartbeat=10):
         self.heartbeat = heartbeat
-        self.dmm_address = ("localhost", 5000)
-        self.dmm_authkey = b"secret password"
         all_workflows = [Workflow(y) for y in workflow_yamls]
         self.active_workflows = []
         self.workflow_stager = Thread(target=self.__stage_workflows, args=(all_workflows,))
@@ -58,6 +53,13 @@ class Donkey:
         self.lock = Lock()
         self.__stop_event = Event()
         self.__heart = Event()
+        with open("config.yaml", "r") as f_in:
+            dmm_host = dmm_config.get("host", "localhost")
+            dmm_port = dmm_config.get("port", 5000)
+            self.dmm_address (dmm_host, dmm_port)
+            dmm_authkey_file = dmm_config.get("authkey", "")
+        with open(dmm_authkey_file, "rb") as f_in:
+            self.dmm_authkey = f_in.read()
 
     def start(self):
         self.workflow_stager.start()
@@ -85,7 +87,9 @@ class Donkey:
             self.lock.release()
 
     def __run_workflows(self):
+        n_heartbeats = 0
         while not self.__stop_event.is_set():
+            logging.debug(f"Starting heartbeat {n_heartbeats}")
             self.lock.acquire()
             for workflow in self.active_workflows:
                 workflow.clean()
@@ -110,6 +114,7 @@ class Donkey:
             self.poller(transfers["SUBMITTED"])
             self.finisher(transfers["DONE"])
             self.__heart.wait(self.heartbeat)
+            n_heartbeats += 1
 
     def preparer(self, transfers):
         prepared_rules = {}
@@ -197,49 +202,3 @@ class Donkey:
 
             with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
                 client.send(("FINISHER", {rule_id: finisher_reports}))
-
-def sigint_handler(donkey):
-    def actual_handler(sig, frame):
-        logging.info("Stopping Donkey (received SIGINT)")
-        donkey.stop()
-        sys.exit(0)
-    return actual_handler
-
-if __name__ == "__main__":
-    cli = argparse.ArgumentParser(description="Rucio-SENSE pseudo-Rucio client")
-    cli.add_argument(
-        "workflow_yaml", nargs="+", 
-        help="Space separted list of workflows (e.g. 'workflows/example.yaml')"
-    )
-    cli.add_argument(
-        "--loglevel", type=str, default="WARNING", 
-        help="log level: DEBUG, INFO, WARNING (default), or ERROR"
-    )
-    cli.add_argument(
-        "--logfile", type=str, default="donkey.log", 
-        help="path to log file (default: ./donkey.log)"
-    )
-    args = cli.parse_args()
-
-    # Set up logging handlers
-    handlers = [logging.FileHandler(filename=args.logfile)]
-    if args.loglevel.upper() == "DEBUG":
-        handlers.append(logging.StreamHandler(sys.stdout))
-    # Configure logging
-    logging.basicConfig(
-        format="(%(threadName)s) [%(asctime)s] %(levelname)s: %(message)s",
-        datefmt="%m-%d-%Y %H:%M:%S %p",
-        level=getattr(logging, args.loglevel.upper()),
-        handlers=handlers
-    )
-
-    # Glob any wildcards
-    workflow_yamls = []
-    for workflow_yaml in args.workflow_yaml:
-        workflow_yamls += glob.glob(workflow_yaml)
-
-    # Start Donkey
-    donkey = Donkey(workflow_yamls)
-    signal.signal(signal.SIGINT, sigint_handler(donkey))
-    logging.info("Starting Donkey")
-    donkey.start()

@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+import signal
+import logging
+from donkey.donkey import Donkey
+
+def sigint_handler(donkey):
+    def actual_handler(sig, frame):
+        logging.info("Stopping Donkey (received SIGINT)")
+        donkey.stop()
+        sys.exit(0)
+    return actual_handler
+
+if __name__ == "__main__":
+    cli = argparse.ArgumentParser(description="Rucio-SENSE pseudo-Rucio client")
+    cli.add_argument(
+        "workflow_yaml", nargs="+", 
+        help="Space separted list of workflows (e.g. 'workflows/example.yaml')"
+    )
+    cli.add_argument(
+        "--loglevel", type=str, default="WARNING", 
+        help="log level: DEBUG, INFO, WARNING (default), or ERROR"
+    )
+    cli.add_argument(
+        "--logfile", type=str, default="donkey.log", 
+        help="path to log file (default: ./donkey.log)"
+    )
+    args = cli.parse_args()
+
+    # Set up logging handlers
+    handlers = [logging.FileHandler(filename=args.logfile)]
+    if args.loglevel.upper() == "DEBUG":
+        handlers.append(logging.StreamHandler(sys.stdout))
+    # Configure logging
+    logging.basicConfig(
+        format="(%(threadName)s) [%(asctime)s] %(levelname)s: %(message)s",
+        datefmt="%m-%d-%Y %H:%M:%S %p",
+        level=getattr(logging, args.loglevel.upper()),
+        handlers=handlers
+    )
+
+    # Glob any wildcards
+    workflow_yamls = []
+    for workflow_yaml in args.workflow_yaml:
+        workflow_yamls += glob.glob(workflow_yaml)
+
+    # Start Donkey
+    donkey = Donkey(workflow_yamls)
+    signal.signal(signal.SIGINT, sigint_handler(donkey))
+    logging.info("Starting Donkey")
+    donkey.start()
