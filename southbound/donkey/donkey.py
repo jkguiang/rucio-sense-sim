@@ -59,7 +59,9 @@ class Donkey:
 
         self.active_rules = []
         self.rule_stager = Thread(target=self.__stage_rules, args=(all_rules,))
+        self.rule_stager.name = "StagerThread"
         self.rule_runner = Thread(target=self.__run_rules)
+        self.rule_runner.name = "RunnerThread"
         self.lock = Lock()
         self.__stop_event = Event()
         self.__heart = Event()
@@ -75,6 +77,7 @@ class Donkey:
         self.rule_runner.join()
 
     def __stage_rules(self, rules):
+        logging.debug(f"Starting rule stager; {len(rules)} rules to stage")
         t_start = time.time()
         remaining_rules = list(rules) # make a local copy
         while not self.__stop_event.is_set() and len(remaining_rules) > 0:
@@ -88,6 +91,7 @@ class Donkey:
                 self.active_rules.append(rule)
                 remaining_rules.remove(rule)
             self.lock.release()
+        logging.debug(f"Stopping rule stager; no more rules to stage")
 
     def __run_rules(self):
         n_heartbeats = 0
@@ -123,6 +127,7 @@ class Donkey:
             n_heartbeats += 1
 
     def preparer(self, transfers):
+        logging.debug(f"Running preparer on {len(transfers)} transfers")
         prepared_rules = {}
         for transfer in transfers:
             if self.use_throttler:
@@ -172,34 +177,36 @@ class Donkey:
             }
         }
         """
+        logging.debug(f"Running throttler on {len(transfers)} transfers")
         for transfer in transfers:
             transfer.state = "QUEUED"
 
     def submitter(self, transfers):
+        logging.debug(f"Running submitter on {len(transfers)} transfers")
         # Count submissions and sort by rule id and RSE pair
         submitter_reports = {}
         for transfer in transfers:
+            # Get rule ID
             rule_id = transfer.rule_id
             if rule_id not in submitter_reports.keys():
                 submitter_reports[rule_id] = {}
+            # Get RSE pair ID
             rse_pair_id = transfer.rse_pair_id
             if rse_pair_id not in submitter_reports[rule_id].keys():
-                submitter_reports[rule_id][rse_pair_id] = 0
-            submitter_reports[rule_id][rse_pair_id] += 1
+                submitter_reports[rule_id][rse_pair_id] = {
+                    "priority": transfer.priority, # attach priority in case it changed
+                    "n_transfers_submitted": 0
+                }
+            # Count transfers
+            submitter_reports[rule_id][rse_pair_id]["n_transfers_submitted"] += 1
+        # Get SENSE mapping
+        with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
+            client.send(("SUBMITTER", submitter_reports))
+            sense_map = client.recv()
         # Do SENSE link replacement
         for transfer in transfers:
-            with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
-                submitter_report = {
-                    "rule_id": transfer.rule_id,
-                    "priority": transfer.priority,
-                    "rse_pair_id": transfer.rse_pair_id,
-                    "n_transfers_submitted": submitter_reports[rule_id][rse_pair_id]
-                }
-                client.send(("SUBMITTER", submitter_report))
-                response = client.recv()
-
+            # TODO: ping PSNet about transfer submissions
             transfer.state = "SUBMITTED"
-        # TODO: ping PSNet about transfer submissions
 
     def poller(self, transfers):
         """
@@ -211,10 +218,12 @@ class Donkey:
 
         For now, just immediately moves transfer to 'DONE'
         """
+        logging.debug(f"Running poller on {len(transfers)} transfers")
         for transfer in transfers:
             transfer.state = "DONE"
 
     def finisher(self, all_transfers):
+        logging.debug(f"Running finisher on {len(all_transfers)} transfers")
         organized_transfers = {}
         # Organize transfers by rule ID and stage them for deletion
         for transfer in all_transfers:
