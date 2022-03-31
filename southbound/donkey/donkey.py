@@ -15,7 +15,7 @@ class Transfer:
         self.rse_pair_id = f"{src_rse}&{dst_rse}"
         self.priority = priority
         self.byte_count = size_GB*10**9
-        self.state = "WAITING"
+        self.state = "PREPARING"
 
 class Rule:
     def __init__(self, rule_config):
@@ -46,7 +46,8 @@ class Donkey:
             config = yaml.safe_load(f_in)
             # Extract Donkey configuration parameters
             donkey_config = config.get("donkey")
-            self.heartbeat = donkey_config.get("heartbeat")
+            self.heartbeat = donkey_config.get("heartbeat", 10)
+            self.use_throttler = donkey_config.get("throttler", False)
             all_rules = [Rule(c) for c in donkey_config.get("rules")]
             # Extract DMM configuration parameters
             dmm_config = config.get("dmm")
@@ -99,6 +100,7 @@ class Donkey:
             self.lock.release()
             # Collect transfers
             transfers = {
+                "PREPARING": [],
                 "WAITING": [],
                 "QUEUED": [],
                 "SUBMITTED": [],
@@ -111,7 +113,9 @@ class Donkey:
             for state, queue in transfers.items():
                 logging.debug(f"{state}: {len(queue)}")
             # Process transfers
-            self.preparer(transfers["WAITING"])
+            self.preparer(transfers["PREPARING"])
+            if self.use_throttler:
+                self.throttler(transfers["WAITING"])
             self.submitter(transfers["QUEUED"])
             self.poller(transfers["SUBMITTED"])
             self.finisher(transfers["DONE"])
@@ -121,7 +125,10 @@ class Donkey:
     def preparer(self, transfers):
         prepared_rules = {}
         for transfer in transfers:
-            transfer.state = "QUEUED"
+            if self.use_throttler:
+                transfer.state = "WAITING"
+            else:
+                transfer.state = "QUEUED"
             # Check if rule has been accounted for
             rule_id = transfer.rule_id
             if rule_id not in prepared_rules.keys():
@@ -143,6 +150,31 @@ class Donkey:
         with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
             client.send(("PREPARER", prepared_rules))
 
+    def throttler(self, transfers):
+        """
+        {
+            This ID is NOT the rule ID (it's the RSE ID)!! Uh oh...
+            '07e0195bbf764c42b9bbfa8e35daf890': {
+                'rse': 'XRD3', 
+                'activities': {
+                    'User Subscriptions': {
+                        'waiting': 6, 
+                        'transfer': 0, 
+                        'strategy': 'fifo', 
+                        'deadline': None, 
+                        'volume': None, 
+                        'threshold': 1, 
+                        'accounts': {
+                            root: {'waiting': 6, 'transfer': 0}
+                        }
+                    }
+                }
+            }
+        }
+        """
+        for transfer in transfers:
+            transfer.state = "QUEUED"
+
     def submitter(self, transfers):
         # Count submissions and sort by rule id and RSE pair
         submitter_reports = {}
@@ -159,6 +191,7 @@ class Donkey:
             with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
                 submitter_report = {
                     "rule_id": transfer.rule_id,
+                    "priority": transfer.priority,
                     "rse_pair_id": transfer.rse_pair_id,
                     "n_transfers_submitted": submitter_reports[rule_id][rse_pair_id]
                 }
