@@ -1,5 +1,6 @@
 donkey:
   heartbeat: 10
+  throttler: true
   rules:
     - delay: 0
       rule:
