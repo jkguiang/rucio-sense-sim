@@ -40,15 +40,15 @@ class Rule:
         for transfer in self.get_transfers("DELETE"):
             self.transfers.remove(transfer)
 
-class Donkey:
+class Burro:
     def __init__(self, config_yaml):
         with open(config_yaml, "r") as f_in:
             config = yaml.safe_load(f_in)
-            # Extract Donkey configuration parameters
-            donkey_config = config.get("donkey")
-            self.heartbeat = donkey_config.get("heartbeat", 10)
-            self.use_throttler = donkey_config.get("throttler", False)
-            all_rules = [Rule(c) for c in donkey_config.get("rules")]
+            # Extract Burro configuration parameters
+            burro_config = config.get("burro")
+            self.heartbeat = burro_config.get("heartbeat", 10)
+            self.use_throttler = burro_config.get("throttler", False)
+            all_rules = [Rule(c) for c in burro_config.get("rules")]
             # Extract DMM configuration parameters
             dmm_config = config.get("dmm")
             dmm_host = dmm_config.get("host", "localhost")

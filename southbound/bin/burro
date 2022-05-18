@@ -5,12 +5,12 @@ import sys
 import glob
 import signal
 import logging
-from donkey.donkey import Donkey
+from burro.burro import Burro
 
-def sigint_handler(donkey):
+def sigint_handler(burro):
     def actual_handler(sig, frame):
         logging.info("Stopping Donkey (received SIGINT)")
-        donkey.stop()
+        burro.stop()
         sys.exit(0)
     return actual_handler
 
@@ -25,8 +25,8 @@ if __name__ == "__main__":
         help="log level: DEBUG, INFO, WARNING (default), or ERROR"
     )
     cli.add_argument(
-        "--logfile", type=str, default="donkey.log", 
-        help="path to log file (default: ./donkey.log)"
+        "--logfile", type=str, default="burro.log", 
+        help="path to log file (default: ./burro.log)"
     )
     args = cli.parse_args()
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     )
     
     # Start Donkey
-    donkey = Donkey(args.config)
-    signal.signal(signal.SIGINT, sigint_handler(donkey))
-    logging.info("Starting Donkey")
-    donkey.start()
+    burro = Donkey(args.config)
+    signal.signal(signal.SIGINT, sigint_handler(burro))
+    logging.info("Starting Burro")
+    burro.start()

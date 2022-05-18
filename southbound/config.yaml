@@ -1,4 +1,4 @@
-donkey:
+burro:
   heartbeat: 10
   throttler: true
   rules:
