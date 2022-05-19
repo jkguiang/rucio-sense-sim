@@ -39,7 +39,6 @@ def site_info_lookup(key, root_uri="", full_uri="", name=""):
 async def authenticate(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": form_data.username, "token_type": "Bearer"}
 
-# @nonsense.route("/api/profile/<profile_uuid>", methods=["GET"])
 @nonsense.get("/api/profile/{profile_uuid}")
 def profile(profile_uuid: str):
     with open(f"data/profiles/{profile_uuid}.json", "r") as profile_json:
@@ -49,7 +48,6 @@ def profile(profile_uuid: str):
 def delete_service(instance_uuid: str):
     return
 
-# @nonsense.route("/api/instance", methods=["GET"])
 @nonsense.get("/api/instance", response_class=PlainTextResponse)
 def create_instance():
     service = Service()
@@ -58,7 +56,6 @@ def create_instance():
     lock.release()
     return service.id
 
-# @nonsense.route("/api/instance/<instance_uuid>", methods=["POST"])
 @nonsense.post("/api/instance/{instance_uuid}")
 def query_instance(instance_uuid: str, new_intent: dict):
     # Initialize response
@@ -111,22 +108,22 @@ def affect_instance(instance_uuid: str, action: str):
     if action == "provision" or action == "reprovision":
         # Retrieve service instance
         service = services[instance_uuid]
-        print(service.intent)
         connection_data = service.intent["connections"][0]
         src_root_uri = connection_data["terminals"][0]["uri"]
         dst_root_uri = connection_data["terminals"][1]["uri"]
         # Retrieve RSE names
-        with open("config.yaml", "r") as f_in:
-            config = yaml.safe_load(f_in).get("nonsense", {})
-        src_rse_name = ""
-        dst_rse_name = ""
-        for site_info in config.get("sites", []):
-            if src_rse_name != "" and dst_rse_name != "":
-                break
-            if src_root_uri == site_info["root_uri"]:
-                src_rse_name = site_info["name"]
-            if dst_root_uri == site_info["root_uri"]:
-                dst_rse_name = site_info["name"]
+        src_rse_name = site_info_lookup("name", root_uri=src_root_uri)
+        if not src_rse_name:
+            raise HTTPException(
+                status_code=404,
+                detail=f"resource with root URI {src_root_uri} not found"
+            )
+        dst_rse_name = site_info_lookup("name", root_uri=dst_root_uri)
+        if not dst_rse_name:
+            raise HTTPException(
+                status_code=404,
+                detail=f"resource with root URI {dst_root_uri} not found"
+            )
         # Send packaged data to PSNet
         package = {
             "nonsense_id": service.alias,
@@ -190,7 +187,6 @@ def uri_ipv6pool(root_uri: str):
         "domain_name": "n/a"
     }
 
-# @nonsense.route("/api/discover/<root_uri>/peers", methods=["GET"])
 @nonsense.get("/api/discover/{root_uri}/peers")
 def uri_peers(root_uri: str):
     port_capacity = site_info_lookup("port_capacity", root_uri=root_uri)
