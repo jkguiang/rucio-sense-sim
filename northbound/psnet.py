@@ -7,7 +7,7 @@ from pydantic import BaseModel
 psnet = FastAPI()
 lock = Lock()
 
-connections = []
+connections = {}
 
 with open("config.yaml", "r") as f_in:
     config = yaml.safe_load(f_in).get("psnet", {})
@@ -35,21 +35,11 @@ class Promise:
         else:
             return self.end_time - self.start_time
 
-class ConnectionSchema(BaseModel):
-    src: str
-    dst: str
-    bandwidth: float
-    total_data: float
-    nonsense_id: str
-
 class Connection:
-    def __init__(self, src, dst, bandwidth, total_data, nonsense_id):
-        self.src = src
-        self.dst = dst
+    def __init__(self, nonsense_id, total_data):
         self.total_data = total_data
         self.nonsense_id = nonsense_id
         self.promises = []
-        self.update(bandwidth)
 
     @property
     def end_time(self):
@@ -68,30 +58,47 @@ class Connection:
             self.promises[-1].end_time = promise.start_time
         self.promises.append(promise)
 
-def find_connection(nonsense_id):
-    for connection in connections:
-        if connection.nonsense_id == nonsense_id:
-            return connection
-
 @psnet.get("/connections/")
 async def check_connection(burro_id: str, src: str, dst: str):
+    """
+    Check status of PSNet Connection
+
+    - **burro_id**: identifier for connection from Burro (rule ID)
+    - **src**: name of source site (RSE name)
+    - **dst**: name of destination site (RSE name)
+    """
     nonsense_id = f"{burro_id}_{src}_{dst}"
-    connection = find_connection(nonsense_id)
-    if not connection:
+    if nonsense_id not in connections:
         raise HTTPException(
             status_code=404,
             detail=f"connection with {nonsense_id} not found"
         )
     else:
-        return {"result": connection.is_finished}
+        return {"result": connections[nonsense_id].is_finished}
 
 @psnet.post("/connections/")
-async def create_connection(connection: ConnectionSchema):
+async def create_connection(burro_id: str, src: str, dst: str, total_data: float):
+    """
+    Create PSNet Connection
+
+    - **burro_id**: identifier for connection from Burro (rule ID)
+    - **src**: name of source site (RSE name)
+    - **dst**: name of destination site (RSE name)
+    - **total_data**: total amount of data to be transfered from src to dst in bytes
+    """
     lock.acquire()
-    connections.append(Connection(**connection.dict()))
+    nonsense_id = f"{burro_id}_{src}_{dst}"
+    connections[nonsense_id] = Connection(nonsense_id, total_data)
     lock.release()
 
 @psnet.put("/connections/")
 async def update_connection(nonsense_id: str, bandwidth: float):
-    connection = find_connection(nonsense_id)
-    connection.update(bandwidth)
+    """
+    Update PSNet Connection with a given ID with new bandwidth
+
+    - **nonsense_id**: identifier for connection from NONSENSE
+    - **bandwidth**: bandwidth provision in bytes/sec
+    """
+    lock.acquire()
+    connections[nonsense_id].update(bandwidth)
+    lock.release()
