@@ -1,10 +1,7 @@
 import yaml
-import json
 import time
 import uuid
-import signal
 import logging
-import argparse
 from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
 
@@ -256,37 +253,3 @@ def sigint_handler(burro):
         burro.stop()
         sys.exit(0)
     return actual_handler
-
-if __name__ == "__main__":
-    cli = argparse.ArgumentParser(description="Rucio-SENSE pseudo-Rucio client")
-    cli.add_argument(
-        "-c", "--config", type=str, default="config.yaml", 
-        help="path to config yaml (default: ./config.yaml)"
-    )
-    cli.add_argument(
-        "--loglevel", type=str, default="WARNING", 
-        help="log level: DEBUG, INFO, WARNING (default), or ERROR"
-    )
-    cli.add_argument(
-        "--logfile", type=str, default="burro.log", 
-        help="path to log file (default: ./burro.log)"
-    )
-    args = cli.parse_args()
-
-    # Set up logging handlers
-    handlers = [logging.FileHandler(filename=args.logfile)]
-    if args.loglevel.upper() == "DEBUG":
-        handlers.append(logging.StreamHandler(sys.stdout))
-    # Configure logging
-    logging.basicConfig(
-        format="(%(threadName)s) [%(asctime)s] %(levelname)s: %(message)s",
-        datefmt="%m-%d-%Y %H:%M:%S %p",
-        level=getattr(logging, args.loglevel.upper()),
-        handlers=handlers
-    )
-    
-    # Start Burro
-    burro = Burro(args.config)
-    signal.signal(signal.SIGINT, sigint_handler(burro))
-    logging.info("Starting Burro")
-    burro.start()
