@@ -26,8 +26,8 @@ dmm:
   port: 5000
   authkey: /Users/jguiang/Projects/rucio-sense-dmm/dummykey
 nonsense:
-  host: 127.0.0.1
-  port: 5000
+  host: localhost
+  port: 8000
   profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db
   sites:
     - name: T2_US_UCSD
@@ -56,4 +56,6 @@ nonsense:
       port_capacity: 1000000
       ipv6_subnet_pool: "blah"
 psnet:
+  host: localhost
+  port: 9000
   time_dilation: 10.0
