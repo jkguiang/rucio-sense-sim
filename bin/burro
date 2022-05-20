@@ -9,7 +9,7 @@ from southbound.burro import Burro
 
 def sigint_handler(burro):
     def actual_handler(sig, frame):
-        logging.info("Stopping Donkey (received SIGINT)")
+        logging.info("Stopping Burro (received SIGINT)")
         burro.stop()
         sys.exit(0)
     return actual_handler
@@ -42,8 +42,8 @@ if __name__ == "__main__":
         handlers=handlers
     )
     
-    # Start Donkey
-    burro = Donkey(args.config)
+    # Start Burro
+    burro = Burro(args.config)
     signal.signal(signal.SIGINT, sigint_handler(burro))
     logging.info("Starting Burro")
     burro.start()
