@@ -1,23 +1,27 @@
+import os
 import json
 import yaml
 import uuid
-from threading import Lock
+import requests
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
+os.makedirs("northbound/profiles", exist_ok=True)
+
 nonsense = FastAPI()
-lock = Lock()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth")
 
 services = {}
 
-config = {}
-with open("config.yaml", "r") as f_in:
-    config = yaml.safe_load(f_in).get("nonsense", {})
+with open("config.yaml", "r") as config_yaml:
+    config = yaml.safe_load(config_yaml)
+    nonsense_config = config.get("nonsense")
+    psnet_config = config.get("psnet")
 
-profile_uuid = config.get("profile_uuid")
+psnet_url = f"{psnet_config.get('host')}:{psnet_config.get('port')}"
+profile_uuid = nonsense_config.get("profile_uuid")
 
 class Service:
     def __init__(self):
@@ -27,7 +31,7 @@ class Service:
         self.status = ""
 
 def site_info_lookup(key, root_uri="", full_uri="", name=""):
-    for site_info in config.get("sites", []):
+    for site_info in nonsense_config.get("sites", []):
         if name and name == site_info["name"]:
             return site_info.get(key, None)
         elif root_uri and root_uri == site_info["root_uri"]:
@@ -41,7 +45,7 @@ async def authenticate(form_data: OAuth2PasswordRequestForm = Depends()):
 
 @nonsense.get("/api/profile/{profile_uuid}")
 def profile(profile_uuid: str):
-    with open(f"data/profiles/{profile_uuid}.json", "r") as profile_json:
+    with open(f"northbound/profiles/{profile_uuid}.json", "r") as profile_json:
         return profile_json.read()
 
 @nonsense.delete("/api/service/{instance_uuid}")
@@ -51,9 +55,7 @@ def delete_service(instance_uuid: str):
 @nonsense.get("/api/instance", response_class=PlainTextResponse)
 def create_instance():
     service = Service()
-    lock.acquire()
     services[service.id] = service
-    lock.release()
     return service.id
 
 @nonsense.post("/api/instance/{instance_uuid}")
@@ -66,7 +68,7 @@ def query_instance(instance_uuid: str, new_intent: dict):
     }
 
     # Load service profile
-    with open(f"data/profiles/{profile_uuid}.json", "r") as profile_json:
+    with open(f"northbound/profiles/{profile_uuid}.json", "r") as profile_json:
         profile = json.load(profile_json)
         intent = profile["intent"]["data"]
 
@@ -89,17 +91,16 @@ def query_instance(instance_uuid: str, new_intent: dict):
                         attr = keychain.split(".")[-1]
                         bandwidth_data[attr] = value
         elif ask == "maximum-bandwidth":
-            # FIXME: make bandwidth more realistic; e.g. lookup src & dst and take min of port cap
+            # TODO: make max bandwidth more realistic
             answer["results"].append(
                 {"bandwidth": "1000000", "name": query["options"][0]["name"]}
             )
+
         response["queries"].append(answer)
 
     # Update service instance
-    lock.acquire()
     services[instance_uuid].intent.update(intent)
     services[instance_uuid].alias = new_intent.get("alias", "")
-    lock.release()
 
     return response
 
@@ -124,19 +125,14 @@ def affect_instance(instance_uuid: str, action: str):
                 status_code=404,
                 detail=f"resource with root URI {dst_root_uri} not found"
             )
-        # Send packaged data to PSNet
-        package = {
-            "nonsense_id": service.alias,
-            "bandwidth": float(connection_data["bandwidth"]["capacity"])
-        }
-        # TODO: add requests.put to PSNet
-        lock.acquire()
+        # Send data to PSNet
+        requests.put(
+            f"http://{psnet_url}/connections/{service.alias}/update", 
+            params={"bandwidth": float(connection_data["bandwidth"]["capacity"])}
+        )
         services[instance_uuid].status = "CREATE - READY"
-        lock.release()
     elif action == "cancel":
-        lock.acquire()
         services[instance_uuid].status = "CANCEL - READY"
-        lock.release()
 
 @nonsense.get("/api/instance/{instance_uuid}/status", response_class=PlainTextResponse)
 def check_instance(instance_uuid: str):
@@ -149,7 +145,7 @@ def delete_instance(instance_uuid: str):
 @nonsense.get("/api/discover/lookup/{pattern}")
 def lookup_name(pattern: str):
     results = []
-    for site_info in config.get("sites", []):
+    for site_info in nonsense_config.get("sites", []):
         if pattern in site_info["full_uri"]:
             results.append({
                 "resource": site_info["full_uri"],
@@ -160,7 +156,6 @@ def lookup_name(pattern: str):
 @nonsense.get("/api/discover/lookup/{full_uri}/rooturi", response_class=PlainTextResponse)
 def full_to_root_uri(full_uri: str):
     root_uri = site_info_lookup("root_uri", full_uri=full_uri)
-    print(root_uri)
     if not root_uri:
         raise HTTPException(
             status_code=404,
