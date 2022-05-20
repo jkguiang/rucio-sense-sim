@@ -7,7 +7,5 @@ from northbound.nonsense import nonsense
 if __name__ == "__main__":
     with open("config.yaml", "r") as config_yaml:
         config = yaml.safe_load(config_yaml).get("nonsense", {})
-        host = config.get("host")
-        port = config.get("port")
 
-    uvicorn.run(nonsense, host=host, port=port)
+    uvicorn.run(nonsense, host=config.get("host"), port=config.get("port"))
