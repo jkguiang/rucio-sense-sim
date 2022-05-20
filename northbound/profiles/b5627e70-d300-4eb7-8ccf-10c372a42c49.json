@@ -1,0 +1,58 @@
+{
+  "uuid": "b5627e70-d300-4eb7-8ccf-10c372a42c49",
+  "name": "DMM-SiteL3-Dev-1",
+  "intent": {
+    "data": {
+      "type": "Site-L3 over P2P VLAN",
+      "connections": [
+        {
+          "name": "Connection 1",
+          "terminals": [
+            {
+              "uri": "urn:ogf:network:ultralight.org:2013",
+              "vlan_tag": "any",
+              "ipv6_prefix_list": "2605:d9c0:2:fff1::/64",
+              "assign_ip": true
+            },
+            {
+              "uri": "urn:ogf:network:ultralight1.org:2013",
+              "vlan_tag": "any",
+              "ipv6_prefix_list": "2605:d9c0:2:fff4::/64",
+              "assign_ip": true
+            }
+          ],
+          "bandwidth": {
+            "qos_class": "guaranteedCapped",
+            "capacity": "1000"
+          },
+          "suggest_ip_range": [
+            {
+              "start": "2001:db8:293:291::1/64",
+              "end": "2001:db8:293:291::100/64"
+            }
+          ]
+        }
+      ]
+    },
+    "service": "dnc"
+  },
+  "owner": "admin",
+  "description": "TEST",
+  "created": "2022-03-07T19:34:41.000Z",
+  "lastEdited": "2022-04-06T14:30:34.000Z",
+  "authorized": true,
+  "editable": true,
+  "edit": [],
+  "licenses": [
+    {
+      "username": "jguiang@ucsd.edu",
+      "type": "ALLOCATION",
+      "remaining": 1.0
+    },
+    {
+      "username": "xiyang@es.net",
+      "type": "ALLOCATION",
+      "remaining": 1.0
+    }
+  ]
+}
