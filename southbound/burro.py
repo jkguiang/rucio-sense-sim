@@ -2,6 +2,7 @@ import yaml
 import time
 import uuid
 import logging
+import requests
 from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
 
@@ -41,8 +42,8 @@ class Rule:
 
 class Burro:
     def __init__(self, config_yaml):
-        with open(config_yaml, "r") as f_in:
-            config = yaml.safe_load(f_in)
+        with open(config_yaml, "r") as config_yaml:
+            config = yaml.safe_load(config_yaml)
             # Extract Burro configuration parameters
             burro_config = config.get("burro")
             self.heartbeat = burro_config.get("heartbeat", 10)
@@ -50,11 +51,12 @@ class Burro:
             all_rules = [Rule(c) for c in burro_config.get("rules")]
             # Extract DMM configuration parameters
             dmm_config = config.get("dmm")
-            dmm_host = dmm_config.get("host", "localhost")
-            dmm_port = dmm_config.get("port", 5000)
-            self.dmm_address = (dmm_host, dmm_port)
+            self.dmm_address = (dmm_config.get("host"), dmm_config.get("port"))
             with open(dmm_config.get("authkey"), "rb") as f_in:
                 self.dmm_authkey = f_in.read()
+            # Extract PSNet configuration parameters
+            psnet_config = config.get("psnet")
+            self.psnet_address = f"{psnet_config.get('host')}:{psnet_config.get('port')}"
 
         self.active_rules = []
         self.rule_stager = Thread(target=self.__stage_rules, args=(all_rules,))
@@ -151,30 +153,30 @@ class Burro:
             prepared_rules[rule_id][rse_pair_id]["n_transfers_total"] += 1
             prepared_rules[rule_id][rse_pair_id]["n_bytes_total"] += transfer.byte_count
 
+        # Send prepared rules to DMM
         with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
             client.send(("PREPARER", prepared_rules))
 
+        # Send prepared rules to PSNet
+        for rule_id, rule_data in prepared_rules.items():
+            for rse_pair_id, transfer_data in rule_data.items():
+                src, dst = rse_pair_id.split("&")
+                requests.post(
+                    "http://localhost:9000/connections", 
+                    params={
+                        "burro_id": rule_id, 
+                        "src": src, 
+                        "dst": dst, 
+                        "total_data": transfer_data["n_bytes_total"]
+                    }
+                )
+
     def throttler(self, transfers):
         """
-        {
-            This ID is NOT the rule ID (it's the RSE ID)!! Uh oh...
-            '07e0195bbf764c42b9bbfa8e35daf890': {
-                'rse': 'XRD3', 
-                'activities': {
-                    'User Subscriptions': {
-                        'waiting': 6, 
-                        'transfer': 0, 
-                        'strategy': 'fifo', 
-                        'deadline': None, 
-                        'volume': None, 
-                        'threshold': 1, 
-                        'accounts': {
-                            root: {'waiting': 6, 'transfer': 0}
-                        }
-                    }
-                }
-            }
-        }
+        TODO: finish this!
+        - Check each site
+            - each site should track # active transfers, # max
+        - Submit (# max) - (# active) transfers
         """
         logging.debug(f"Running throttler on {len(transfers)} transfers")
         for transfer in transfers:
@@ -204,35 +206,49 @@ class Burro:
             sense_map = client.recv()
         # Do SENSE link replacement
         for transfer in transfers:
-            # TODO: ping PSNet about transfer submissions
+            connection_id = f"{transfer.rule_id}_{transfer.src_rse}_{transfer.dst_rse}"
+            requests.put(
+                f"http://{self.psnet_address}/connections/{connection_id}/start"
+            )
             transfer.state = "SUBMITTED"
 
-    def poller(self, transfers):
-        """
-        Could be one of at least two things:
+    def poller(self, unsorted_transfers):
+        logging.debug(f"Running poller on {len(unsorted_transfers)} transfers")
+        # Sort transfers by PSNet Connection ID
+        sorted_transfers = {}
+        for transfer in unsorted_transfers:
+            connection_id = f"{transfer.rule_id}_{transfer.src_rse}_{transfer.dst_rse}"
+            if connection_id not in sorted_transfers.keys():
+                sorted_transfers[connection_id] = []
 
-            1. polls PSNet for each group (grouping TBD) of transfers
-            2. runs on a separate thread, listens for pings from PSNet; PSNet sends which 
-               transfers (grouping TBD) are finished
+            sorted_transfers[connection_id].append(transfer)
+        # Parse sorted transfers
+        for connection_id, transfers in sorted_transfers.items():
+            response = requests.get(
+                f"http://{self.psnet_address}/connections/{connection_id}/check"
+            )
+            connection_data = response.json()
+            if connection_data.get("is_finished", False):
+                for transfer in transfers:
+                    transfer.state = "DONE"
+            else:
+                remaining_time = connection_data.get("remaining_time", None)
+                logging.debug(
+                    f"{connection_id} not yet finished; {remaining_time} left"
+                )
 
-        For now, just immediately moves transfer to 'DONE'
-        """
-        logging.debug(f"Running poller on {len(transfers)} transfers")
-        for transfer in transfers:
-            transfer.state = "DONE"
-
-    def finisher(self, all_transfers):
-        logging.debug(f"Running finisher on {len(all_transfers)} transfers")
-        organized_transfers = {}
-        # Organize transfers by rule ID and stage them for deletion
-        for transfer in all_transfers:
+    def finisher(self, unsorted_transfers):
+        logging.debug(f"Running finisher on {len(unsorted_transfers)} transfers")
+        # Sort transfers by rule ID (because Rucio does) and stage them for deletion
+        sorted_transfers = {}
+        for transfer in unsorted_transfers:
             rule_id = transfer.rule_id
-            if rule_id not in organized_transfers.keys():
-                organized_transfers[rule_id] = []
-            organized_transfers[rule_id].append(transfer)
+            if rule_id not in sorted_transfers.keys():
+                sorted_transfers[rule_id] = []
+            sorted_transfers[rule_id].append(transfer)
             transfer.state = "DELETE"
-        # Parse organized transfers
-        for rule_id, transfers in organized_transfers.items():
+        # Parse sorted transfers
+        for rule_id, transfers in sorted_transfers.items():
             finisher_reports = {}
             for transfer in transfers:
                 rse_pair_id = transfer.rse_pair_id
