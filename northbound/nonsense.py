@@ -1,4 +1,3 @@
-import os
 import json
 import yaml
 import uuid
@@ -7,8 +6,6 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
-
-os.makedirs("northbound/profiles", exist_ok=True)
 
 nonsense = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth")
