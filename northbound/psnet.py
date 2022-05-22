@@ -109,8 +109,15 @@ def find_connection(connection_id):
     else:
         return connections[connection_id]
 
+async def construct_history():
+    return [connection.__dict__ for connection in connections.values()]
+
+@psnet.get("/history")
+async def get_history():
+    return await construct_history()
+
 @psnet.get("/connections/{connection_id}/check")
-async def check_connection(connection_id: str):
+def check_connection(connection_id: str):
     """
     Check status of PSNet Connection
 
@@ -124,7 +131,7 @@ async def check_connection(connection_id: str):
     }
 
 @psnet.post("/connections")
-async def create_connection(burro_id: str, src: str, dst: str, total_data: float):
+def create_connection(burro_id: str, src: str, dst: str, total_data: float):
     """
     Create PSNet Connection
 
@@ -137,7 +144,7 @@ async def create_connection(burro_id: str, src: str, dst: str, total_data: float
     connections[connection_id] = Connection(connection_id, total_data)
 
 @psnet.put("/connections/{connection_id}/update")
-async def update_connection(connection_id: str, bandwidth: float):
+def update_connection(connection_id: str, bandwidth: float):
     """
     Update PSNet Connection with a given ID with new bandwidth
 
@@ -148,7 +155,7 @@ async def update_connection(connection_id: str, bandwidth: float):
     connection.update(bandwidth)
 
 @psnet.put("/connections/{connection_id}/start")
-async def start_connection(connection_id: str):
+def start_connection(connection_id: str):
     """
     Start PSNet "transfers" across a Connection with a given ID
 
