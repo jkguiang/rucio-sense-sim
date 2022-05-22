@@ -6,6 +6,14 @@ import requests
 from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
 
+with open("config.yaml", "r") as f_in:
+    psnet_config = yaml.safe_load(f_in).get("psnet", {})
+
+time_dilation = psnet_config.get("time_dilation", 1.0)
+
+def now():
+    return time_dilation*(time.time_ns()/10**9)
+
 class Transfer:
     def __init__(self, rule_id, src_rse, dst_rse, priority, size_GB):
         self.id = uuid.uuid4().hex
@@ -79,10 +87,10 @@ class Burro:
 
     def __stage_rules(self, rules):
         logging.debug(f"Starting rule stager; {len(rules)} rules to stage")
-        t_start = time.time()
+        t_start = now()
         remaining_rules = list(rules) # make a local copy
         while not self.__stop_event.is_set() and len(remaining_rules) > 0:
-            t_now = time.time()
+            t_now = now()
             rules_to_start = []
             for rule in remaining_rules:
                 if (t_now - t_start) > rule.delay:
@@ -185,6 +193,7 @@ class Burro:
     def submitter(self, transfers):
         logging.debug(f"Running submitter on {len(transfers)} transfers")
         # Count submissions and sort by rule id and RSE pair
+        connection_ids = set()
         submitter_reports = {}
         for transfer in transfers:
             # Get rule ID
@@ -200,17 +209,20 @@ class Burro:
                 }
             # Count transfers
             submitter_reports[rule_id][rse_pair_id]["n_transfers_submitted"] += 1
+
+            connection_ids.add(f"{rule_id}_{transfer.src_rse}_{transfer.dst_rse}")
+            transfer.state = "SUBMITTED"
+
         # Get SENSE mapping
         with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
             client.send(("SUBMITTER", submitter_reports))
             sense_map = client.recv()
+
         # Do SENSE link replacement
-        for transfer in transfers:
-            connection_id = f"{transfer.rule_id}_{transfer.src_rse}_{transfer.dst_rse}"
+        for connection_id in connection_ids:
             requests.put(
                 f"http://{self.psnet_address}/connections/{connection_id}/start"
             )
-            transfer.state = "SUBMITTED"
 
     def poller(self, unsorted_transfers):
         logging.debug(f"Running poller on {len(unsorted_transfers)} transfers")
@@ -222,6 +234,7 @@ class Burro:
                 sorted_transfers[connection_id] = []
 
             sorted_transfers[connection_id].append(transfer)
+
         # Parse sorted transfers
         for connection_id, transfers in sorted_transfers.items():
             response = requests.get(
@@ -247,6 +260,7 @@ class Burro:
                 sorted_transfers[rule_id] = []
             sorted_transfers[rule_id].append(transfer)
             transfer.state = "DELETE"
+
         # Parse sorted transfers
         for rule_id, transfers in sorted_transfers.items():
             finisher_reports = {}
