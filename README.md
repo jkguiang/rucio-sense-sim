@@ -10,7 +10,7 @@ Contains components that allow high-level components to communicate with low-lev
 
 ## Northbound
 Contains components that allow low-level components to communicate with high-level components
-- PSNet: stand-in for ESNet+FTS
+- VSNet: stand-in for ESNet+FTS
 ```
 ./bin/vsnet
 ```
