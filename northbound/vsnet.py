@@ -3,12 +3,12 @@ import yaml
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-psnet = FastAPI()
+vsnet = FastAPI()
 
 connections = {}
 
 with open("config.yaml", "r") as f_in:
-    config = yaml.safe_load(f_in).get("psnet", {})
+    config = yaml.safe_load(f_in).get("vsnet", {})
 
 time_dilation = config.get("time_dilation", 1.0)
 
@@ -112,14 +112,14 @@ def find_connection(connection_id):
 async def construct_history():
     return [connection.__dict__ for connection in connections.values()]
 
-@psnet.get("/history")
+@vsnet.get("/history")
 async def get_history():
     return await construct_history()
 
-@psnet.get("/connections/{connection_id}/check")
+@vsnet.get("/connections/{connection_id}/check")
 def check_connection(connection_id: str):
     """
-    Check status of PSNet Connection
+    Check status of VSNet Connection
 
     - **connection_id**: identifier for connection (RuleID_Src_Dst)
     """
@@ -130,10 +130,10 @@ def check_connection(connection_id: str):
         "remaining_time": connection.compute_remaining_time()
     }
 
-@psnet.post("/connections")
+@vsnet.post("/connections")
 def create_connection(burro_id: str, src: str, dst: str, total_data: float):
     """
-    Create PSNet Connection
+    Create VSNet Connection
 
     - **burro_id**: identifier for connection from Burro (rule ID)
     - **src**: name of source site (RSE name)
@@ -143,10 +143,10 @@ def create_connection(burro_id: str, src: str, dst: str, total_data: float):
     connection_id = f"{burro_id}_{src}_{dst}"
     connections[connection_id] = Connection(connection_id, total_data)
 
-@psnet.put("/connections/{connection_id}/update")
+@vsnet.put("/connections/{connection_id}/update")
 def update_connection(connection_id: str, bandwidth: float):
     """
-    Update PSNet Connection with a given ID with new bandwidth
+    Update VSNet Connection with a given ID with new bandwidth
 
     - **connection_id**: identifier for connection
     - **bandwidth**: bandwidth provision in bytes/sec
@@ -154,10 +154,10 @@ def update_connection(connection_id: str, bandwidth: float):
     connection = find_connection(connection_id)
     connection.update(bandwidth)
 
-@psnet.put("/connections/{connection_id}/start")
+@vsnet.put("/connections/{connection_id}/start")
 def start_connection(connection_id: str):
     """
-    Start PSNet "transfers" across a Connection with a given ID
+    Start VSNet "transfers" across a Connection with a given ID
 
     - **connection_id**: identifier for connection
     """

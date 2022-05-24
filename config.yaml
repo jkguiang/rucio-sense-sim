@@ -50,7 +50,7 @@ nonsense:
       root_uri: urn:ogf:network:calit2.optiputer.net
       port_capacity: 1000000
       ipv6_subnet_pool: blah
-psnet:
+vsnet:
   host: localhost
   port: 9000
   time_dilation: 100.0

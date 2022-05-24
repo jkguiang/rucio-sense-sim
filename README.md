@@ -12,7 +12,7 @@ Contains components that allow high-level components to communicate with low-lev
 Contains components that allow low-level components to communicate with high-level components
 - PSNet: stand-in for ESNet+FTS
 ```
-./bin/psnet
+./bin/vsnet
 ```
 - NONSENSE: stand-in for SENSE
 ```

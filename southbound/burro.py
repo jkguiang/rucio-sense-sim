@@ -7,9 +7,9 @@ from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
 
 with open("config.yaml", "r") as f_in:
-    psnet_config = yaml.safe_load(f_in).get("psnet", {})
+    vsnet_config = yaml.safe_load(f_in).get("vsnet", {})
 
-time_dilation = psnet_config.get("time_dilation", 1.0)
+time_dilation = vsnet_config.get("time_dilation", 1.0)
 
 def now():
     return time_dilation*(time.time_ns()/10**9)
@@ -62,9 +62,9 @@ class Burro:
             self.dmm_address = (dmm_config.get("host"), dmm_config.get("port"))
             with open(dmm_config.get("authkey"), "rb") as f_in:
                 self.dmm_authkey = f_in.read()
-            # Extract PSNet configuration parameters
-            psnet_config = config.get("psnet")
-            self.psnet_address = f"{psnet_config.get('host')}:{psnet_config.get('port')}"
+            # Extract VSNet configuration parameters
+            vsnet_config = config.get("vsnet")
+            self.vsnet_address = f"{vsnet_config.get('host')}:{vsnet_config.get('port')}"
 
         self.active_rules = []
         self.rule_stager = Thread(target=self.__stage_rules, args=(all_rules,))
@@ -165,7 +165,7 @@ class Burro:
         with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
             client.send(("PREPARER", prepared_rules))
 
-        # Send prepared rules to PSNet
+        # Send prepared rules to VSNet
         for rule_id, rule_data in prepared_rules.items():
             for rse_pair_id, transfer_data in rule_data.items():
                 src, dst = rse_pair_id.split("&")
@@ -221,12 +221,12 @@ class Burro:
         # Do SENSE link replacement
         for connection_id in connection_ids:
             requests.put(
-                f"http://{self.psnet_address}/connections/{connection_id}/start"
+                f"http://{self.vsnet_address}/connections/{connection_id}/start"
             )
 
     def poller(self, unsorted_transfers):
         logging.debug(f"Running poller on {len(unsorted_transfers)} transfers")
-        # Sort transfers by PSNet Connection ID
+        # Sort transfers by VSNet Connection ID
         sorted_transfers = {}
         for transfer in unsorted_transfers:
             connection_id = f"{transfer.rule_id}_{transfer.src_rse}_{transfer.dst_rse}"
@@ -238,7 +238,7 @@ class Burro:
         # Parse sorted transfers
         for connection_id, transfers in sorted_transfers.items():
             response = requests.get(
-                f"http://{self.psnet_address}/connections/{connection_id}/check"
+                f"http://{self.vsnet_address}/connections/{connection_id}/check"
             )
             connection_data = response.json()
             if connection_data.get("is_finished", False):

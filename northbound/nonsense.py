@@ -15,9 +15,9 @@ services = {}
 with open("config.yaml", "r") as config_yaml:
     config = yaml.safe_load(config_yaml)
     nonsense_config = config.get("nonsense")
-    psnet_config = config.get("psnet")
+    vsnet_config = config.get("vsnet")
 
-psnet_url = f"{psnet_config.get('host')}:{psnet_config.get('port')}"
+vsnet_url = f"{vsnet_config.get('host')}:{vsnet_config.get('port')}"
 profile_uuid = nonsense_config.get("profile_uuid")
 
 class Service:
@@ -122,9 +122,9 @@ def affect_instance(instance_uuid: str, action: str):
                 status_code=404,
                 detail=f"resource with root URI {dst_root_uri} not found"
             )
-        # Send data to PSNet
+        # Send data to VSNet
         requests.put(
-            f"http://{psnet_url}/connections/{service.alias}/update", 
+            f"http://{vsnet_url}/connections/{service.alias}/update", 
             params={"bandwidth": float(connection_data["bandwidth"]["capacity"])}
         )
         services[instance_uuid].status = "CREATE - READY"
