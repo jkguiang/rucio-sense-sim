@@ -17,6 +17,10 @@ def sigint_handler(burro):
 if __name__ == "__main__":
     cli = argparse.ArgumentParser(description="Rucio-SENSE pseudo-Rucio client")
     cli.add_argument(
+        "--no_vsnet", action="store_true", 
+        help="Disable communication with VSNet"
+    )
+    cli.add_argument(
         "-c", "--config", type=str, default="config.yaml", 
         help="path to config yaml (default: ./config.yaml)"
     )
@@ -43,7 +47,7 @@ if __name__ == "__main__":
     )
     
     # Start Burro
-    burro = Burro(args.config)
+    burro = Burro(args.config, vsnet=(not args.no_vsnet))
     signal.signal(signal.SIGINT, sigint_handler(burro))
     logging.info("Starting Burro")
     burro.start()
