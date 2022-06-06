@@ -3,17 +3,11 @@ import yaml
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from utils.vtime import now
+
 vsnet = FastAPI()
 
 connections = {}
-
-with open("config.yaml", "r") as f_in:
-    config = yaml.safe_load(f_in).get("vsnet", {})
-
-time_dilation = config.get("time_dilation", 1.0)
-
-def now():
-    return time_dilation*(time.time_ns()/10**9)
 
 class Promise:
     def __init__(self, bandwidth):
