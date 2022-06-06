@@ -1,18 +1,11 @@
 import yaml
-import time
 import uuid
 import logging
 import requests
 from multiprocessing.connection import Client
 from threading import Thread, Event, Lock
 
-with open("config.yaml", "r") as f_in:
-    vsnet_config = yaml.safe_load(f_in).get("vsnet", {})
-
-time_dilation = vsnet_config.get("time_dilation", 1.0)
-
-def now():
-    return time_dilation*(time.time_ns()/10**9)
+from utils.vtime import now, time_this
 
 class Transfer:
     def __init__(self, rule_id, src_rse, dst_rse, priority, size_GB):
@@ -30,33 +23,49 @@ class Rule:
         self.transfers = []
         self.rule_id = uuid.uuid4().hex
         self.delay = rule_config.get("delay")
-        for config in rule_config.get("rule"):
-            for _ in range(config.get("n_transfers")):
-                new_transfer = Transfer(
-                    self.rule_id,
-                    config.get("src_rse"),
-                    config.get("dst_rse"),
-                    config.get("priority"),
-                    config.get("size_GB")/config.get("n_transfers")
-                )
-                self.transfers.append(new_transfer)
+        for _ in range(rule_config.get("n_transfers")):
+            new_transfer = Transfer(
+                self.rule_id,
+                rule_config.get("src_rse"),
+                rule_config.get("dst_rse"),
+                rule_config.get("priority"),
+                rule_config.get("size_GB")/rule_config.get("n_transfers"),
+            )
+            self.transfers.append(new_transfer)
 
-    def get_transfers(self, state):
-        return [transfer for transfer in self.transfers if transfer.state == state]
+        src_limit = rule_config.get("src_limit", None)
+        dst_limit = rule_config.get("dst_limit", None)
+        if src_limit and dst_limit:
+            self.transfer_limit = min(src_limit, dst_limit)
+        elif src_limit:
+            self.transfer_limit = src_limit
+        elif dst_limit:
+            self.transfer_limit = dst_limit
+        else:
+            self.transfer_limit = None
+
+    def get_transfers(self, state, throttler=False):
+        transfers = [transfer for transfer in self.transfers if transfer.state == state]
+        if self.transfer_limit and state == "WAITING":
+            n_active_transfers = len(self.get_transfers("SUBMITTED"))
+            return transfers[:(self.transfer_limit - n_active_transfers)]
+        else:
+            return transfers
 
     def clean(self):
         for transfer in self.get_transfers("DELETE"):
             self.transfers.remove(transfer)
 
 class Burro:
-    def __init__(self, config_yaml):
+    def __init__(self, config_yaml, vsnet=True):
+        self.use_vsnet = vsnet
         with open(config_yaml, "r") as config_yaml:
             config = yaml.safe_load(config_yaml)
             # Extract Burro configuration parameters
             burro_config = config.get("burro")
             self.heartbeat = burro_config.get("heartbeat", 10)
             self.use_throttler = burro_config.get("throttler", False)
-            all_rules = [Rule(c) for c in burro_config.get("rules")]
+            all_rules = [Rule(rule_config) for rule_config in burro_config.get("rules")]
             # Extract DMM configuration parameters
             dmm_config = config.get("dmm")
             self.dmm_address = (dmm_config.get("host"), dmm_config.get("port"))
@@ -121,10 +130,10 @@ class Burro:
             }
             for rule in active_rules:
                 for state in transfers.keys():
-                    transfers[state] += rule.get_transfers(state)
-            # Print transfers
-            for state, queue in transfers.items():
-                logging.debug(f"{state}: {len(queue)}")
+                    transfers[state] += rule.get_transfers(
+                        state, 
+                        throttler=self.use_throttler
+                    )
             # Process transfers
             self.preparer(transfers["PREPARING"])
             if self.use_throttler:
@@ -135,14 +144,11 @@ class Burro:
             self.__heart.wait(self.heartbeat)
             n_heartbeats += 1
 
+    @time_this
     def preparer(self, transfers):
         logging.debug(f"Running preparer on {len(transfers)} transfers")
         prepared_rules = {}
         for transfer in transfers:
-            if self.use_throttler:
-                transfer.state = "WAITING"
-            else:
-                transfer.state = "QUEUED"
             # Check if rule has been accounted for
             rule_id = transfer.rule_id
             if rule_id not in prepared_rules.keys():
@@ -160,10 +166,17 @@ class Burro:
             prepared_rules[rule_id][rse_pair_id]["transfer_ids"].append(transfer.id)
             prepared_rules[rule_id][rse_pair_id]["n_transfers_total"] += 1
             prepared_rules[rule_id][rse_pair_id]["n_bytes_total"] += transfer.byte_count
+            if self.use_throttler:
+                transfer.state = "WAITING"
+            else:
+                transfer.state = "QUEUED"
 
         # Send prepared rules to DMM
         with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
             client.send(("PREPARER", prepared_rules))
+
+        if not self.use_vsnet:
+            return
 
         # Send prepared rules to VSNet
         for rule_id, rule_data in prepared_rules.items():
@@ -179,17 +192,13 @@ class Burro:
                     }
                 )
 
+    @time_this
     def throttler(self, transfers):
-        """
-        TODO: finish this!
-        - Check each site
-            - each site should track # active transfers, # max
-        - Submit (# max) - (# active) transfers
-        """
         logging.debug(f"Running throttler on {len(transfers)} transfers")
         for transfer in transfers:
             transfer.state = "QUEUED"
 
+    @time_this
     def submitter(self, transfers):
         logging.debug(f"Running submitter on {len(transfers)} transfers")
         # Count submissions and sort by rule id and RSE pair
@@ -207,9 +216,8 @@ class Burro:
                     "priority": transfer.priority, # attach priority in case it changed
                     "n_transfers_submitted": 0
                 }
-            # Count transfers
-            submitter_reports[rule_id][rse_pair_id]["n_transfers_submitted"] += 1
 
+            submitter_reports[rule_id][rse_pair_id]["n_transfers_submitted"] += 1
             connection_ids.add(f"{rule_id}_{transfer.src_rse}_{transfer.dst_rse}")
             transfer.state = "SUBMITTED"
 
@@ -217,15 +225,25 @@ class Burro:
         with Client(self.dmm_address, authkey=self.dmm_authkey) as client:
             client.send(("SUBMITTER", submitter_reports))
             sense_map = client.recv()
+            logging.info(sense_map)
 
-        # Do SENSE link replacement
+        if not self.use_vsnet:
+            return
+
+        # Start VSNet data transfers
         for connection_id in connection_ids:
             requests.put(
                 f"http://{self.vsnet_address}/connections/{connection_id}/start"
             )
 
+    @time_this
     def poller(self, unsorted_transfers):
         logging.debug(f"Running poller on {len(unsorted_transfers)} transfers")
+        if not self.use_vsnet:
+            for transfer in unsorted_transfers:
+                transfer.state = "DONE"
+            return
+
         # Sort transfers by VSNet Connection ID
         sorted_transfers = {}
         for transfer in unsorted_transfers:
@@ -250,9 +268,10 @@ class Burro:
                     f"{connection_id} not yet finished; {remaining_time} left"
                 )
 
+    @time_this
     def finisher(self, unsorted_transfers):
         logging.debug(f"Running finisher on {len(unsorted_transfers)} transfers")
-        # Sort transfers by rule ID (because Rucio does) and stage them for deletion
+        # Sort transfers by rule ID and stage them for deletion
         sorted_transfers = {}
         for transfer in unsorted_transfers:
             rule_id = transfer.rule_id
@@ -279,7 +298,7 @@ class Burro:
 
 def sigint_handler(burro):
     def actual_handler(sig, frame):
-        logging.info("Stopping Donkey (received SIGINT)")
+        logging.info("Stopping Burro (received SIGINT)")
         burro.stop()
         sys.exit(0)
     return actual_handler

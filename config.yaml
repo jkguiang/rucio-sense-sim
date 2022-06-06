@@ -2,20 +2,21 @@ burro:
   heartbeat: 10
   throttler: true
   rules:
-    - delay: 0
-      rule:
-      - src_rse: T2_US_UCSD
-        dst_rse: T2_US_Caltech_Test
-        size_GB: 1
-        n_transfers: 10
-        priority: 2
+    - delay: 1
+      src_rse: T2_US_SDSC
+      dst_rse: T2_US_Caltech_Test
+      src_limit: 5
+      size_GB: 1
+      n_transfers: 10
+      priority: 2
     - delay: 15
-      rule:
-      - src_rse: T2_US_Caltech_Test
-        dst_rse: T2_US_Caltech_Test1
-        size_GB: 2
-        n_transfers: 20
-        priority: 1
+      src_rse: T2_US_Caltech_Test
+      dst_rse: T2_US_Caltech_Test1
+      src_limit: 10
+      dst_limit: 7
+      size_GB: 2
+      n_transfers: 20
+      priority: 1
 dmm:
   host: localhost
   port: 5000
@@ -25,8 +26,8 @@ nonsense:
   port: 8000
   profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db
   sites:
-    - name: T2_US_UCSD
-      full_uri: urn:ogf:t2.ucsd.edu:nrp-dev:T2_US_UCSD
+    - name: T2_US_SDSC
+      full_uri: urn:ogf:t2.ucsd.edu:nrp-dev:T2_US_SDSC
       root_uri: urn:ogf:t2.ucsd.edu:nrp-dev
       port_capacity: 1000000
       ipv6_subnet_pool: 2001:48d0:3001:111::/64,2001:48d0:3001:112::/64,2001:48d0:3001:113::/64
