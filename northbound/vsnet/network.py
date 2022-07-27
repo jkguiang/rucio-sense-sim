@@ -59,9 +59,12 @@ class BestEffort(Promise):
             link.deregister_best_effort(self)
 
 class Link:
-    def __init__(self):
-        # TODO: implement this
-        pass
+    def __init__(self, id, start_node, end_node, bandwidth, igp_metric):
+        self.id = id
+        self.start_node = start_node
+        self.end_node = end_node
+        self.bandwidth = bandwidth
+        self.igpMetric = igp_metric
 
 class Node:
     def __init__(self, name, status=False):
@@ -105,3 +108,43 @@ class Network:
             igp_metric = adjacency.get("igpMetric")
             link = Link(id, self.nodes[start_name], self.nodes[end_name], bandwidth, igp_metric)
             self.links[link.id] = link
+
+    def dijkstra(self, start_node_name, end_node_name):
+        dist = {}
+        prev = {}
+        queue = []
+        for node in self.nodes.values():
+            if node == self.nodes[start_node_name]:
+                dist[node.name] = 0
+            else:
+                dist[node.name] = INFINITY
+            prev[node.name] = None
+            queue.append(node)
+
+        while len(queue) > 0:
+            min_dist = INFINITY
+            min_dist_node = -1
+            for node in queue:
+                if dist[node.name] < min_dist:
+                    min_dist = dist[node.name]
+                    min_dist_node = node
+                    break
+            this_node = min_dist_node
+            queue.remove(min_dist_node)
+
+            if this_node.name == end_node_name:
+                break
+
+            alt = dist[this_node.name] + 1
+            for next_node in [n for n in this_node.neighbors.values() if n in queue]:
+                if alt < dist[next_node.name] and dist[this_node.name] != INFINITY:
+                    dist[next_node.name] = alt
+                    prev[next_node.name] = this_node
+
+        route = []
+        if prev[end_node_name] != None:
+            this_node = prev[end_node_name]
+            while this_node != None:
+                route.insert(0, this_node)
+                this_node = prev[this_node.name]
+        return route
