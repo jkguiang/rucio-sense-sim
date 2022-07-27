@@ -1,3 +1,5 @@
+import json
+
 class Promise:
     def __init__(self, route, bandwidth):
         self.route = route
@@ -62,11 +64,44 @@ class Link:
         pass
 
 class Node:
-    def __init__(self):
-        # TODO: implement this
-        pass
+    def __init__(self, name, status=False):
+        self.name = name
+        self.neighbors = {}
+        self.status = status
+
+    def __str__(self):
+        return f"Node({self.name})"
+
+    def visit(self):
+        self.status = True
 
 class Network:
-    def __init__(self):
-        # TODO: implement this
-        pass
+    def __init__(self, filename):
+        self.nodes = {}
+        self.links = {}
+        self.filename = filename
+        with open(filename, "r") as f:
+            nodes_file = json.loads(f.read())
+        for adjacency in nodes_file["adjacencies"]:
+            start_name = adjacency.get("a")
+            end_name = adjacency.get("z")
+            if start_name not in self.nodes:
+                node = Node(start_name)
+                self.nodes[node.name] = node
+            if end_name not in self.nodes:
+                node = Node(end_name)
+                self.nodes[node.name] = node
+        for adjacency in nodes_file["adjacencies"]:
+            for node in self.nodes.values():
+                if node.name == adjacency.get("a") and adjacency.get("z") not in node.neighbors:
+                    node.neighbors[adjacency.get("z")] = self.nodes[adjacency.get("z")]
+                if node.name == adjacency.get("z") and adjacency.get("a") not in node.neighbors:
+                    node.neighbors[adjacency.get("a")] = self.nodes[adjacency.get("a")]
+        for adjacency in nodes_file["adjacencies"]:
+            id = adjacency.get("id")
+            start_name = adjacency.get("a")
+            end_name = adjacency.get("z")
+            bandwidth = adjacency.get("mbps")
+            igp_metric = adjacency.get("igpMetric")
+            link = Link(id, self.nodes[start_name], self.nodes[end_name], bandwidth, igp_metric)
+            self.links[link.id] = link
