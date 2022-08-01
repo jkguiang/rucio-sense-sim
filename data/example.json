@@ -1,0 +1,46 @@
+{
+  "adjacencies": [
+    {
+      "id": "AtoB",
+      "a": "NodeA",
+      "z": "NodeB",
+      "mbps": 100000,
+      "igpMetric": 100
+    },
+    {
+      "id": "BtoC",
+      "a": "NodeB",
+      "z": "NodeC",
+      "mbps": 100000,
+      "igpMetric": 100
+    },
+    {
+      "id": "DtoB",
+      "a": "NodeD",
+      "z": "NodeB",
+      "mbps": 100000,
+      "igpMetric": 100
+    },
+    {
+      "id": "EtoC",
+      "a": "NodeE",
+      "z": "NodeC",
+      "mbps": 100000,
+      "igpMetric": 100
+    },
+    {
+      "id": "CtoF",
+      "a": "NodeC",
+      "z": "NodeF",
+      "mbps": 50000,
+      "igpMetric": 100
+    },
+    {
+      "id": "CtoG",
+      "a": "NodeC",
+      "z": "NodeG",
+      "mbps": 100000,
+      "igpMetric": 100
+    }
+  ]
+}
