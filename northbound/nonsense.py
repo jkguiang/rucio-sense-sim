@@ -24,6 +24,7 @@ class Service:
     def __init__(self):
         self.id = str(uuid.uuid4())
         self.alias = ""
+        self.route_id = ""
         self.intent = {}
         self.status = ""
 
@@ -42,7 +43,7 @@ async def authenticate(form_data: OAuth2PasswordRequestForm = Depends()):
 
 @nonsense.get("/api/profile/{profile_uuid}")
 def profile(profile_uuid: str):
-    with open(f"northbound/profiles/{profile_uuid}.json", "r") as profile_json:
+    with open(f"data/profiles/{profile_uuid}.json", "r") as profile_json:
         return profile_json.read()
 
 @nonsense.delete("/api/service/{instance_uuid}")
@@ -65,7 +66,7 @@ def query_instance(instance_uuid: str, new_intent: dict):
     }
 
     # Load service profile
-    with open(f"northbound/profiles/{profile_uuid}.json", "r") as profile_json:
+    with open(f"data/profiles/{profile_uuid}.json", "r") as profile_json:
         profile = json.load(profile_json)
         intent = profile["intent"]["data"]
 
@@ -88,10 +89,26 @@ def query_instance(instance_uuid: str, new_intent: dict):
                         attr = keychain.split(".")[-1]
                         bandwidth_data[attr] = value
         elif ask == "maximum-bandwidth":
-            # TODO: make max bandwidth more realistic
-            answer["results"].append(
-                {"bandwidth": "1000000", "name": query["options"][0]["name"]}
-            )
+            connection_names = []
+            if "options" in query:
+                for option in query["options"]:
+                    if "name" in option:
+                        connection_names.append(option["name"])
+            for connection_i, connection_data in enumerate(intent["connections"]):
+                if connection_names and connection_data["name"] not in connection_names:
+                    continue
+                src_data, dst_data = connection_data["terminals"]
+                response = requests.get(
+                    f"http://{vsnet_url}/routes", 
+                    params={
+                        "src": site_info_lookup("vsnet_node", root_uri=src_data["uri"]),
+                        "dst": site_info_lookup("vsnet_node", root_uri=dst_data["uri"])
+                    }
+                )
+                answer["results"].append(
+                    {"bandwidth": str(response["capacity"]), "name": connection_data["name"]}
+                )
+                services[instance_uuid].route_id = response["route_id"]
 
         response["queries"].append(answer)
 
@@ -125,7 +142,10 @@ def affect_instance(instance_uuid: str, action: str):
         # Send data to VSNet
         requests.put(
             f"http://{vsnet_url}/connections/{service.alias}/update", 
-            params={"bandwidth": float(connection_data["bandwidth"]["capacity"])}
+            params={
+                "bandwidth": float(connection_data["bandwidth"]["capacity"]),
+                "route_id": service.route_id
+            }
         )
         services[instance_uuid].status = "CREATE - READY"
     elif action == "cancel":
