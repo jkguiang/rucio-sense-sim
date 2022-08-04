@@ -139,6 +139,7 @@ class Network:
                 start_node, 
                 end_node, 
                 adjacency.get("mbps"), 
+                0.25,
                 adjacency.get("igpMetric")
             )
 
