@@ -156,7 +156,7 @@ class Network:
                 adjacency.get("igpMetric")
             )
 
-    def get_promise(route_id, bandwidth=0.):
+    def get_promise(self, route_id, bandwidth=0.):
         route = self.get_route_from_id(route_id)
         if bandwidth > 0:
             return Promise(self, route, bandwidth)
@@ -287,23 +287,3 @@ class Network:
             prev_node = prev[this_node.name]
 
         return route
-
-if __name__ == "__main__":
-    network = Network("/Users/jguiang/Projects/rucio-sense-sim/data/example.json", max_beff_passes=20)
-    route_AtoC = network.dijkstra("NodeA", "NodeC")
-    route_BtoE = network.dijkstra("NodeB", "NodeE")
-    route_DtoC = network.dijkstra("NodeD", "NodeC")
-    print("Routes:")
-    print(" --> ".join([l.name for l in route_AtoC.links]))
-    print(" --> ".join([l.name for l in route_BtoE.links]))
-    print(" --> ".join([l.name for l in route_DtoC.links]))
-    besteff_AtoC = BestEffort(route_AtoC)
-    besteff_BtoE = BestEffort(route_BtoE)
-    besteff_DtoC = BestEffort(route_DtoC)
-    network.distrib_besteff(besteff=besteff_AtoC)
-    network.distrib_besteff(besteff=besteff_BtoE)
-    network.distrib_besteff(besteff=besteff_DtoC)
-    print("Results:")
-    print(f"AtoC: {besteff_AtoC.bandwidth} Xb/s")
-    print(f"BtoE: {besteff_BtoE.bandwidth} Xb/s")
-    print(f"DtoC: {besteff_DtoC.bandwidth} Xb/s")
