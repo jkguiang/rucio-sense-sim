@@ -1,10 +1,15 @@
+import yaml
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from northbound.vsnet.connection import Connection
 from northbound.vsnet.network import Network
 
-vsnet = Network()
+with open("config.yaml", "r") as config_yaml:
+    config = yaml.safe_load(config_yaml)
+    vsnet_config = config.get("vsnet")
+
+vsnet = Network(vsnet_config.get("json"))
 api = FastAPI()
 
 connections = {}
@@ -24,6 +29,20 @@ async def construct_history():
 @api.get("/history")
 async def get_history():
     return await construct_history()
+
+@api.get("/routes")
+def get_route(src: str, dst: str):
+    """
+    Get best route between a given source and destination
+
+    - **src**: name of source site (RSE name)
+    - **dst**: name of destination site (RSE name)
+    """
+    route = vsnet.dijkstra(src, dst)
+    return {
+        "route_id": route.id,
+        "capacity": route.get_capacity()
+    }
 
 @api.get("/connections/{connection_id}/check")
 def check_connection(connection_id: str):
@@ -61,8 +80,8 @@ def update_connection(connection_id: str, bandwidth: float, route_id: str):
     - **bandwidth**: bandwidth provision in bytes/sec
     """
     connection = find_connection(connection_id)
-    route = vsnet.get_route(route_id)
-    connection.update(route, bandwidth=bandwidth)
+    promise = vsnet.get_promise(route_id, bandwidth)
+    connection.update(promise)
 
 @api.put("/connections/{connection_id}/start")
 def start_connection(connection_id: str):

@@ -45,13 +45,8 @@ class Connection:
                 self.is_active = False
                 self.is_finished = True
 
-    def update(self, route, bandwidth=None):
+    def update(self, promise):
         self.check()
-        if bandwidth:
-            promise = Promise(route, bandwidth)
-        else:
-            promise = BestEffort(route)
-
         if self.is_active and len(self.promises) > 0:
             start_time = now()
             promise.start(t=start_time)

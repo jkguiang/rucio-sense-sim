@@ -7,7 +7,8 @@ INFINITY = 1e12
 
 class Promise:
     def __init__(self, network, route, bandwidth):
-        self.network = network
+        self.__fulfill = network.fulfill_promise
+        self.__release = network.release_promise
         self.route = route
         self.bandwidth = bandwidth
         self.start_time = None
@@ -27,17 +28,19 @@ class Promise:
             return self.end_time - self.start_time
 
     def start(self, t=None):
-        self.start_time = t if t else now()
-        self.network.fulfill_promise(self)
+        self.start_time = t or now()
+        self.__fullfill(self)
 
     def end(self, t=None):
-        self.end_time = t if t else now()
-        self.network.release_promise(self)
+        self.end_time = t or now()
+        self.__release(self)
 
 class BestEffort(Promise):
     def __init__(self, network, route):
         super().__init__(network, route, 0.)
         self.__bytes = 0.
+        self.__fulfill = network.distrib_besteff
+        self.__release = network.release_besteff
 
     def __str__(self):
         return f"BestEffort({self.route})"
@@ -51,20 +54,12 @@ class BestEffort(Promise):
         self.start_time = now()
         self.bandwidth = bandwidth
 
-    def start(self, t=None):
-        self.start_time = t if t else now()
-        self.network.distrib_besteff(besteff=self)
-
-    def end(self, t=None):
-        self.end_time = t if t else now()
-        self.network.release_besteff(self)
-
 class Route:
     def __init__(self, links=None):
         self.links = links or []
 
     def __str__(self):
-        return " --> ".join([l.name for l in self.links])
+        return " --> ".join([link.name for link in self.links])
 
     @property
     def id(self):
@@ -160,6 +155,13 @@ class Network:
                 1.,
                 adjacency.get("igpMetric")
             )
+
+    def get_promise(route_id, bandwidth=0.):
+        route = self.get_route_from_id(route_id)
+        if bandwidth > 0:
+            return Promise(self, route, bandwidth)
+        else:
+            return BestEffort(self, route)
 
     def distrib_besteff(self, besteff=None):
         if besteff:
