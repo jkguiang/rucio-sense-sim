@@ -118,7 +118,7 @@ class Node:
         return f"Node({self.name})"
 
 class Network:
-    def __init__(self, network_json, max_beff_passes=100):
+    def __init__(self, network_json, max_beff_passes=100, beff_frac=0.25):
         self.nodes = {}
         self.links = {}
         self.besteffs = []
@@ -151,8 +151,7 @@ class Network:
                 start_node, 
                 end_node, 
                 adjacency.get("mbps"), 
-                # 0.25,
-                1.,
+                beff_frac,
                 adjacency.get("igpMetric")
             )
 

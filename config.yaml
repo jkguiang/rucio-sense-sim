@@ -31,27 +31,35 @@ nonsense:
       root_uri: urn:ogf:t2.ucsd.edu:nrp-dev
       port_capacity: 1000000
       ipv6_subnet_pool: 2001:48d0:3001:111::/64,2001:48d0:3001:112::/64,2001:48d0:3001:113::/64
+      vsnet_node: ucsd-cr6
     - name: T2_US_Caltech_Test
       full_uri: urn:ogf:network:ultralight.org:2013:T2_US_Caltech_Test
       root_uri: urn:ogf:network:ultralight.org:2013
       port_capacity: 1000000
       ipv6_subnet_pool: 2605:d9c0:2:fff1::/64,2605:d9c0:2:fff2::/64,2605:d9c0:2:fff3::/64
+      vsnet_node: caltech-cr6
     - name: T2_US_Caltech_Test1
       full_uri: urn:ogf:network:ultralight1.org:2013:T2_US_Caltech_Test1
       root_uri: urn:ogf:network:ultralight1.org:2013
       port_capacity: 1000000
       ipv6_subnet_pool: 2605:d9c0:2:fff4::/64,2605:d9c0:2:fff5::/64,2605:d9c0:2:fff6::/64
+      vsnet_node: caltech-cr6
     - name: k8s-igrok-01
       full_uri: urn:ogf:network:calit2.optiputer.net:2020:prism-core:k8s-igrok-01
       root_uri: urn:ogf:network:calit2.optiputer.net
       port_capacity: 1000000
       ipv6_subnet_pool: blah
+      vsnet_node: caltech-cr6
     - name: k8s-igrok-02
       full_uri: urn:ogf:network:calit2.optiputer.net:2020:prism-core:k8s-igrok-02
       root_uri: urn:ogf:network:calit2.optiputer.net
       port_capacity: 1000000
       ipv6_subnet_pool: blah
+      vsnet_node: caltech-cr6
 vsnet:
   host: localhost
   port: 9000
+  json: data/esnet.json
   time_dilation: 100.0
+  max_beff_passes: 100
+  beff_frac: 0.10

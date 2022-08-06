@@ -9,7 +9,11 @@ with open("config.yaml", "r") as config_yaml:
     config = yaml.safe_load(config_yaml)
     vsnet_config = config.get("vsnet")
 
-vsnet = Network(vsnet_config.get("json"))
+vsnet = Network(
+    vsnet_config.get("json"),
+    max_beff_passes=vsnet_config.get("max_beff_passes"),
+    beff_frac=vsnet_config.get("beff_frac")
+)
 api = FastAPI()
 
 connections = {}
