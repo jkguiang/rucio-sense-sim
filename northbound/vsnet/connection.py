@@ -49,8 +49,8 @@ class Connection:
         self.check()
         if self.is_active and len(self.promises) > 0:
             start_time = now()
-            promise.start(t=start_time)
             self.promises[-1].end(t=start_time)
+            promise.start(t=start_time)
 
         self.promises.append(promise)
 
