@@ -7,8 +7,7 @@ INFINITY = 1e12
 
 class Promise:
     def __init__(self, network, route, bandwidth):
-        self.__fulfill = network.fulfill_promise
-        self.__release = network.release_promise
+        self.network = network
         self.route = route
         self.bandwidth = bandwidth
         self.start_time = None
@@ -29,18 +28,16 @@ class Promise:
 
     def start(self, t=None):
         self.start_time = t or now()
-        self.__fullfill(self)
+        self.network.fulfill_promise(self)
 
     def end(self, t=None):
         self.end_time = t or now()
-        self.__release(self)
+        self.network.release_promise(self)
 
 class BestEffort(Promise):
     def __init__(self, network, route):
         super().__init__(network, route, 0.)
         self.__bytes = 0.
-        self.__fulfill = network.distrib_besteff
-        self.__release = network.release_besteff
 
     def __str__(self):
         return f"BestEffort({self.route})"
@@ -53,6 +50,14 @@ class BestEffort(Promise):
         self.__bytes += self.duration*self.bandwidth
         self.start_time = now()
         self.bandwidth = bandwidth
+
+    def start(self, t=None):
+        self.start_time = t or now()
+        self.network.distrib_besteff(self)
+
+    def end(self, t=None):
+        self.end_time = t or now()
+        self.network.release_besteff(self)
 
 class Route:
     def __init__(self, links=None):
@@ -90,7 +95,7 @@ class Link:
         orig_bandwidth = self.beff_bandwidth if is_besteff else self.prio_bandwidth
         if orig_bandwidth - bandwidth < 0:
             raise ValueError(
-                f"taking {bandwidth} exceeds current free bandwidth (orig_bandwidth)"
+                f"taking {bandwidth} exceeds free bandwidth ({orig_bandwidth})"
             )
         else:
             if is_besteff:
@@ -101,7 +106,7 @@ class Link:
     def free(self, bandwidth, is_besteff=False):
         if self.beff_bandwidth + self.prio_bandwidth + bandwidth > self.total_bandwidth:
             raise ValueError(
-                f"freeing {bandwidth} exceeds current max bandwidth (self.total_bandwidth)"
+                f"freeing {bandwidth} exceeds max bandwidth ({self.total_bandwidth})"
             )
         else:
             if is_besteff:
@@ -216,15 +221,17 @@ class Network:
 
     def release_besteff(self, besteff):
         self.besteffs.remove(besteff)
-        self.distrib_besteffs()
+        self.distrib_besteff()
 
     def fulfill_promise(self, promise):
+        print(f"FULFILLING {promise}")
         for link in promise.route.links:
-            link.reserve(self.bandwidth)
+            link.reserve(promise.bandwidth)
 
     def release_promise(self, promise):
+        print(f"RELEASING {promise}")
         for link in promise.route.links:
-            link.free(self.bandwidth)
+            link.free(promise.bandwidth)
 
     def get_route_from_id(self, route_id):
         link_names = base64.b64decode(route_id.encode("utf-8")).decode("utf-8").split("&")
