@@ -14,11 +14,11 @@ services = {}
 
 with open("config.yaml", "r") as config_yaml:
     config = yaml.safe_load(config_yaml)
-    nonsense_config = config.get("nonsense")
-    vsnet_config = config.get("vsnet")
+    nonsense_config = config["nonsense"]
+    vsnet_config = config["vsnet"]
 
-vsnet_url = f"{vsnet_config.get('host')}:{vsnet_config.get('port')}"
-profile_uuid = nonsense_config.get("profile_uuid")
+vsnet_url = f"{vsnet_config['host']}:{vsnet_config['port']}"
+profile_uuid = nonsense_config["profile_uuid"]
 
 class Service:
     def __init__(self):
@@ -101,8 +101,8 @@ def query_instance(instance_uuid: str, new_intent: dict):
                 route_info = requests.get(
                     f"http://{vsnet_url}/routes", 
                     params={
-                        "src": site_info_lookup("vsnet_node", root_uri=src_data["uri"]),
-                        "dst": site_info_lookup("vsnet_node", root_uri=dst_data["uri"])
+                        "src": site_info_lookup("name", root_uri=src_data["uri"]),
+                        "dst": site_info_lookup("name", root_uri=dst_data["uri"])
                     }
                 ).json()
                 answer["results"].append(
