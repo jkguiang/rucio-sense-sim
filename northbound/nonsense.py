@@ -98,17 +98,17 @@ def query_instance(instance_uuid: str, new_intent: dict):
                 if connection_names and connection_data["name"] not in connection_names:
                     continue
                 src_data, dst_data = connection_data["terminals"]
-                response = requests.get(
+                route_info = requests.get(
                     f"http://{vsnet_url}/routes", 
                     params={
                         "src": site_info_lookup("vsnet_node", root_uri=src_data["uri"]),
                         "dst": site_info_lookup("vsnet_node", root_uri=dst_data["uri"])
                     }
-                )
+                ).json()
                 answer["results"].append(
-                    {"bandwidth": str(response["capacity"]), "name": connection_data["name"]}
+                    {"bandwidth": str(route_info["capacity"]), "name": connection_data["name"]}
                 )
-                services[instance_uuid].route_id = response["route_id"]
+                services[instance_uuid].route_id = route_info["route_id"]
 
         response["queries"].append(answer)
 
