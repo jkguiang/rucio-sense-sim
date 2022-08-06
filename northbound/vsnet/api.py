@@ -7,12 +7,12 @@ from northbound.vsnet.network import Network
 
 with open("config.yaml", "r") as config_yaml:
     config = yaml.safe_load(config_yaml)
-    vsnet_config = config.get("vsnet")
+    vsnet_config = config["vsnet"]
 
 vsnet = Network(
-    vsnet_config.get("json"),
-    max_beff_passes=vsnet_config.get("max_beff_passes"),
-    beff_frac=vsnet_config.get("beff_frac")
+    vsnet_config["json"],
+    max_beff_passes=vsnet_config.get("max_beff_passes", 100),
+    beff_frac=vsnet_config.get("beff_frac", 0.25)
 )
 api = FastAPI()
 
@@ -42,7 +42,7 @@ def get_route(src: str, dst: str):
     - **src**: name of source site (RSE name)
     - **dst**: name of destination site (RSE name)
     """
-    route = vsnet.dijkstra(src, dst)
+    route = vsnet.dijkstra(vsnet_config["sites"][src], vsnet_config["sites"][dst])
     return {
         "route_id": route.id,
         "capacity": route.get_capacity()
