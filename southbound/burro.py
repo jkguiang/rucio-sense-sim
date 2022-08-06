@@ -73,7 +73,7 @@ class Burro:
                 self.dmm_authkey = f_in.read()
             # Extract VSNet configuration parameters
             vsnet_config = config.get("vsnet")
-            self.vsnet_address = f"{vsnet_config.get('host')}:{vsnet_config.get('port')}"
+            self.vsnet_url = f"{vsnet_config.get('host')}:{vsnet_config.get('port')}"
 
         self.active_rules = []
         self.rule_stager = Thread(target=self.__stage_rules, args=(all_rules,))
@@ -183,7 +183,7 @@ class Burro:
             for rse_pair_id, transfer_data in rule_data.items():
                 src, dst = rse_pair_id.split("&")
                 requests.post(
-                    "http://localhost:9000/connections", 
+                    f"http://{self.vsnet_url}/connections", 
                     params={
                         "burro_id": rule_id, 
                         "src": src, 
@@ -191,6 +191,17 @@ class Burro:
                         "total_data": transfer_data["n_bytes_total"]
                     }
                 )
+                if transfer_data["priority"] == 0:
+                    route_info = requests.get(
+                        f"http://{self.vsnet_url}/routes",
+                        params={"src": src, "dst": dst} # FIXME: NONSENSE has to look up src, dst VSNet names... maybe change how API works?
+                    ).json()
+
+                    connection_id = f"{rule_id}_{src}_{dst}"
+                    requests.put(
+                        f"http://{self.vsnet_url}/connections/{connection_id}/update", 
+                        params={"bandwidth": 0., "route_id": route_info["route_id"]}
+                    )
 
     @time_this
     def throttler(self, transfers):
@@ -233,7 +244,7 @@ class Burro:
         # Start VSNet data transfers
         for connection_id in connection_ids:
             requests.put(
-                f"http://{self.vsnet_address}/connections/{connection_id}/start"
+                f"http://{self.vsnet_url}/connections/{connection_id}/start"
             )
 
     @time_this
@@ -255,10 +266,9 @@ class Burro:
 
         # Parse sorted transfers
         for connection_id, transfers in sorted_transfers.items():
-            response = requests.get(
-                f"http://{self.vsnet_address}/connections/{connection_id}/check"
-            )
-            connection_data = response.json()
+            connection_data = requests.get(
+                f"http://{self.vsnet_url}/connections/{connection_id}/check"
+            ).json()
             if connection_data.get("is_finished", False):
                 for transfer in transfers:
                     transfer.state = "DONE"
