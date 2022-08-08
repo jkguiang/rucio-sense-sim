@@ -1,9 +1,25 @@
 import json
 import base64
+from math import radians, cos, sin, asin, sqrt
 
 from utils.vtime import now
 
 INFINITY = 1e12
+
+def distance(lat1, lat2, lon1, lon2):
+      
+     # Converts degrees to radians
+     lon1 = radians(lon1)
+     lon2 = radians(lon2)
+     lat1 = radians(lat1)
+     lat2 = radians(lat2)
+       
+     # Uses Haversine formula then multiplies by 6371 KM (radius of Earth); for miles use 3956
+     km_distance = 2*asin(sqrt(
+         sin((lat2 - lat1)/2)**2
+         + cos(lat1)*cos(lat2)*sin((lon2 - lon1)/2)**2
+         ))*6371
+     return round(km_distance, 3)
 
 class Promise:
     def __init__(self, network, route, bandwidth):
@@ -81,7 +97,8 @@ class Route:
             return 0
 
 class Link:
-    def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric):
+    def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric, 
+                 lat, lon):
         self.name = name
         self.nodes = (node_1, node_2)
         self.total_bandwidth = bandwidth
@@ -90,6 +107,7 @@ class Link:
         self.beff_bandwidth = bandwidth*(self.beff_frac)
         self.igp_metric = igp_metric
         self.n_besteffs = 0
+        self.length = max(distance(node_1.lat, node_2.lat, node_1.lon, node_2.lon),1)
 
     def reserve(self, bandwidth, is_besteff=False):
         orig_bandwidth = self.beff_bandwidth if is_besteff else self.prio_bandwidth
@@ -115,15 +133,17 @@ class Link:
                 self.prio_bandwidth += bandwidth
 
 class Node:
-    def __init__(self, name):
+    def __init__(self, name, lat, lon):
         self.name = name
         self.neighbors = {}
-
+        self.lat = lat
+        self.lon = lon
+        
     def __str__(self):
         return f"Node({self.name})"
 
 class Network:
-    def __init__(self, network_json, max_beff_passes=100, beff_frac=0.25):
+    def __init__(self, network_json, location_data, max_beff_passes=100, beff_frac=0.25):
         self.nodes = {}
         self.links = {}
         self.besteffs = []
@@ -134,6 +154,10 @@ class Network:
             # Initialize nodes
             start_name = adjacency.get("a")
             end_name = adjacency.get("z")
+            with open(location_data, "r") as m:
+                points = json.load(m)
+                lat = float(points[start_name][0])
+                lon = float(points[start_name][1])
             if start_name not in self.nodes:
                 start_node = Node(start_name)
                 self.nodes[start_node.name] = start_node
@@ -157,7 +181,9 @@ class Network:
                 end_node, 
                 adjacency.get("mbps"), 
                 beff_frac,
-                adjacency.get("igpMetric")
+                adjacency.get("igpMetric"),
+                lat,
+                lon,
             )
 
     def get_promise(self, route_id, bandwidth=0.):
@@ -279,6 +305,7 @@ class Network:
             # Evaluate distances from closest node to its neighbors
             alt = dist[this_node.name] + 1
             for next_node in [n for n in this_node.neighbors.values() if n in queue]:
+                alt = dist[this_node.name] + distance(this_node.lat, next_node.lat, this_node.lon, next_node.lon)
                 if alt < dist[next_node.name] and dist[this_node.name] != INFINITY:
                     dist[next_node.name] = alt
                     prev[next_node.name] = this_node
