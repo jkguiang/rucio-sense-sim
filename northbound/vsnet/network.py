@@ -19,7 +19,7 @@ def distance(lat1, lat2, lon1, lon2):
          sin((lat2 - lat1)/2)**2
          + cos(lat1)*cos(lat2)*sin((lon2 - lon1)/2)**2
          ))*6371
-     return round(km_distance, 3)
+     return round(km_distance/6371, 3)
 
 class Promise:
     def __init__(self, network, route, bandwidth):
@@ -107,7 +107,18 @@ class Link:
         self.beff_bandwidth = bandwidth*(self.beff_frac)
         self.igp_metric = igp_metric
         self.n_besteffs = 0
-        self.length = max(distance(node_1.lat, node_2.lat, node_1.lon, node_2.lon),1)
+        self.is_spur = False
+        self.__length = distance(node_1.lat, node_2.lat, node_1.lon, node_2.lon)
+        
+    @property
+    def length(self):
+       if self.is_spur:
+           return INFINITY
+       else:
+           return self.__length
+           
+    def __str__(self):
+        return f"Link({self.nodes})"
 
     def reserve(self, bandwidth, is_besteff=False):
         orig_bandwidth = self.beff_bandwidth if is_besteff else self.prio_bandwidth
@@ -159,12 +170,12 @@ class Network:
                 lat = float(points[start_name][0])
                 lon = float(points[start_name][1])
             if start_name not in self.nodes:
-                start_node = Node(start_name)
+                start_node = Node(start_name, lat, lon)
                 self.nodes[start_node.name] = start_node
             else:
                 start_node = self.nodes[start_name]
             if end_name not in self.nodes:
-                end_node = Node(end_name)
+                end_node = Node(end_name, lat, lon)
                 self.nodes[end_node.name] = end_node
             else:
                 end_node = self.nodes[end_name]
@@ -285,27 +296,29 @@ class Network:
                 dist[node.name] = INFINITY
             prev[node.name] = None
             queue.append(node)
-
         while len(queue) > 0:
             # Find closest node
             min_dist = INFINITY
-            min_dist_node = -1
+            min_dist_node = None
             for node in queue:
                 if dist[node.name] < min_dist:
                     min_dist = dist[node.name]
                     min_dist_node = node
+                    
+            if min_dist_node == None:
+                return None 
 
             # Remove closest node from queue
             this_node = min_dist_node
             queue.remove(min_dist_node)
-
+            
             if this_node.name == end_node_name:
                 break
 
             # Evaluate distances from closest node to its neighbors
-            alt = dist[this_node.name] + 1
             for next_node in [n for n in this_node.neighbors.values() if n in queue]:
-                alt = dist[this_node.name] + distance(this_node.lat, next_node.lat, this_node.lon, next_node.lon)
+                links = self.get_links(this_node, next_node)
+                alt = dist[this_node.name] + links[0].length
                 if alt < dist[next_node.name] and dist[this_node.name] != INFINITY:
                     dist[next_node.name] = alt
                     prev[next_node.name] = this_node
@@ -320,3 +333,28 @@ class Network:
             prev_node = prev[this_node.name]
 
         return route
+
+    def YenKSP(self, start_node_name, end_node_name, k):  
+        
+        shortest_path = self.dijkstra(start_node_name, end_node_name)
+        spur_paths = {}
+        kshortest_paths = []
+        
+        test = []
+        for i in shortest_path.links:  
+            test.append(i.name)
+                
+        for i in range(1, len(test)):
+            for j in range(len(test)):
+                spur_path = shortest_path.links[j:j+i]
+                spur_path_id = ",".join([link.name for link in spur_path])
+                spur_paths[spur_path_id] = spur_path
+
+        for spur_path in list(spur_paths.values())[:k]:
+            for link in spur_path:
+                link.is_spur = True  
+            next_path = self.dijkstra(start_node_name, end_node_name)
+            kshortest_paths.append(next_path)
+            for link in spur_path:
+                link.is_spur = False
+        return kshortest_paths
