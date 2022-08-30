@@ -2,7 +2,7 @@ import json
 import base64
 from math import radians, cos, sin, asin, sqrt
 
-from utils.vtime import now
+# from utils.vtime import now
 
 INFINITY = 1e12
 
@@ -334,9 +334,11 @@ class Network:
 
         return route
 
-    def YenKSP(self, start_node_name, end_node_name, k):  
-        
-        shortest_path = self.dijkstra(start_node_name, end_node_name)
+    def YenKSP(self, start_node_name, end_node_name, k, algo="dijkstra"):
+   
+        route_algo = getattr(self, algo)
+
+        shortest_path = route_algo(start_node_name, end_node_name)
         spur_paths = {}
         kshortest_paths = []
         
