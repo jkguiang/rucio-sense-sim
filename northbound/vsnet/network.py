@@ -1,9 +1,25 @@
 import json
 import base64
+from math import radians, cos, sin, asin, sqrt
 
-from utils.vtime import now
+# from utils.vtime import now
 
 INFINITY = 1e12
+
+def distance(lat1, lat2, lon1, lon2):
+      
+     # Converts degrees to radians
+     lon1 = radians(lon1)
+     lon2 = radians(lon2)
+     lat1 = radians(lat1)
+     lat2 = radians(lat2)
+       
+     # Uses Haversine formula then multiplies by 6371 KM (radius of Earth); for miles use 3956
+     km_distance = 2*asin(sqrt(
+         sin((lat2 - lat1)/2)**2
+         + cos(lat1)*cos(lat2)*sin((lon2 - lon1)/2)**2
+         ))*6371
+     return round(km_distance/6371, 3)
 
 class Promise:
     def __init__(self, network, route, bandwidth):
@@ -81,7 +97,8 @@ class Route:
             return 0
 
 class Link:
-    def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric):
+    def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric, 
+                 lat, lon):
         self.name = name
         self.nodes = (node_1, node_2)
         self.total_bandwidth = bandwidth
@@ -90,6 +107,18 @@ class Link:
         self.beff_bandwidth = bandwidth*(self.beff_frac)
         self.igp_metric = igp_metric
         self.n_besteffs = 0
+        self.is_spur = False
+        self.__length = distance(node_1.lat, node_2.lat, node_1.lon, node_2.lon)
+        
+    @property
+    def length(self):
+       if self.is_spur:
+           return INFINITY
+       else:
+           return self.__length
+           
+    def __str__(self):
+        return f"Link({self.nodes})"
 
     def reserve(self, bandwidth, is_besteff=False):
         orig_bandwidth = self.beff_bandwidth if is_besteff else self.prio_bandwidth
@@ -115,15 +144,17 @@ class Link:
                 self.prio_bandwidth += bandwidth
 
 class Node:
-    def __init__(self, name):
+    def __init__(self, name, lat, lon):
         self.name = name
         self.neighbors = {}
-
+        self.lat = lat
+        self.lon = lon
+        
     def __str__(self):
         return f"Node({self.name})"
 
 class Network:
-    def __init__(self, network_json, max_beff_passes=100, beff_frac=0.25):
+    def __init__(self, network_json, location_data, max_beff_passes=100, beff_frac=0.25):
         self.nodes = {}
         self.links = {}
         self.besteffs = []
@@ -134,13 +165,17 @@ class Network:
             # Initialize nodes
             start_name = adjacency.get("a")
             end_name = adjacency.get("z")
+            with open(location_data, "r") as m:
+                points = json.load(m)
+                lat = float(points[start_name][0])
+                lon = float(points[start_name][1])
             if start_name not in self.nodes:
-                start_node = Node(start_name)
+                start_node = Node(start_name, lat, lon)
                 self.nodes[start_node.name] = start_node
             else:
                 start_node = self.nodes[start_name]
             if end_name not in self.nodes:
-                end_node = Node(end_name)
+                end_node = Node(end_name, lat, lon)
                 self.nodes[end_node.name] = end_node
             else:
                 end_node = self.nodes[end_name]
@@ -157,7 +192,9 @@ class Network:
                 end_node, 
                 adjacency.get("mbps"), 
                 beff_frac,
-                adjacency.get("igpMetric")
+                adjacency.get("igpMetric"),
+                lat,
+                lon,
             )
 
     def get_promise(self, route_id, bandwidth=0.):
@@ -259,26 +296,29 @@ class Network:
                 dist[node.name] = INFINITY
             prev[node.name] = None
             queue.append(node)
-
         while len(queue) > 0:
             # Find closest node
             min_dist = INFINITY
-            min_dist_node = -1
+            min_dist_node = None
             for node in queue:
                 if dist[node.name] < min_dist:
                     min_dist = dist[node.name]
                     min_dist_node = node
+                    
+            if min_dist_node == None:
+                return None 
 
             # Remove closest node from queue
             this_node = min_dist_node
             queue.remove(min_dist_node)
-
+            
             if this_node.name == end_node_name:
                 break
 
             # Evaluate distances from closest node to its neighbors
-            alt = dist[this_node.name] + 1
             for next_node in [n for n in this_node.neighbors.values() if n in queue]:
+                links = self.get_links(this_node, next_node)
+                alt = dist[this_node.name] + links[0].length
                 if alt < dist[next_node.name] and dist[this_node.name] != INFINITY:
                     dist[next_node.name] = alt
                     prev[next_node.name] = this_node
@@ -293,3 +333,30 @@ class Network:
             prev_node = prev[this_node.name]
 
         return route
+
+    def YenKSP(self, start_node_name, end_node_name, k, algo="dijkstra"):
+   
+        route_algo = getattr(self, algo)
+
+        shortest_path = route_algo(start_node_name, end_node_name)
+        spur_paths = {}
+        kshortest_paths = []
+        
+        test = []
+        for i in shortest_path.links:  
+            test.append(i.name)
+                
+        for i in range(1, len(test)):
+            for j in range(len(test)):
+                spur_path = shortest_path.links[j:j+i]
+                spur_path_id = ",".join([link.name for link in spur_path])
+                spur_paths[spur_path_id] = spur_path
+
+        for spur_path in list(spur_paths.values())[:k]:
+            for link in spur_path:
+                link.is_spur = True  
+            next_path = self.dijkstra(start_node_name, end_node_name)
+            kshortest_paths.append(next_path)
+            for link in spur_path:
+                link.is_spur = False
+        return kshortest_paths
