@@ -79,13 +79,20 @@ class Route:
     def __init__(self, links=None):
         self.links = links or []
 
-    def __str__(self):
-        return " --> ".join([link.name for link in self.links])
+    @property
+    def link_names(self):
+        return [link.name for link in self.links]
 
     @property
     def id(self):
-        link_names = sorted([link.name for link in self.links])
+        link_names = sorted(self.link_names)
         return base64.b64encode("&".join(link_names).encode("utf-8")).decode("utf-8")
+
+    def __len__(self):
+        return len(self.links)
+
+    def __str__(self):
+        return " --> ".join(self.link_names)
 
     def get_capacity(self, is_besteff=False):
         if len(self.links) > 0:
@@ -97,8 +104,7 @@ class Route:
             return 0
 
 class Link:
-    def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric, 
-                 lat, lon):
+    def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric):
         self.name = name
         self.nodes = (node_1, node_2)
         self.total_bandwidth = bandwidth
@@ -146,7 +152,7 @@ class Link:
 class Node:
     def __init__(self, name, lat, lon):
         self.name = name
-        self.neighbors = {}
+        self.neighbors = []
         self.lat = lat
         self.lon = lon
         
@@ -154,48 +160,97 @@ class Node:
         return f"Node({self.name})"
 
 class Network:
-    def __init__(self, network_json, location_data, max_beff_passes=100, beff_frac=0.25):
-        self.nodes = {}
-        self.links = {}
+    def __init__(self, network_json, coordinates_json, max_beff_passes=100, beff_frac=0.25):
+        self.__nodes = {}
+        self.__links = {}
         self.besteffs = []
         self.max_beff_passes = max_beff_passes
         with open(network_json, "r") as f:
             adjacencies = json.load(f).get("adjacencies")
+        with open(coordinates_json, "r") as m:
+            coordinates = json.load(m)
         for adjacency in adjacencies:
-            # Initialize nodes
+            # Initialize or look up start node
             start_name = adjacency.get("a")
+            start_lat, start_lon = coordinates[start_name]
+            if not self.has_node(start_name):
+                start_node = Node(start_name, start_lat, start_lon)
+                self.add_node(start_node)
+            else:
+                start_node = self.get_node(start_name)
+            # Initialize or look up end node
             end_name = adjacency.get("z")
-            with open(location_data, "r") as m:
-                points = json.load(m)
-                lat = float(points[start_name][0])
-                lon = float(points[start_name][1])
-            if start_name not in self.nodes:
-                start_node = Node(start_name, lat, lon)
-                self.nodes[start_node.name] = start_node
+            end_lat, end_lon = coordinates[end_name]
+            if not self.has_node(end_name):
+                end_node = Node(end_name, end_lat, end_lon)
+                self.add_node(end_node)
             else:
-                start_node = self.nodes[start_name]
-            if end_name not in self.nodes:
-                end_node = Node(end_name, lat, lon)
-                self.nodes[end_node.name] = end_node
-            else:
-                end_node = self.nodes[end_name]
+                end_node = self.get_node(end_name)
             # Resolve neighbors
-            if end_name not in start_node.neighbors:
-                start_node.neighbors[end_name] = end_node
-            if start_name not in end_node.neighbors:
-                end_node.neighbors[start_name] = start_node
+            if end_node not in start_node.neighbors:
+                start_node.neighbors.append(end_node)
+            if start_node not in end_node.neighbors:
+                end_node.neighbors.append(start_node)
             # Initialize link
-            link_name = adjacency.get("id")
-            self.links[link_name] = Link(
-                link_name, 
+            new_link = Link(
+                adjacency.get("id"), 
                 start_node, 
                 end_node, 
                 adjacency.get("mbps"), 
                 beff_frac,
-                adjacency.get("igpMetric"),
-                lat,
-                lon,
+                adjacency.get("igpMetric")
             )
+            self.add_link(new_link)
+
+    def add_link(self, link):
+        self.__links[link.name] = link
+
+    def get_link(self, link_name):
+        return self.__links[link_name]
+
+    def find_links(self, node_1, node_2, best_only=False):
+        links = []
+        for link in self.links():
+            if set([node_1, node_2]) == set(link.nodes):
+                links.append(link)
+
+        if len(links) == 0:
+            raise KeyError(f"no link connecting {node_1.name} and {node_2.name}")
+
+        links.sort(key=lambda link: link.prio_bandwidth, reverse=True)
+        if best_only:
+            return links[0]
+        else:
+            return links
+
+    def links(self, names=False):
+        if names:
+            return self.__links.items()
+        else:
+            return self.__links.values()
+
+    def has_node(self, node):
+        if type(node) == Node:
+            return node.name in self.__nodes
+        elif type(node) == str:
+            return node in self.__nodes
+        else:
+            return False
+
+    def add_node(self, node):
+        self.__nodes[node.name] = node
+
+    def get_node(self, node_name):
+        if not self.has_node(node_name):
+            raise KeyError(f"{node_name} not in network")
+        else:
+            return self.__nodes[node_name]
+
+    def nodes(self, names=False):
+        if names:
+            return self.__nodes.items()
+        else:
+            return self.__nodes.values()
 
     def get_promise(self, route_id, bandwidth=0.):
         route = self.get_route_from_id(route_id)
@@ -261,41 +316,90 @@ class Network:
         self.distrib_besteff()
 
     def fulfill_promise(self, promise):
-        print(f"FULFILLING {promise}")
         for link in promise.route.links:
             link.reserve(promise.bandwidth)
 
     def release_promise(self, promise):
-        print(f"RELEASING {promise}")
         for link in promise.route.links:
             link.free(promise.bandwidth)
 
     def get_route_from_id(self, route_id):
         link_names = base64.b64decode(route_id.encode("utf-8")).decode("utf-8").split("&")
-        return Route(links=[self.links[name] for name in link_names])
+        return Route(links=[self.get_link(name) for name in link_names])
 
-    def get_links(self, node_1, node_2):
-        links = []
-        for link in self.links.values():
-            if set([node_1, node_2]) == set(link.nodes):
-                links.append(link)
+    def __reconstruct_route(self, end_node_name, prev):
+        route = Route()
+        this_node = self.get_node(end_node_name)
+        prev_node = prev[this_node.name]
+        while prev_node != None:
+            route.links.insert(0, self.find_links(prev_node, this_node, best_only=True))
+            this_node = prev_node
+            prev_node = prev[this_node.name]
 
-        if len(links) == 0:
-            raise KeyError(f"no link connecting {node_1.name} and {node_2.name}")
+        return route
 
-        return sorted(links, key=lambda link: link.prio_bandwidth, reverse=True)
+    def __A_star_h(self, node, end_node):
+        return distance(node.lat, end_node.lat, node.lon, end_node.lon)
+
+    def __A_star_g(self, node1, node2):
+        return distance(node1.lat, node2.lat, node1.lon, node2.lon)
+
+    def A_star(self, start_node_name, end_node_name):
+        start_node = self.get_node(start_node_name)
+        end_node = self.get_node(end_node_name)
+
+        nodes_to_try = [start_node]
+
+        # prev[n] = is the node immediately preceding n on the cheapest path from start 
+        #           currently known
+        prev = {start_node_name: None}
+
+        # g_scores[n] = actual cost of the cheapest path from start to n 
+        g_scores = {start_node_name: 0}
+
+        # f_scores[n] = approximately how cheap a path could be from start to finish if 
+        #               it goes through n 
+        f_scores = {start_node_name: self.__A_star_h(start_node, end_node)}
+
+        while len(nodes_to_try) != 0:
+            # Select the 'closest' node (i.e. node with minimal f score)
+            nodes_to_try.sort(key=lambda node: f_scores[node.name])
+            this_node = nodes_to_try.pop(-1)
+            if this_node.name == end_node.name:
+                # Success
+                return self.__reconstruct_route(end_node_name, prev)
+            else:
+                # Check neighbors
+                for next_node in this_node.neighbors:
+                    g_score = (
+                        g_scores[this_node.name] 
+                        + self.__A_star_g(this_node, next_node)
+                    )
+                    if next_node.name not in g_scores or g_score < g_scores[next_node.name]:
+                        # The path to this neighbor is better than any previous one
+                        prev[next_node.name] = this_node
+                        g_scores[next_node.name] = g_score
+                        f_scores[next_node.name] = (
+                            g_score 
+                            + self.__A_star_h(this_node, end_node)
+                        )
+                        if next_node not in nodes_to_try:
+                            nodes_to_try.append(next_node)
 
     def dijkstra(self, start_node_name, end_node_name):
+        start_node = self.get_node(start_node_name)
+        # Initialize Dijkstra variables
         dist = {}
         prev = {}
         queue = []
-        for node in self.nodes.values():
-            if node == self.nodes[start_node_name]:
+        for node in self.nodes():
+            if node == start_node:
                 dist[node.name] = 0
             else:
                 dist[node.name] = INFINITY
             prev[node.name] = None
             queue.append(node)
+
         while len(queue) > 0:
             # Find closest node
             min_dist = INFINITY
@@ -313,50 +417,36 @@ class Network:
             queue.remove(min_dist_node)
             
             if this_node.name == end_node_name:
-                break
+                return self.__reconstruct_route(end_node_name, prev)
 
             # Evaluate distances from closest node to its neighbors
-            for next_node in [n for n in this_node.neighbors.values() if n in queue]:
-                links = self.get_links(this_node, next_node)
-                alt = dist[this_node.name] + links[0].length
+            for next_node in [n for n in this_node.neighbors if n in queue]:
+                link = self.find_links(this_node, next_node, best_only=True)
+                alt = dist[this_node.name] + link.length
                 if alt < dist[next_node.name] and dist[this_node.name] != INFINITY:
                     dist[next_node.name] = alt
                     prev[next_node.name] = this_node
 
-        # Reconstruct route
-        route = Route()
-        this_node = self.nodes[end_node_name]
-        prev_node = prev[this_node.name]
-        while prev_node != None:
-            route.links.insert(0, self.get_links(prev_node, this_node)[0])
-            this_node = prev_node
-            prev_node = prev[this_node.name]
-
         return route
 
-    def YenKSP(self, start_node_name, end_node_name, k, algo="dijkstra"):
+    def YenKSP(self, start_node_name, end_node_name, n_routes=1, algo="dijkstra"):
    
         route_algo = getattr(self, algo)
 
         shortest_path = route_algo(start_node_name, end_node_name)
-        spur_paths = {}
+        spur_paths = []
         kshortest_paths = []
-        
-        test = []
-        for i in shortest_path.links:  
-            test.append(i.name)
                 
-        for i in range(1, len(test)):
-            for j in range(len(test)):
-                spur_path = shortest_path.links[j:j+i]
-                spur_path_id = ",".join([link.name for link in spur_path])
-                spur_paths[spur_path_id] = spur_path
+        for i in range(1, len(shortest_path)):
+            for j in range(len(shortest_path)):
+                spur_paths.append(shortest_path.links[j:j+i])
 
-        for spur_path in list(spur_paths.values())[:k]:
+        for spur_path in spur_paths[:n_routes]:
             for link in spur_path:
                 link.is_spur = True  
             next_path = self.dijkstra(start_node_name, end_node_name)
             kshortest_paths.append(next_path)
             for link in spur_path:
                 link.is_spur = False
+
         return kshortest_paths
