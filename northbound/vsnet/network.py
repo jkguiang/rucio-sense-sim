@@ -18,8 +18,8 @@ def distance(lat1, lat2, lon1, lon2):
      km_distance = 2*asin(sqrt(
          sin((lat2 - lat1)/2)**2
          + cos(lat1)*cos(lat2)*sin((lon2 - lon1)/2)**2
-         ))*6371
-     return round(km_distance/6371, 3)
+     ))*6371
+     return round(km_distance, 3)
 
 class Promise:
     def __init__(self, network, route, bandwidth):
@@ -328,6 +328,10 @@ class Network:
         return Route(links=[self.get_link(name) for name in link_names])
 
     def __reconstruct_route(self, end_node_name, prev):
+        """
+        Returns the route found by one of the route-finding algorithms implemented in 
+        this class.
+        """
         route = Route()
         this_node = self.get_node(end_node_name)
         prev_node = prev[this_node.name]
@@ -339,16 +343,32 @@ class Network:
         return route
 
     def __A_star_h(self, node, end_node):
+        """
+        Returns the estimated cost of going from the current node to the end node
+        """
         return distance(node.lat, end_node.lat, node.lon, end_node.lon)
 
-    def __A_star_g(self, node1, node2):
-        return distance(node1.lat, node2.lat, node1.lon, node2.lon)
+    def __A_star_g(self, node, prev_node):
+        """
+        Returns the actual cost of going from the previous node to the current node
+        """
+        return distance(node.lat, prev_node.lat, node.lon, prev_node.lon)
 
     def A_star(self, start_node_name, end_node_name):
+        """
+        A* algorithm for finding the shortest path between two nodes in the network. 
+        Minimizes the function f(node) defined as:
+
+            f(n) = g(n) + h(n)
+
+        where g(n) gives the actual cost of the currently known shortest path from the 
+        start node to the node n and h(n) gives the estimated cost of going from the 
+        node n to the end node.
+        """
         start_node = self.get_node(start_node_name)
         end_node = self.get_node(end_node_name)
 
-        nodes_to_try = [start_node]
+        queue = [start_node]
 
         # prev[n] = is the node immediately preceding n on the cheapest path from start 
         #           currently known
@@ -361,10 +381,10 @@ class Network:
         #               it goes through n 
         f_scores = {start_node_name: self.__A_star_h(start_node, end_node)}
 
-        while len(nodes_to_try) != 0:
+        while len(queue) != 0:
             # Select the 'closest' node (i.e. node with minimal f score)
-            nodes_to_try.sort(key=lambda node: f_scores[node.name])
-            this_node = nodes_to_try.pop(-1)
+            queue.sort(key=lambda node: f_scores[node.name])
+            this_node = queue.pop(0)
             if this_node.name == end_node.name:
                 # Success
                 return self.__reconstruct_route(end_node_name, prev)
@@ -373,20 +393,24 @@ class Network:
                 for next_node in this_node.neighbors:
                     g_score = (
                         g_scores[this_node.name] 
-                        + self.__A_star_g(this_node, next_node)
+                        + self.__A_star_g(next_node, this_node)
                     )
                     if next_node.name not in g_scores or g_score < g_scores[next_node.name]:
-                        # The path to this neighbor is better than any previous one
+                        # This path is better than any previous one
                         prev[next_node.name] = this_node
                         g_scores[next_node.name] = g_score
                         f_scores[next_node.name] = (
                             g_score 
-                            + self.__A_star_h(this_node, end_node)
+                            + self.__A_star_h(next_node, end_node)
                         )
-                        if next_node not in nodes_to_try:
-                            nodes_to_try.append(next_node)
+                        if next_node not in queue:
+                            queue.append(next_node)
 
     def dijkstra(self, start_node_name, end_node_name):
+        """
+        Dijkstra's algorithm for finding the shortest route between two nodes in the 
+        network
+        """
         start_node = self.get_node(start_node_name)
         # Initialize Dijkstra variables
         dist = {}
@@ -429,8 +453,12 @@ class Network:
 
         return route
 
-    def YenKSP(self, start_node_name, end_node_name, n_routes=1, algo="dijkstra"):
-   
+    def find_routes(self, start_node_name, end_node_name, n_routes=1, algo="dijkstra"):
+        """
+        Find the N shortest routes (default: 1) between a start and end node in the 
+        network using Yen's K shortest paths algorithm with any algorithm implemented 
+        in Network (currently: Dijkstra, A*)
+        """
         route_algo = getattr(self, algo)
 
         shortest_path = route_algo(start_node_name, end_node_name)
