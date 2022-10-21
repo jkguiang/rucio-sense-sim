@@ -86,9 +86,19 @@ def plot_network(network, route=None, show_names=False, tag=""):
         route_x, route_y = m(route_X, route_Y)
         m.plot(route_x, route_y, marker="o", markersize=20, markerfacecolor="red", linewidth=0)
 
-    if show_names:
-        for i, (x, y) in enumerate(zip(all_x, all_y)):
-            plt.annotate(all_names[i], (x, y), xytext=(5, 5), textcoords="offset points")
+        if show_names:
+            labeled_nodes = []
+            for link in route.links:
+                for node in link.nodes:
+                    if node not in labeled_nodes:
+                        plt.annotate(
+                            node.name, 
+                            m(node.lon, node.lat), 
+                            xytext=(5, 5), 
+                            textcoords="offset points", 
+                            fontsize=16
+                        )
+                        labeled_nodes.append(node)
 
     if route:
         output_png = f"network_{route.start_node.name}_to_{route.end_node.name}.png"
