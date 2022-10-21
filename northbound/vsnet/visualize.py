@@ -3,6 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 from matplotlib.collections import LineCollection
+matplotlib.rcParams["figure.figsize"] = [100, 75]
 import json
 import pandas as pd
 import random
@@ -10,20 +11,23 @@ import random
 from northbound.vsnet.network import Network
 
 def plot_network(network, route=None, show_names=False, tag=""):
-    matplotlib.rcParams["figure.figsize"] = [100, 75]
-
-    coords = pd.read_csv("location_data.csv")
-
     # Get coordinates for every node in network
+    all_X = []
+    all_Y = []
+    all_names = []
+    for node in network.nodes():
+        all_X.append(node.lon)
+        all_Y.append(node.lat)
+        all_names.append(node.name)
+
+    # Get coordinates of every link in network
     lon1, lat1, lon2, lat2 = [], [], [], []
     for link in network.links():
         node1, node2 = link.nodes
-        coords1 = coords.query(f"name == '{node1.name}'")
-        coords2 = coords.query(f"name == '{node2.name}'")
-        lon1.append(float(coords1.longitude))
-        lat1.append(float(coords1.latitude))
-        lon2.append(float(coords2.longitude))
-        lat2.append(float(coords2.latitude))
+        lon1.append(node1.lon)
+        lat1.append(node1.lat)
+        lon2.append(node2.lon)
+        lat2.append(node2.lat)
 
     # Get coordinates for every node in route
     if route:
@@ -33,12 +37,10 @@ def plot_network(network, route=None, show_names=False, tag=""):
         for link in route.links:
             node1, node2 = link.nodes
             print(f"{node1.name} -- {node2.name}")
-            coords3 = coords.query(f"name == '{node1.name}'")
-            coords4 = coords.query(f"name == '{node2.name}'")
-            lon3.append(float(coords3.longitude))
-            lat3.append(float(coords3.latitude))
-            lon4.append(float(coords4.longitude))
-            lat4.append(float(coords4.latitude))
+            lon3.append(node1.lon)
+            lat3.append(node1.lat)
+            lon4.append(node2.lon)
+            lat4.append(node2.lat)
             names3.append(node1.name.split("-")[0])
             names4.append(node2.name.split("-")[0])
 
@@ -52,15 +54,11 @@ def plot_network(network, route=None, show_names=False, tag=""):
     # Plot continents
     m.fillcontinents(color="gainsboro")
 
-    # Plot entire network topology
-    all_X = list(map(float, coords.longitude))
-    all_Y = list(map(float, coords.latitude))
-
+    # Translate coordinates into basemape objects
     all_x, all_y = m(all_X, all_Y)
-
     a, b = m(lon1, lat1)
     c, d = m(lon2, lat2) 
-
+    # Plot entire network topology
     pts = np.c_[a, b, c, d].reshape(len(lon1), 2, 2)
     plt.gca().add_collection(LineCollection(pts, color="grey"))
     m.plot(all_x, all_y, marker="o", markersize=20, markerfacecolor="black", linewidth=0)
@@ -89,7 +87,6 @@ def plot_network(network, route=None, show_names=False, tag=""):
         m.plot(route_x, route_y, marker="o", markersize=20, markerfacecolor="red", linewidth=0)
 
     if show_names:
-        all_names = list(coords.name.str.split("-").str.get(0))
         for i, (x, y) in enumerate(zip(all_x, all_y)):
             plt.annotate(all_names[i], (x, y), xytext=(5, 5), textcoords="offset points")
 
@@ -105,13 +102,13 @@ def plot_network(network, route=None, show_names=False, tag=""):
     plt.clf()
 
 if __name__ == "__main__":
-    network = Network("sense.json", "location_data.json")
+    network = Network("data/esnet_adjacencies.json", "data/esnet_coordinates.json")
     print(f"- DIJKSTRA ------")
-    plot_network(network, route=network.dijkstra("cern-773-cr5", "sand-cr6"), tag="dijkstra")
+    plot_network(network, route=network.dijkstra("cern-773-cr5", "sand-cr6"), tag="dijkstra", show_names=True)
     print(f"- A* ------------")
     for route_i, route in enumerate(network.find_routes("cern-773-cr5", "sand-cr6", n_routes=5, algo="A_star")):
         print(f"- ROUTE {route_i} -------")
         plot_network(network, route=route, tag=str(route_i + 1))
     plot_network(network, route=network.A_star("fnalfcc-cr6", "sand-cr6"))
     plot_network(network, route=network.A_star("cern-773-cr5", "fnalfcc-cr6"))
-    plot_network()
+    plot_network(network)
