@@ -44,7 +44,7 @@ def plot_network(network, route=None, show_names=False, tag=""):
             names3.append(node1.name.split("-")[0])
             names4.append(node2.name.split("-")[0])
 
-    m = Basemap(
+    bmap = Basemap(
         llcrnrlon=-119, llcrnrlat=20, 
         urcrnrlon=50, urcrnrlat=49,
         lat_1=33, lat_2=45, lon_0=-95,
@@ -52,21 +52,21 @@ def plot_network(network, route=None, show_names=False, tag=""):
     )
 
     # Plot continents
-    m.fillcontinents(color="gainsboro")
+    bmap.fillcontinents(color="gainsboro")
 
     # Translate coordinates into basemape objects
-    all_x, all_y = m(all_X, all_Y)
-    a, b = m(lon1, lat1)
-    c, d = m(lon2, lat2) 
+    all_x, all_y = bmap(all_X, all_Y)
+    a, b = bmap(lon1, lat1)
+    c, d = bmap(lon2, lat2) 
     # Plot entire network topology
     pts = np.c_[a, b, c, d].reshape(len(lon1), 2, 2)
     plt.gca().add_collection(LineCollection(pts, color="grey"))
-    m.plot(all_x, all_y, marker="o", markersize=20, markerfacecolor="black", linewidth=0)
+    bmap.plot(all_x, all_y, marker="o", markersize=20, markerfacecolor="black", linewidth=0)
 
     # Plot route
     if route:
-        e, f = m(lon3, lat3) 
-        g, h = m(lon4, lat4) 
+        e, f = bmap(lon3, lat3) 
+        g, h = bmap(lon4, lat4) 
 
         route_pts = np.c_[e, f, g, h].reshape(len(lon3), 2, 2)
         plt.gca().add_collection(LineCollection(route_pts, color="red", linewidths=4.5))
@@ -83,8 +83,8 @@ def plot_network(network, route=None, show_names=False, tag=""):
                 route_X.append(x)
                 route_Y.append(y)
 
-        route_x, route_y = m(route_X, route_Y)
-        m.plot(route_x, route_y, marker="o", markersize=20, markerfacecolor="red", linewidth=0)
+        route_x, route_y = bmap(route_X, route_Y)
+        bmap.plot(route_x, route_y, marker="o", markersize=20, markerfacecolor="red", linewidth=0)
 
         if show_names:
             labeled_nodes = []
@@ -93,7 +93,7 @@ def plot_network(network, route=None, show_names=False, tag=""):
                     if node not in labeled_nodes:
                         plt.annotate(
                             node.name, 
-                            m(node.lon, node.lat), 
+                            bmap(node.lon, node.lat), 
                             xytext=(5, 5), 
                             textcoords="offset points", 
                             fontsize=16
