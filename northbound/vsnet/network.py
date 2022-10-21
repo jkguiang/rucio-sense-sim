@@ -255,6 +255,9 @@ class Network:
         else:
             return self.__nodes.values()
 
+    def node_names(self):
+        return self.__nodes.keys()
+
     def get_promise(self, route_id, bandwidth=0.):
         route = self.get_route_from_id(route_id)
         if bandwidth > 0:
