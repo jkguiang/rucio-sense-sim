@@ -104,7 +104,7 @@ def plot_network(network, route=None, show_names=False, tag=""):
 if __name__ == "__main__":
     network = Network("data/esnet_adjacencies.json", "data/esnet_coordinates.json")
     print(f"- DIJKSTRA ------")
-    plot_network(network, route=network.dijkstra("cern-773-cr5", "sand-cr6"), tag="dijkstra", show_names=True)
+    plot_network(network, route=network.dijkstra("cern-773-cr5", "sand-cr6"), tag="dijkstra")
     print(f"- A* ------------")
     for route_i, route in enumerate(network.find_routes("cern-773-cr5", "sand-cr6", n_routes=5, algo="A_star")):
         print(f"- ROUTE {route_i} -------")
