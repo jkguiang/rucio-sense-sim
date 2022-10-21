@@ -10,7 +10,8 @@ with open("config.yaml", "r") as config_yaml:
     vsnet_config = config["vsnet"]
 
 vsnet = Network(
-    vsnet_config["json"],
+    vsnet_config["network_json"],
+    vsnet_config["coordinates_json"],
     max_beff_passes=vsnet_config.get("max_beff_passes", 100),
     beff_frac=vsnet_config.get("beff_frac", 0.25)
 )
