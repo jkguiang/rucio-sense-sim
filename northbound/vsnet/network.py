@@ -7,13 +7,11 @@ from math import radians, cos, sin, asin, sqrt
 INFINITY = 1e12
 
 def distance(lat1, lat2, lon1, lon2):
-      
      # Converts degrees to radians
      lon1 = radians(lon1)
      lon2 = radians(lon2)
      lat1 = radians(lat1)
      lat2 = radians(lat2)
-       
      # Uses Haversine formula then multiplies by 6371 KM (radius of Earth); for miles use 3956
      km_distance = 2*asin(sqrt(
          sin((lat2 - lat1)/2)**2
@@ -76,8 +74,10 @@ class BestEffort(Promise):
         self.network.release_besteff(self)
 
 class Route:
-    def __init__(self, links=None):
+    def __init__(self, start_node=None, end_node=None, links=None):
         self.links = links or []
+        self.start_node = start_node
+        self.end_node = end_node
 
     @property
     def link_names(self):
@@ -93,6 +93,9 @@ class Route:
 
     def __str__(self):
         return " --> ".join(self.link_names)
+
+    def __eq__(self, other_route):
+        return self.id == other_route.id
 
     def get_capacity(self, is_besteff=False):
         if len(self.links) > 0:
@@ -333,9 +336,11 @@ class Network:
         this class.
         """
         route = Route()
-        this_node = self.get_node(end_node_name)
+        route.end_node = self.get_node(end_node_name)
+        this_node = route.end_node
         prev_node = prev[this_node.name]
         while prev_node != None:
+            route.start_node = prev_node
             route.links.insert(0, self.find_links(prev_node, this_node, best_only=True))
             this_node = prev_node
             prev_node = prev[this_node.name]
@@ -352,7 +357,8 @@ class Network:
         """
         Returns the actual cost of going from the previous node to the current node
         """
-        return distance(node.lat, prev_node.lat, node.lon, prev_node.lon)
+        link = self.find_links(prev_node, node, best_only=True)
+        return link.length
 
     def A_star(self, start_node_name, end_node_name):
         """
@@ -461,20 +467,25 @@ class Network:
         """
         route_algo = getattr(self, algo)
 
-        shortest_path = route_algo(start_node_name, end_node_name)
-        spur_paths = []
-        kshortest_paths = []
+        shortest_route = route_algo(start_node_name, end_node_name)
+        spur_routes = []
+        shortest_routes = [shortest_route]
+        shortest_route_ids = [shortest_route.id]
                 
-        for i in range(1, len(shortest_path)):
-            for j in range(len(shortest_path)):
-                spur_paths.append(shortest_path.links[j:j+i])
+        for i in range(1, len(shortest_route)):
+            for j in range(len(shortest_route)):
+                spur_routes.append(shortest_route.links[j:j+i])
 
-        for spur_path in spur_paths[:n_routes]:
-            for link in spur_path:
+        for spur_route in spur_routes[:n_routes]:
+            for link in spur_route:
                 link.is_spur = True  
-            next_path = self.dijkstra(start_node_name, end_node_name)
-            kshortest_paths.append(next_path)
-            for link in spur_path:
+            next_route = route_algo(start_node_name, end_node_name)
+            if next_route.id not in shortest_route_ids:
+                shortest_routes.append(next_route)
+                shortest_route_ids.append(next_route.id)
+            for link in spur_route:
                 link.is_spur = False
 
-        return kshortest_paths
+        shortest_routes.sort(key=lambda route: sum([link.length for link in route.links]))
+
+        return shortest_routes
