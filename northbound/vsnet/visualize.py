@@ -8,7 +8,7 @@ import json
 import pandas as pd
 import random
 
-from northbound.vsnet.network import Network
+from northbound.vsnet.network import Network, distance
 
 def plot_network(network, route=None, show_names=False, tag=""):
     # Get coordinates for every node in network
@@ -61,7 +61,7 @@ def plot_network(network, route=None, show_names=False, tag=""):
     # Plot entire network topology
     pts = np.c_[a, b, c, d].reshape(len(lon1), 2, 2)
     plt.gca().add_collection(LineCollection(pts, color="grey"))
-    bmap.plot(all_x, all_y, marker="o", markersize=20, markerfacecolor="black", linewidth=0)
+    bmap.plot(all_x, all_y, marker="o", markersize=20, markerfacecolor="darkgrey", linewidth=0)
 
     # Plot route
     if route:
@@ -91,12 +91,28 @@ def plot_network(network, route=None, show_names=False, tag=""):
             for link in route.links:
                 for node in link.nodes:
                     if node not in labeled_nodes:
+                        label_loc = (15, 15)
+                        overlaps = 0
+                        for labeled_node in labeled_nodes:
+                            d = distance(
+                                node.lat, labeled_node.lat, 
+                                node.lon, labeled_node.lon
+                            )
+                            if d < 150:
+                                overlaps += 1
+                        if overlaps == 1:
+                            label_loc = (15, -15)
+                        if overlaps == 2:
+                            label_loc = (-15, -15)
+                        if overlaps == 3:
+                            label_loc = (-15, 15)
                         plt.annotate(
                             node.name, 
                             bmap(node.lon, node.lat), 
-                            xytext=(5, 5), 
+                            xytext=label_loc, 
                             textcoords="offset points", 
-                            fontsize=16
+                            fontsize=32,
+                            weight="bold"
                         )
                         labeled_nodes.append(node)
 
@@ -114,11 +130,17 @@ def plot_network(network, route=None, show_names=False, tag=""):
 if __name__ == "__main__":
     network = Network("data/esnet_adjacencies.json", "data/esnet_coordinates.json")
     print(f"- DIJKSTRA ------")
-    plot_network(network, route=network.dijkstra("cern-773-cr5", "sand-cr6"), tag="dijkstra")
+    plot_network(
+        network, 
+        route=network.dijkstra("cern-773-cr5", "sand-cr6"), 
+        tag="dijkstra", 
+        show_names=True
+    )
     print(f"- A* ------------")
-    for route_i, route in enumerate(network.find_routes("cern-773-cr5", "sand-cr6", n_routes=5, algo="A_star")):
+    Astar_routes = network.find_routes("cern-773-cr5", "sand-cr6", n_routes=5, algo="A_star")
+    for route_i, route in enumerate(Astar_routes):
         print(f"- ROUTE {route_i} -------")
-        plot_network(network, route=route, tag=str(route_i + 1))
-    plot_network(network, route=network.A_star("fnalfcc-cr6", "sand-cr6"))
-    plot_network(network, route=network.A_star("cern-773-cr5", "fnalfcc-cr6"))
+        plot_network(network, route=route, tag=str(route_i + 1), show_names=True)
+    plot_network(network, route=network.A_star("fnalfcc-cr6", "sand-cr6"), show_names=True)
+    plot_network(network, route=network.A_star("cern-773-cr5", "fnalfcc-cr6"), show_names=True)
     plot_network(network)
