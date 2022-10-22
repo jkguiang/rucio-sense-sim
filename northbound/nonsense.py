@@ -160,7 +160,7 @@ def delete_instance(instance_uuid: str):
     return
 
 @nonsense.get("/api/discover/lookup/{pattern}")
-def lookup_name(pattern: str):
+def lookup_name(pattern: str, search: str = ""):
     results = []
     for site_info in nonsense_config.get("sites", []):
         if pattern in site_info["full_uri"]:
