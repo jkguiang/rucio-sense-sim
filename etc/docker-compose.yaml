@@ -1,0 +1,74 @@
+services:
+  vsnet:
+    image: docker.io/jguiang/rucio-sense-sim:latest
+    network_mode: "host"
+    extra_hosts:
+      - "vsnet:127.0.0.1"
+      - "nonsense:127.0.0.1"
+      - "burro:127.0.0.1"
+      - "dmm:127.0.0.1"
+    volumes:
+      - ../:/rucio-sense-sim:Z
+    environment:
+      - VSNET_HOST=vsnet
+      - VSNET_PORT=9000
+      - NONSENSE_HOST=nonsense
+      - NONSENSE_PORT=8000
+      - DMM_HOST=dmm
+      - DMM_PORT=5000
+    working_dir: /rucio-sense-sim
+    entrypoint: python bin/vsnet
+  nonsense:
+    image: docker.io/jguiang/rucio-sense-sim:latest
+    network_mode: "host"
+    extra_hosts:
+      - "vsnet:127.0.0.1"
+      - "nonsense:127.0.0.1"
+      - "burro:127.0.0.1"
+      - "dmm:127.0.0.1"
+    volumes:
+      - ../:/rucio-sense-sim:Z
+    environment:
+      - VSNET_HOST=vsnet
+      - VSNET_PORT=9000
+      - NONSENSE_HOST=nonsense
+      - NONSENSE_PORT=8000
+      - DMM_HOST=dmm
+      - DMM_PORT=5000
+    working_dir: /rucio-sense-sim
+    entrypoint: python bin/nonsense
+  dmm:
+    image: docker.io/jguiang/rucio-sense-sim:latest
+    network_mode: "host"
+    extra_hosts:
+      - "vsnet:127.0.0.1"
+      - "nonsense:127.0.0.1"
+      - "burro:127.0.0.1"
+      - "dmm:127.0.0.1"
+    environment:
+      - VSNET_HOST=vsnet
+      - VSNET_PORT=9000
+      - NONSENSE_HOST=nonsense
+      - NONSENSE_PORT=8000
+      - DMM_HOST=dmm
+      - DMM_PORT=5000
+    working_dir: /rucio-sense-dmm
+    entrypoint: python bin/dmm --loglevel=DEBUG
+  burro:
+    image: docker.io/jguiang/rucio-sense-sim:latest
+    network_mode: "host"
+    extra_hosts:
+      - "vsnet:127.0.0.1"
+      - "nonsense:127.0.0.1"
+      - "burro:127.0.0.1"
+      - "dmm:127.0.0.1"
+    environment:
+      - VSNET_HOST=vsnet
+      - VSNET_PORT=9000
+      - NONSENSE_HOST=nonsense
+      - NONSENSE_PORT=8000
+      - DMM_HOST=dmm
+      - DMM_PORT=5000
+    volumes:
+      - ../:/rucio-sense-sim:Z
+    working_dir: /rucio-sense-sim
