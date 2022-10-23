@@ -6,15 +6,15 @@ Contains components that allow high-level components to communicate with low-lev
 ```
 ./bin/burro
 ```
-- [DMM](https://github.com/jkguiang/rucio-sense-dmm)
+- [DMM](https://github.com/jkguiang/rucio-sense-dmm): Data Movement Manager
 
 ## Northbound
 Contains components that allow low-level components to communicate with high-level components
-- VSNet: stand-in for ESNet+FTS
+- VSnet: Virtual Science Network (stand-in for ESnet+FTS)
 ```
 ./bin/vsnet
 ```
-- NONSENSE: stand-in for SENSE
+- NONSENSE: Name-Only Nonfunctional SENSE (stand-in for SENSE)
 ```
 ./bin/nonsense
 ```
@@ -68,17 +68,73 @@ This sections provides more details as to exactly what each configuration line i
 Importantly, the host and port for each component of the simulation is configured by an environment variable (see `setup.sh`).
 
 ### Burro
+```yaml
+burro:
+  heartbeat: 5
+  throttler: true
+  rules:
+    - delay: 10
+      src_rse: T2_US_SDSC
+      dst_rse: T2_US_Caltech_Test
+      src_limit: 10
+      dst_limit: 7
+      size_GB: 20
+      n_transfers: 20
+      priority: 1
+    - ...
+```
 - `heartbeat`: (int) number of seconds to wait between runs of Burro's main loop
 - `throttler`: (bool) whether or not to throttle the number of transfers submitted
-- `rules`: list of Rucio-like "rules" to run
+- `rules`: (list) Rucio-like "rules" to run
     - `delay`: (int) number of seconds to wait before submitting this rule
-    - `src_rse`: (str) name of source site (e.g. `T2_US_SDSC`)
-    - `dst_rse`: (str) name of destination site (e.g. `T2_US_Caltech_Test`)
+    - `src_rse`: (str) name of source site
+    - `dst_rse`: (str) name of destination site
     - `size_GB`: (float) total size of transfer
     - `n_transfers`: (int) total number of transfers
     - `priority`: (int) numerical priority of this rule (0 = no priority)
     - `src_limit`: (int, optional) maximum number of transfers that the source can support (only respected if `throttler == true`)
     - `dst_limit`: (int, optional) maximum number of transfers that the destination can support (only respected if `throttler == true`)
+
+### NONSENSE
+```yaml
+nonsense:
+  profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db
+  sites:
+    - name: T2_US_SDSC
+      full_uri: urn:ogf:t2.ucsd.edu:nrp-dev:T2_US_SDSC
+      root_uri: urn:ogf:t2.ucsd.edu:nrp-dev
+      port_capacity: 1000000
+      ipv6_subnet_pool: 2001:48d0:3001:111::/64,2001:48d0:3001:112::/64,2001:48d0:3001:113::/64
+    - ...
+```
+- `profile_uuid`: (str) UUID of profile to use (see `data/profiles` for supported profiles)
+- `sites`: (list) list of site information
+    - `name`: (str) name of site
+    - `full_uri`: (str) full URI of site (`root_uri:name`)
+    - `root_uri`: (str) root URI of site (just needs to be something SENSE-like)
+    - `port_capacity`: (int) I/O capacity of site
+    - `ipv6_subnet_pool`: (str) comma-separated list of IPv6 /64 blocks that the site has available
+
+### VSnet
+```yaml
+vsnet:
+  network_json: data/esnet_adjacencies.json
+  coordinates_json: data/esnet_coordinates.json
+  time_dilation: 5000.0
+  max_beff_passes: 100
+  beff_frac: 0.1
+  sites:
+    T1_US_FNAL: fnalfcc-cr6
+    T2_US_Caltech: losa-cr6
+    ...
+```
+- `network_json`: (str) path to ESnet topology JSON
+- `coordinates_json`: (str) path to ESnet node coordinates JSON
+- `time_dilation`: (float) factor by which to scale "virtual" time by
+- `max_beff_passes`: (int) maximum number of attempts that VSnet can make to maximally distribute best effort bandwidth
+- `beff_frac`: (float) fraction of network bandwidth to allocate to best effort
+- `sites`: (dict) dictionary of name-node pairs
+    - `NAME`: (str) name of node corresponding to the site named `NAME` in ESnet topology JSON
 
 ## Running the simulation locally
 1. Clone both the Rucio-SENSE simulation and DMM
