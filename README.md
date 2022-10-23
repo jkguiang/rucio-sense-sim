@@ -21,11 +21,21 @@ Contains components that allow low-level components to communicate with high-lev
 
 ## Running the simulation containers
 1. Install Docker
-2. Spool up the containers using `docker-compose`:
+2. Clone this repository
+```
+git clone git@github.com:jkguiang/rucio-sense-sim.git
+```
+3. Request the ESNet topology JSON from an author/maintainer or ESNet and put it in the configured location (see the VSNet section of `config.yaml`):
+```
+cd rucio-sense-sim
+mv /path/to/esnet_adjacencies.json data/esnet_adjacencies.json
+mv /path/to/esnet_coordinates.json data/esnet_coordinates.json
+```
+4. Spool up the containers using `docker-compose`
 ```
 docker-compose --file etc/docker-compose.yaml up -d
 ```
-3. Ensure that all four containers are running with `docker ps`
+5. Ensure that all four containers are running with `docker ps`
 ```
 CONTAINER ID   IMAGE                            COMMAND                  CREATED         STATUS         PORTS     NAMES
 7500768303db   jguiang/rucio-sense-sim:latest   "python bin/vsnet"       6 seconds ago   Up 5 seconds             etc_vsnet_1
@@ -33,19 +43,19 @@ CONTAINER ID   IMAGE                            COMMAND                  CREATED
 8fca40160de7   jguiang/rucio-sense-sim:latest   "python bin/nonsense"    6 seconds ago   Up 5 seconds             etc_nonsense_1
 c11142487fbe   jguiang/rucio-sense-sim:latest   "python bin/dmm --lo…"   6 seconds ago   Up 5 seconds             etc_dmm_1
 ```
-3. Hop onto the `burro` container:
+6. Hop onto the `burro` container
 ```
 docker exec -it etc_burro_1 /bin/sh
 ```
-4. Run `burro`:
+7. Run `burro`
 ```
 ./bin/burro --loglevel=DEBUG
 ```
-5. (Optional) restart containers in order to run again
+8. (Optional) restart containers in order to run again
 ```
 docker restart $(docker ps -q)
 ```
-6. Clean up or restart containers
+9. Clean up or restart containers
 ```
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
@@ -82,6 +92,8 @@ mv /path/to/esnet_coordinates.json data/esnet_coordinates.json
 # Session 1:
 source setup.sh     # sets up simulation environment
 ./bin/vsnet         # starts VSNet
+```
+```
 # Session 2:
 source setup.sh     # sets up simulation environment
 ./bin/nonsense      # starts NONSENSE
