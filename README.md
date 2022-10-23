@@ -53,12 +53,12 @@ docker exec -it etc_burro_1 /bin/sh
 ```
 8. (Optional) restart containers in order to run again
 ```
-docker restart $(docker ps -q)
+docker-compose --file etc/docker-compose.yaml restart
 ```
-9. Clean up or restart containers
+9. Clean up
 ```
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
+docker-compose --file etc/docker-compose.yaml stop
+docker-compose --file etc/docker-compose.yaml rm
 docker system prune -f --volumes
 ```
 
