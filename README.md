@@ -19,7 +19,43 @@ Contains components that allow low-level components to communicate with high-lev
 ./bin/nonsense
 ```
 
-## Running the simulation
+## Running the simulation containers
+1. Install Docker
+2. Spool up the containers using `docker-compose`:
+```
+docker-compose --file etc/docker-compose.yaml up -d
+```
+3. Ensure that all four containers are running with `docker ps`
+```
+CONTAINER ID   IMAGE                            COMMAND                  CREATED         STATUS         PORTS     NAMES
+7500768303db   jguiang/rucio-sense-sim:latest   "python bin/vsnet"       6 seconds ago   Up 5 seconds             etc_vsnet_1
+5fc40c71cf8c   jguiang/rucio-sense-sim:latest   "tail -f /dev/null"      6 seconds ago   Up 5 seconds             etc_burro_1
+8fca40160de7   jguiang/rucio-sense-sim:latest   "python bin/nonsense"    6 seconds ago   Up 5 seconds             etc_nonsense_1
+c11142487fbe   jguiang/rucio-sense-sim:latest   "python bin/dmm --lo…"   6 seconds ago   Up 5 seconds             etc_dmm_1
+```
+3. Hop onto the `burro` container:
+```
+docker exec -it etc_burro_1 /bin/sh
+```
+4. Run `burro`:
+```
+./bin/burro --loglevel=DEBUG
+```
+5. (Optional) restart containers in order to run again
+```
+docker restart $(docker ps -q)
+```
+6. Clean up or restart containers
+```
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker system prune -f --volumes
+```
+
+## Editing the simulation parameters
+The simulation is primarily driven by the configuation YAML (`config.yaml`) found in this respository.
+
+## Running the simulation locally
 1. Clone both the Rucio-SENSE simulation and DMM
 ```
 git clone https://github.com/jkguiang/rucio-sense-sim
@@ -62,6 +98,3 @@ source setup.sh     # sets up DMM environment
 source setup.sh     # sets up simulation environment
 ./bin/burro         # starts Burro
 ```
-
-## Editing the simulation parameters
-The simulation is primarily driven by the configuation YAML (`config.yaml`) found in this respository.
