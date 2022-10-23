@@ -1,3 +1,4 @@
+import os
 import yaml
 import uuid
 import logging
@@ -67,13 +68,12 @@ class Burro:
             self.use_throttler = burro_config.get("throttler", False)
             all_rules = [Rule(rule_config) for rule_config in burro_config.get("rules")]
             # Extract DMM configuration parameters
-            dmm_config = config.get("dmm")
-            self.dmm_address = (dmm_config.get("host"), dmm_config.get("port"))
-            with open(dmm_config.get("authkey"), "rb") as f_in:
+            self.dmm_address = (os.environ["DMM_HOST"], int(os.environ["DMM_PORT"]))
+            with open(config.get("authkey"), "rb") as f_in:
                 self.dmm_authkey = f_in.read()
             # Extract VSNet configuration parameters
             vsnet_config = config.get("vsnet")
-            self.vsnet_url = f"{vsnet_config.get('host')}:{vsnet_config.get('port')}"
+            self.vsnet_url = f"{os.environ['VSNET_HOST']}:{os.environ['VSNET_PORT']}"
 
         self.active_rules = []
         self.rule_stager = Thread(target=self.__stage_rules, args=(all_rules,))

@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 
-import yaml
+import os
 import uvicorn
 from northbound.vsnet.api import api
 
 if __name__ == "__main__":
-    with open("config.yaml", "r") as config_yaml:
-        config = yaml.safe_load(config_yaml).get("vsnet", {})
-
-    uvicorn.run(api, host=config.get("host"), port=config.get("port"))
+    uvicorn.run(api, host=os.environ["VSNET_HOST"], port=int(os.environ["VSNET_PORT"]))

@@ -2,3 +2,12 @@
 export PYTHONPATH=${PWD}/northbound:$PYTHONPATH
 export PYTHONPATH=${PWD}/southbound:$PYTHONPATH
 export PYTHONPATH=${PWD}/utils:$PYTHONPATH
+
+export VSNET_HOST=127.0.0.1
+export VSNET_PORT=9000
+
+export NONSENSE_HOST=127.0.0.1
+export NONSENSE_PORT=8000
+
+export DMM_HOST=127.0.0.1
+export DMM_PORT=5000

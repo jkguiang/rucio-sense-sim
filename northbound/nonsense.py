@@ -1,3 +1,4 @@
+import os
 import json
 import yaml
 import uuid
@@ -7,7 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
-nonsense = FastAPI()
+api = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth")
 
 services = {}
@@ -15,9 +16,8 @@ services = {}
 with open("config.yaml", "r") as config_yaml:
     config = yaml.safe_load(config_yaml)
     nonsense_config = config["nonsense"]
-    vsnet_config = config["vsnet"]
 
-vsnet_url = f"{vsnet_config['host']}:{vsnet_config['port']}"
+vsnet_url = f"{os.environ['VSNET_HOST']}:{os.environ['VSNET_PORT']}"
 profile_uuid = nonsense_config["profile_uuid"]
 
 class Service:
@@ -37,26 +37,26 @@ def site_info_lookup(key, root_uri="", full_uri="", name=""):
         elif full_uri and full_uri == site_info["full_uri"]:
             return site_info.get(key, None)
 
-@nonsense.post("/auth")
+@api.post("/auth")
 async def authenticate(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": form_data.username, "token_type": "Bearer"}
 
-@nonsense.get("/api/profile/{profile_uuid}")
+@api.get("/api/profile/{profile_uuid}")
 def profile(profile_uuid: str):
     with open(f"data/profiles/{profile_uuid}.json", "r") as profile_json:
         return profile_json.read()
 
-@nonsense.delete("/api/service/{instance_uuid}")
+@api.delete("/api/service/{instance_uuid}")
 def delete_service(instance_uuid: str):
     return
 
-@nonsense.get("/api/instance", response_class=PlainTextResponse)
+@api.get("/api/instance", response_class=PlainTextResponse)
 def create_instance():
     service = Service()
     services[service.id] = service
     return service.id
 
-@nonsense.post("/api/instance/{instance_uuid}")
+@api.post("/api/instance/{instance_uuid}")
 def query_instance(instance_uuid: str, new_intent: dict):
     # Initialize response
     response = {
@@ -118,7 +118,7 @@ def query_instance(instance_uuid: str, new_intent: dict):
 
     return response
 
-@nonsense.put("/api/instance/{instance_uuid}/{action}")
+@api.put("/api/instance/{instance_uuid}/{action}")
 def affect_instance(instance_uuid: str, action: str):
     if action == "provision" or action == "reprovision":
         # Retrieve service instance
@@ -151,15 +151,15 @@ def affect_instance(instance_uuid: str, action: str):
     elif action == "cancel":
         services[instance_uuid].status = "CANCEL - READY"
 
-@nonsense.get("/api/instance/{instance_uuid}/status", response_class=PlainTextResponse)
+@api.get("/api/instance/{instance_uuid}/status", response_class=PlainTextResponse)
 def check_instance(instance_uuid: str):
     return services[instance_uuid].status
 
-@nonsense.delete("/api/instance/{instance_uuid}")
+@api.delete("/api/instance/{instance_uuid}")
 def delete_instance(instance_uuid: str):
     return
 
-@nonsense.get("/api/discover/lookup/{pattern}")
+@api.get("/api/discover/lookup/{pattern}")
 def lookup_name(pattern: str, search: str = ""):
     results = []
     for site_info in nonsense_config.get("sites", []):
@@ -170,7 +170,7 @@ def lookup_name(pattern: str, search: str = ""):
             })
     return {"results": results}
 
-@nonsense.get("/api/discover/lookup/{full_uri}/rooturi", response_class=PlainTextResponse)
+@api.get("/api/discover/lookup/{full_uri}/rooturi", response_class=PlainTextResponse)
 def full_to_root_uri(full_uri: str):
     root_uri = site_info_lookup("root_uri", full_uri=full_uri)
     if not root_uri:
@@ -180,7 +180,7 @@ def full_to_root_uri(full_uri: str):
         )
     return root_uri
 
-@nonsense.get("/api/discover/{root_uri}/ipv6pool")
+@api.get("/api/discover/{root_uri}/ipv6pool")
 def uri_ipv6pool(root_uri: str):
     ipv6_subnet_pool = site_info_lookup("ipv6_subnet_pool", root_uri=root_uri)
     if not ipv6_subnet_pool:
@@ -199,7 +199,7 @@ def uri_ipv6pool(root_uri: str):
         "domain_name": "n/a"
     }
 
-@nonsense.get("/api/discover/{root_uri}/peers")
+@api.get("/api/discover/{root_uri}/peers")
 def uri_peers(root_uri: str):
     port_capacity = site_info_lookup("port_capacity", root_uri=root_uri)
     if not port_capacity:
@@ -224,4 +224,4 @@ def uri_peers(root_uri: str):
     }
 
 if __name__ == "__main__":
-    nonsense.run(debug=True)
+    api.run(debug=True)

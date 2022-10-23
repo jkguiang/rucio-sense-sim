@@ -1,3 +1,4 @@
+authkey: data/dummykey
 burro:
   heartbeat: 5
   throttler: true
@@ -25,13 +26,7 @@ burro:
       size_GB: 2
       n_transfers: 20
       priority: 1
-dmm:
-  host: localhost
-  port: 5000
-  authkey: data/dummykey
 nonsense:
-  host: localhost
-  port: 8000
   profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db
   sites:
     - name: T2_US_SDSC
@@ -60,8 +55,6 @@ nonsense:
       port_capacity: 1000000
       ipv6_subnet_pool: blah
 vsnet:
-  host: localhost
-  port: 9000
   network_json: data/esnet_adjacencies.json
   coordinates_json: data/esnet_coordinates.json
   time_dilation: 5000.0

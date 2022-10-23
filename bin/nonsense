@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 
-import yaml
+import os
 import uvicorn
-from northbound.nonsense import nonsense
+from northbound.nonsense import api
 
 if __name__ == "__main__":
-    with open("config.yaml", "r") as config_yaml:
-        config = yaml.safe_load(config_yaml).get("nonsense", {})
-
-    uvicorn.run(nonsense, host=config.get("host"), port=config.get("port"))
+    uvicorn.run(api, host=os.environ["NONSENSE_HOST"], port=int(os.environ["NONSENSE_PORT"]))
