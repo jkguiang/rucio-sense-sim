@@ -68,17 +68,17 @@ This sections provides more details as to exactly what each configuration line i
 Importantly, the host and port for each component of the simulation is configured by an environment variable (see `setup.sh`).
 
 ### Burro
-- `heartbeat (int)`: number of seconds to wait between runs of Burro's main loop
-- `throttler (bool)`: whether or not to throttle the number of transfers submitted
+- `heartbeat`: (int) number of seconds to wait between runs of Burro's main loop
+- `throttler`: (bool) whether or not to throttle the number of transfers submitted
 - `rules`: list of Rucio-like "rules" to run
-    - `delay (int)`: number of seconds to wait before submitting this rule
-    - `src_rse (str)`: name of source site (e.g. `T2_US_SDSC`)
-    - `dst_rse (str)`: name of destination site (e.g. `T2_US_Caltech_Test`)
-    - `size_GB (float)`: total size of transfer
-    - `n_transfers (int)`: total number of transfers
-    - `priority (int)`: numerical priority of this rule (0 = no priority)
-    - `src_limit (int, optional)`: maximum number of transfers that the source can support (only respected if `throttler == true`)
-    - `dst_limit (int, optional)`: maximum number of transfers that the destination can support (only respected if `throttler == true`)
+    - `delay`: (int) number of seconds to wait before submitting this rule
+    - `src_rse`: (str) name of source site (e.g. `T2_US_SDSC`)
+    - `dst_rse`: (str) name of destination site (e.g. `T2_US_Caltech_Test`)
+    - `size_GB`: (float) total size of transfer
+    - `n_transfers`: (int) total number of transfers
+    - `priority`: (int) numerical priority of this rule (0 = no priority)
+    - `src_limit`: (int, optional) maximum number of transfers that the source can support (only respected if `throttler == true`)
+    - `dst_limit`: (int, optional) maximum number of transfers that the destination can support (only respected if `throttler == true`)
 
 ## Running the simulation locally
 1. Clone both the Rucio-SENSE simulation and DMM
