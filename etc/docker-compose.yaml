@@ -3,10 +3,10 @@ services:
     image: docker.io/jguiang/rucio-sense-sim:latest
     network_mode: "host"
     extra_hosts:
-      - "vsnet:127.0.0.1"
-      - "nonsense:127.0.0.1"
-      - "burro:127.0.0.1"
-      - "dmm:127.0.0.1"
+      - "vsnet:0.0.0.0"
+      - "nonsense:0.0.0.0"
+      - "burro:0.0.0.0"
+      - "dmm:0.0.0.0"
     volumes:
       - ../:/rucio-sense-sim:Z
     environment:
@@ -22,10 +22,10 @@ services:
     image: docker.io/jguiang/rucio-sense-sim:latest
     network_mode: "host"
     extra_hosts:
-      - "vsnet:127.0.0.1"
-      - "nonsense:127.0.0.1"
-      - "burro:127.0.0.1"
-      - "dmm:127.0.0.1"
+      - "vsnet:0.0.0.0"
+      - "nonsense:0.0.0.0"
+      - "burro:0.0.0.0"
+      - "dmm:0.0.0.0"
     volumes:
       - ../:/rucio-sense-sim:Z
     environment:
@@ -41,10 +41,10 @@ services:
     image: docker.io/jguiang/rucio-sense-sim:latest
     network_mode: "host"
     extra_hosts:
-      - "vsnet:127.0.0.1"
-      - "nonsense:127.0.0.1"
-      - "burro:127.0.0.1"
-      - "dmm:127.0.0.1"
+      - "vsnet:0.0.0.0"
+      - "nonsense:0.0.0.0"
+      - "burro:0.0.0.0"
+      - "dmm:0.0.0.0"
     environment:
       - VSNET_HOST=vsnet
       - VSNET_PORT=9000
@@ -58,10 +58,10 @@ services:
     image: docker.io/jguiang/rucio-sense-sim:latest
     network_mode: "host"
     extra_hosts:
-      - "vsnet:127.0.0.1"
-      - "nonsense:127.0.0.1"
-      - "burro:127.0.0.1"
-      - "dmm:127.0.0.1"
+      - "vsnet:0.0.0.0"
+      - "nonsense:0.0.0.0"
+      - "burro:0.0.0.0"
+      - "dmm:0.0.0.0"
     environment:
       - VSNET_HOST=vsnet
       - VSNET_PORT=9000
