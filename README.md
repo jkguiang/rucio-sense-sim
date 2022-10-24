@@ -58,7 +58,7 @@ docker-compose --file etc/docker-compose.yaml restart
 9. Clean up
 ```
 docker-compose --file etc/docker-compose.yaml stop
-docker-compose --file etc/docker-compose.yaml rm
+docker-compose --file etc/docker-compose.yaml rm -f
 docker system prune -f --volumes
 ```
 
