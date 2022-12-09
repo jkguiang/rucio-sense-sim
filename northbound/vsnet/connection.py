@@ -19,6 +19,11 @@ class Connection:
             return now() - self.start_time
         else:
             return self.end_time - self.start_time
+    
+    def history(self):
+        for prom in self.promises:
+            
+
 
     def compute_remaining_time(self):
         if self.is_active:

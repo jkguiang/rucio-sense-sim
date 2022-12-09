@@ -17,7 +17,7 @@ vsnet = Network(
 )
 api = FastAPI()
 
-connections = {}
+connections = {"1":Connection("1", 1000)}
 
 def find_connection(connection_id):
     if connection_id not in connections:

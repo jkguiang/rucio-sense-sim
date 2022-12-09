@@ -61,15 +61,15 @@ vsnet:
   max_beff_passes: 100
   beff_frac: 0.1
   sites:
-    T1_US_FNAL: fnalfcc-cr6
-    T2_US_Caltech: losa-cr6
+    #T1_US_FNAL: fnalfcc-cr6
+    #T2_US_Caltech: losa-cr6
     T2_US_Caltech_Test: losa-cr6
-    T2_US_Caltech_Test1: losa-cr6
+    #T2_US_Caltech_Test1: losa-cr6
     # T2_US_Florida
-    T2_US_MIT: bost-cr6
+    #T2_US_MIT: bost-cr6
     # T2_US_Nebraska
     # T2_US_Purdue
     T2_US_SDSC: sand-cr6
-    T2_US_UCSD: sand-cr6
-    T2_US_Vanderbilt: nash-cr6
+    #T2_US_UCSD: sand-cr6
+    #T2_US_Vanderbilt: nash-cr6
     # T2_US_Wisconsin
