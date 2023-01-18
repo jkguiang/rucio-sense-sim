@@ -70,4 +70,5 @@ class Connection():
         "is_active":self.is_active,
         "is_finished":self.is_finished,
         "start_time":self.start_time,
-        "end_time":self.end_time}
+        "end_time":self.end_time,
+        "duration": self.duration}
