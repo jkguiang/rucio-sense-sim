@@ -20,8 +20,8 @@ class Connection:
         else:
             return self.end_time - self.start_time
     
-    def history(self):
-        for prom in self.promises:
+    #def history(self):
+    #    for prom in self.promises:
             
 
 

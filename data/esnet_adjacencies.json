@@ -1,72 +1,9 @@
 {
   "adjacencies": [
     {
-      "id": "AtoR1",
-      "a": "NodeA",
-      "z": "NodeR1",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "BtoR1",
-      "a": "NodeB",
-      "z": "NodeR1",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "R1toR2",
-      "a": "NodeR1",
-      "z": "NodeR2",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "DtoR2",
-      "a": "NodeD",
-      "z": "NodeR2",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "R2toC",
-      "a": "NodeR2",
-      "z": "NodeC",
-      "mbps": 50000,
-      "igpMetric": 100
-    },
-    {
-      "id": "R2toE",
-      "a": "NodeR2",
-      "z": "NodeE",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "losa-cr6toE",
+      "id": "losa-cr6tosand-cr6",
       "a": "losa-cr6",
-      "z": "NodeE",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "R2tosand-cr6",
-      "a": "NodeR2",
       "z": "sand-cr6",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "T2_US_Caltech_TesttoE",
-      "a": "T2_US_Caltech_Test",
-      "z": "NodeE",
-      "mbps": 100000,
-      "igpMetric": 100
-    },
-    {
-      "id": "R2toT2_US_SDSC",
-      "a": "NodeR2",
-      "z": "T2_US_SDSC",
       "mbps": 100000,
       "igpMetric": 100
     }

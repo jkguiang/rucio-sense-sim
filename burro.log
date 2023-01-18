@@ -1,623 +1,278 @@
-(MainThread) [11-10-2022 19:13:52 PM] INFO: Starting Burro
-(StagerThread) [11-10-2022 19:13:52 PM] DEBUG: Starting rule stager; 3 rules to stage
-(RunnerThread) [11-10-2022 19:13:52 PM] DEBUG: Starting heartbeat 0
-(StagerThread) [11-10-2022 19:13:52 PM] DEBUG: Stopping rule stager; no more rules to stage
-(RunnerThread) [11-10-2022 19:13:52 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Ran preparer in 84.0947265625 virtual seconds
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Ran throttler in 1.693359375 virtual seconds
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:13:53 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Ran submitter in 359.8369140625 virtual seconds
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Ran poller in 1.6015625 virtual seconds
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:13:53 PM] DEBUG: Ran finisher in 1.77734375 virtual seconds
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: Starting heartbeat 1
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: Running preparer on 50 transfers
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=bc0394ac5d5e46a2b160a5dd51c264de&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=c63c8a22a48e40c78dd12168da103e6b&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:13:58 PM] DEBUG: http://vsnet:9000 "GET /routes?src=T2_US_SDSC&dst=T2_US_Caltech_Test HTTP/1.1" 500 21
-(MainThread) [11-10-2022 19:20:26 PM] INFO: Starting Burro
-(StagerThread) [11-10-2022 19:20:26 PM] DEBUG: Starting rule stager; 3 rules to stage
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Starting heartbeat 0
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Running preparer on 0 transfers
-(StagerThread) [11-10-2022 19:20:26 PM] DEBUG: Stopping rule stager; no more rules to stage
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Ran preparer in 97.7685546875 virtual seconds
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Ran throttler in 1.861328125 virtual seconds
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:20:26 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Ran submitter in 360.6328125 virtual seconds
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Ran poller in 1.5927734375 virtual seconds
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:20:26 PM] DEBUG: Ran finisher in 1.8505859375 virtual seconds
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: Starting heartbeat 1
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: Running preparer on 50 transfers
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=328d4ab821184adb824d93348e9514c6&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=83c6a6a692cf4c4fbca7098a9a31b50e&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:20:31 PM] DEBUG: http://vsnet:9000 "GET /routes?src=T2_US_SDSC&dst=T2_US_Caltech_Test HTTP/1.1" 500 21
-(MainThread) [11-10-2022 19:26:55 PM] INFO: Starting Burro
-(StagerThread) [11-10-2022 19:26:55 PM] DEBUG: Starting rule stager; 3 rules to stage
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Starting heartbeat 0
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Running preparer on 0 transfers
-(StagerThread) [11-10-2022 19:26:55 PM] DEBUG: Stopping rule stager; no more rules to stage
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Ran preparer in 97.529296875 virtual seconds
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Ran throttler in 1.4326171875 virtual seconds
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:26:55 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Ran submitter in 389.189453125 virtual seconds
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Ran poller in 1.814453125 virtual seconds
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:26:55 PM] DEBUG: Ran finisher in 1.62109375 virtual seconds
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: Starting heartbeat 1
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: Running preparer on 50 transfers
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=aad86d5411e3450a80677b89208945a2&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=9527d89284a14a6a915cb3e791a1234a&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:27:00 PM] DEBUG: http://vsnet:9000 "GET /routes?src=T2_US_SDSC&dst=T2_US_Caltech_Test HTTP/1.1" 500 21
-(MainThread) [11-10-2022 19:42:19 PM] INFO: Starting Burro
-(StagerThread) [11-10-2022 19:42:19 PM] DEBUG: Starting rule stager; 3 rules to stage
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Starting heartbeat 0
-(StagerThread) [11-10-2022 19:42:19 PM] DEBUG: Stopping rule stager; no more rules to stage
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Ran preparer in 83.5478515625 virtual seconds
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Ran throttler in 1.8779296875 virtual seconds
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:42:19 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Ran submitter in 412.212890625 virtual seconds
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Ran poller in 1.8037109375 virtual seconds
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:42:19 PM] DEBUG: Ran finisher in 1.701171875 virtual seconds
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: Starting heartbeat 1
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: Running preparer on 50 transfers
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=ccd57b246b2245288f73f7b1f0ef38ed&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=bc6c596583384e90a8bd512395e57ffd&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:42:24 PM] DEBUG: http://vsnet:9000 "GET /routes?src=T2_US_SDSC&dst=T2_US_Caltech_Test HTTP/1.1" 500 21
-(MainThread) [11-10-2022 19:45:12 PM] INFO: Starting Burro
-(StagerThread) [11-10-2022 19:45:12 PM] DEBUG: Starting rule stager; 3 rules to stage
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Starting heartbeat 0
-(StagerThread) [11-10-2022 19:45:12 PM] DEBUG: Stopping rule stager; no more rules to stage
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Ran preparer in 83.671875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Ran throttler in 2.291015625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:45:12 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Ran submitter in 361.7666015625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Ran poller in 2.3935546875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:45:12 PM] DEBUG: Ran finisher in 1.9169921875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Starting heartbeat 1
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Running preparer on 50 transfers
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=59c81ebba73d45c5aa08a3c7a14b4305&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=a9415db82a6f40699b89a8f3589a3346&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: http://vsnet:9000 "GET /routes?src=T2_US_SDSC&dst=T2_US_Caltech_Test HTTP/1.1" 200 74
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: http://vsnet:9000 "PUT /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/update?bandwidth=0.0&route_id=UjJ0b0UmUjJ0b3NhbmQtY3I2Jmxvc2EtY3I2dG9F HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=e8ad78ab6a374f73ab796cee9caded52&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Ran preparer in 230.501953125 virtual seconds
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Ran throttler in 1.693359375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:17 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:45:29 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:45:29 PM] DEBUG: Ran submitter in 60920.2607421875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:29 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:45:29 PM] DEBUG: Ran poller in 1.6865234375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:29 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:45:29 PM] DEBUG: Ran finisher in 1.8046875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Starting heartbeat 2
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Ran preparer in 107.6982421875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Running throttler on 19 transfers
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Ran throttler in 1.9541015625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:45:34 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Ran submitter in 144.1943359375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Ran poller in 1.5126953125 virtual seconds
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:45:34 PM] DEBUG: Ran finisher in 1.8798828125 virtual seconds
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Starting heartbeat 3
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Ran preparer in 81.8466796875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Running throttler on 19 transfers
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Ran throttler in 1.6181640625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Running submitter on 19 transfers
-(RunnerThread) [11-10-2022 19:45:39 PM] INFO: {'59c81ebba73d45c5aa08a3c7a14b4305': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:111::300]:1094', 'T2_US_Caltech_Test': 'sense-origin-01.ultralight.org:1094'}}, 'a9415db82a6f40699b89a8f3589a3346': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:113::300]:1096', 'T2_US_Caltech_Test': 'sense-origin-03.ultralight.org:1096'}}, 'e8ad78ab6a374f73ab796cee9caded52': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:112::300]:1095', 'T2_US_Caltech_Test': 'sense-origin-02.ultralight.org:1095'}}}
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: http://vsnet:9000 "PUT /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: http://vsnet:9000 "PUT /connections/59c81ebba73d45c5aa08a3c7a14b4305_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: http://vsnet:9000 "PUT /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Ran submitter in 396.0693359375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Ran poller in 1.775390625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:45:39 PM] DEBUG: Ran finisher in 1.4345703125 virtual seconds
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting heartbeat 4
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Ran preparer in 108.263671875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Ran throttler in 1.75 virtual seconds
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Running submitter on 19 transfers
-(RunnerThread) [11-10-2022 19:45:44 PM] INFO: {'59c81ebba73d45c5aa08a3c7a14b4305': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:111::300]:1094', 'T2_US_Caltech_Test': 'sense-origin-01.ultralight.org:1094'}}, 'a9415db82a6f40699b89a8f3589a3346': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:113::300]:1096', 'T2_US_Caltech_Test': 'sense-origin-03.ultralight.org:1096'}}, 'e8ad78ab6a374f73ab796cee9caded52': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:112::300]:1095', 'T2_US_Caltech_Test': 'sense-origin-02.ultralight.org:1095'}}}
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: http://vsnet:9000 "PUT /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: http://vsnet:9000 "PUT /connections/59c81ebba73d45c5aa08a3c7a14b4305_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: http://vsnet:9000 "PUT /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Ran submitter in 218.5888671875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Running poller on 19 transfers
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: http://vsnet:9000 "GET /connections/59c81ebba73d45c5aa08a3c7a14b4305_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: http://vsnet:9000 "GET /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 56
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 66666.66666666667 left
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Ran poller in 60.451171875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:45:44 PM] DEBUG: Ran finisher in 1.7119140625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Starting heartbeat 5
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Ran preparer in 81.82421875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Ran throttler in 1.724609375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:45:49 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Ran submitter in 223.744140625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Running poller on 33 transfers
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: http://vsnet:9000 "GET /connections/59c81ebba73d45c5aa08a3c7a14b4305_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: http://vsnet:9000 "GET /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 56
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 66666.66666666667 left
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Ran poller in 60.455078125 virtual seconds
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Running finisher on 5 transfers
-(RunnerThread) [11-10-2022 19:45:49 PM] DEBUG: Ran finisher in 141.46484375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Starting heartbeat 6
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Ran preparer in 135.9208984375 virtual seconds
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Ran throttler in 1.9296875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:45:54 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Ran submitter in 178.5556640625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Running poller on 28 transfers
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: http://vsnet:9000 "GET /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Ran poller in 53.712890625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Running finisher on 5 transfers
-(RunnerThread) [11-10-2022 19:45:54 PM] DEBUG: Ran finisher in 98.2080078125 virtual seconds
-(RunnerThread) [11-10-2022 19:45:59 PM] DEBUG: Starting heartbeat 7
-(RunnerThread) [11-10-2022 19:45:59 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:45:59 PM] DEBUG: Ran preparer in 81.59765625 virtual seconds
-(RunnerThread) [11-10-2022 19:45:59 PM] DEBUG: Running throttler on 6 transfers
-(RunnerThread) [11-10-2022 19:45:59 PM] DEBUG: Ran throttler in 1.41796875 virtual seconds
-(RunnerThread) [11-10-2022 19:45:59 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:00 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: Ran submitter in 299.5205078125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: Ran poller in 27.861328125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: Running finisher on 14 transfers
-(RunnerThread) [11-10-2022 19:46:00 PM] DEBUG: Ran finisher in 176.9990234375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Starting heartbeat 8
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Ran preparer in 108.40625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Ran throttler in 1.3779296875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Running submitter on 6 transfers
-(RunnerThread) [11-10-2022 19:46:05 PM] INFO: {'e8ad78ab6a374f73ab796cee9caded52': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:112::300]:1095', 'T2_US_Caltech_Test': 'sense-origin-02.ultralight.org:1095'}}}
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: http://vsnet:9000 "PUT /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Ran submitter in 242.69140625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Ran poller in 23.2080078125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:46:05 PM] DEBUG: Ran finisher in 1.935546875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Starting heartbeat 9
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Ran preparer in 108.080078125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Ran throttler in 1.9833984375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:10 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Ran submitter in 268.576171875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Running poller on 20 transfers
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: http://vsnet:9000 "GET /connections/e8ad78ab6a374f73ab796cee9caded52_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Ran poller in 45.650390625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:46:10 PM] DEBUG: Ran finisher in 1.6904296875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Starting heartbeat 10
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Ran preparer in 82.5517578125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Ran throttler in 1.716796875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:15 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Ran submitter in 243.0625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Ran poller in 24.7626953125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Running finisher on 6 transfers
-(RunnerThread) [11-10-2022 19:46:15 PM] DEBUG: Ran finisher in 178.0556640625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Starting heartbeat 11
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Ran preparer in 82.9091796875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Ran throttler in 1.6591796875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:20 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Ran submitter in 318.8291015625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Ran poller in 21.45703125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:46:20 PM] DEBUG: Ran finisher in 1.7783203125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Starting heartbeat 12
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Ran preparer in 83.1318359375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Running throttler on 6 transfers
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Ran throttler in 1.544921875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:25 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Ran submitter in 286.384765625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Ran poller in 1.5087890625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Running finisher on 14 transfers
-(RunnerThread) [11-10-2022 19:46:25 PM] DEBUG: Ran finisher in 125.1142578125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Starting heartbeat 13
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Ran preparer in 81.2958984375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Ran throttler in 2.123046875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Running submitter on 6 transfers
-(RunnerThread) [11-10-2022 19:46:30 PM] INFO: {'a9415db82a6f40699b89a8f3589a3346': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:113::300]:1096', 'T2_US_Caltech_Test': 'sense-origin-03.ultralight.org:1096'}}}
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: http://vsnet:9000 "PUT /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Ran submitter in 340.1494140625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Ran poller in 2.0302734375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:46:30 PM] DEBUG: Ran finisher in 1.74609375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Starting heartbeat 14
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Ran preparer in 107.8447265625 virtual seconds
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Ran throttler in 1.9833984375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:35 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Ran submitter in 315.826171875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Running poller on 6 transfers
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: http://vsnet:9000 "GET /connections/a9415db82a6f40699b89a8f3589a3346_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 46
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Ran poller in 22.1669921875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 19:46:35 PM] DEBUG: Ran finisher in 2.208984375 virtual seconds
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Starting heartbeat 15
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Ran preparer in 108.0830078125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Ran throttler in 1.7080078125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 19:46:40 PM] INFO: {}
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Ran submitter in 267.07421875 virtual seconds
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Ran poller in 2.328125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Running finisher on 6 transfers
-(RunnerThread) [11-10-2022 19:46:40 PM] DEBUG: Ran finisher in 173.9345703125 virtual seconds
-(RunnerThread) [11-10-2022 19:46:45 PM] DEBUG: Starting heartbeat 16
-(RunnerThread) [11-10-2022 19:46:45 PM] DEBUG: Running preparer on 0 transfers
-(MainThread) [11-10-2022 19:59:21 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 19:59:28 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 19:59:28 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 19:59:37 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 19:59:37 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 19:59:37 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 19:59:38 PM] INFO: Stopping Burro (received SIGINT)
-(MainThread) [11-10-2022 23:12:40 PM] INFO: Starting Burro
-(StagerThread) [11-10-2022 23:12:40 PM] DEBUG: Starting rule stager; 3 rules to stage
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Starting heartbeat 0
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Running preparer on 0 transfers
-(StagerThread) [11-10-2022 23:12:40 PM] DEBUG: Stopping rule stager; no more rules to stage
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Ran preparer in 121.568359375 virtual seconds
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Ran throttler in 2.060546875 virtual seconds
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:12:40 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Ran submitter in 362.396484375 virtual seconds
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Ran poller in 1.4248046875 virtual seconds
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:12:40 PM] DEBUG: Ran finisher in 1.8369140625 virtual seconds
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Starting heartbeat 1
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Running preparer on 50 transfers
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=b43a388b0dfb415ab06497dc63cfd821&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=2ce0cbff800d492595242dc27e6b81a4&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: http://vsnet:9000 "GET /routes?src=T2_US_SDSC&dst=T2_US_Caltech_Test HTTP/1.1" 200 74
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: http://vsnet:9000 "PUT /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/update?bandwidth=0.0&route_id=UjJ0b0UmUjJ0b3NhbmQtY3I2Jmxvc2EtY3I2dG9F HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=15c7e0571fe1472c90fe942276ba34cc&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=2000000000.0 HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Ran preparer in 291.529296875 virtual seconds
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Ran throttler in 1.796875 virtual seconds
-(RunnerThread) [11-10-2022 23:12:45 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:12:57 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:12:57 PM] DEBUG: Ran submitter in 60645.5234375 virtual seconds
-(RunnerThread) [11-10-2022 23:12:57 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:12:57 PM] DEBUG: Ran poller in 1.478515625 virtual seconds
-(RunnerThread) [11-10-2022 23:12:57 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:12:57 PM] DEBUG: Ran finisher in 1.71484375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Starting heartbeat 2
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Ran preparer in 82.48828125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Running throttler on 19 transfers
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Ran throttler in 1.80859375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:02 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Ran submitter in 120.0068359375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Ran poller in 1.615234375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:02 PM] DEBUG: Ran finisher in 1.5126953125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:07 PM] DEBUG: Starting heartbeat 3
-(RunnerThread) [11-10-2022 23:13:07 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:07 PM] DEBUG: Ran preparer in 83.19140625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:07 PM] DEBUG: Running throttler on 19 transfers
-(RunnerThread) [11-10-2022 23:13:07 PM] DEBUG: Ran throttler in 1.849609375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:07 PM] DEBUG: Running submitter on 19 transfers
-(RunnerThread) [11-10-2022 23:13:08 PM] INFO: {'b43a388b0dfb415ab06497dc63cfd821': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:111::300]:1094', 'T2_US_Caltech_Test': 'sense-origin-01.ultralight.org:1094'}}, '2ce0cbff800d492595242dc27e6b81a4': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:113::300]:1096', 'T2_US_Caltech_Test': 'sense-origin-03.ultralight.org:1096'}}, '15c7e0571fe1472c90fe942276ba34cc': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:112::300]:1095', 'T2_US_Caltech_Test': 'sense-origin-02.ultralight.org:1095'}}}
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: http://vsnet:9000 "PUT /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: http://vsnet:9000 "PUT /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: http://vsnet:9000 "PUT /connections/b43a388b0dfb415ab06497dc63cfd821_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Ran submitter in 371.9326171875 virtual seconds
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Ran poller in 1.375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:08 PM] DEBUG: Ran finisher in 1.5068359375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting heartbeat 4
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Ran preparer in 82.552734375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Ran throttler in 1.5703125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Running submitter on 19 transfers
-(RunnerThread) [11-10-2022 23:13:13 PM] INFO: {'b43a388b0dfb415ab06497dc63cfd821': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:111::300]:1094', 'T2_US_Caltech_Test': 'sense-origin-01.ultralight.org:1094'}}, '2ce0cbff800d492595242dc27e6b81a4': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:113::300]:1096', 'T2_US_Caltech_Test': 'sense-origin-03.ultralight.org:1096'}}, '15c7e0571fe1472c90fe942276ba34cc': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:112::300]:1095', 'T2_US_Caltech_Test': 'sense-origin-02.ultralight.org:1095'}}}
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: http://vsnet:9000 "PUT /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: http://vsnet:9000 "PUT /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: http://vsnet:9000 "PUT /connections/b43a388b0dfb415ab06497dc63cfd821_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Ran submitter in 278.3681640625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Running poller on 19 transfers
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: http://vsnet:9000 "GET /connections/b43a388b0dfb415ab06497dc63cfd821_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: http://vsnet:9000 "GET /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 56
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: 15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 66666.66666666667 left
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Ran poller in 59.2041015625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:13 PM] DEBUG: Ran finisher in 1.5927734375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Starting heartbeat 5
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Ran preparer in 83.30859375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Ran throttler in 1.861328125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:18 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Ran submitter in 176.7568359375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Running poller on 33 transfers
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: http://vsnet:9000 "GET /connections/b43a388b0dfb415ab06497dc63cfd821_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: http://vsnet:9000 "GET /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 56
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: 15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 66666.66666666667 left
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Ran poller in 69.6748046875 virtual seconds
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Running finisher on 5 transfers
-(RunnerThread) [11-10-2022 23:13:18 PM] DEBUG: Ran finisher in 83.37109375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Starting heartbeat 6
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Ran preparer in 82.298828125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Ran throttler in 1.4580078125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:23 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Ran submitter in 147.2568359375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Running poller on 28 transfers
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: http://vsnet:9000 "GET /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Ran poller in 57.15234375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Running finisher on 5 transfers
-(RunnerThread) [11-10-2022 23:13:23 PM] DEBUG: Ran finisher in 147.6806640625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Starting heartbeat 7
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Ran preparer in 83.240234375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Running throttler on 6 transfers
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Ran throttler in 1.51953125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:28 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Ran submitter in 345.408203125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Ran poller in 23.7919921875 virtual seconds
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Running finisher on 14 transfers
-(RunnerThread) [11-10-2022 23:13:28 PM] DEBUG: Ran finisher in 153.322265625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Starting heartbeat 8
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Ran preparer in 82.095703125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Ran throttler in 1.7041015625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Running submitter on 6 transfers
-(RunnerThread) [11-10-2022 23:13:33 PM] INFO: {'15c7e0571fe1472c90fe942276ba34cc': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:112::300]:1095', 'T2_US_Caltech_Test': 'sense-origin-02.ultralight.org:1095'}}}
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: http://vsnet:9000 "PUT /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Ran submitter in 214.2919921875 virtual seconds
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Ran poller in 24.650390625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:33 PM] DEBUG: Ran finisher in 1.69140625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Starting heartbeat 9
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Ran preparer in 108.78125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Ran throttler in 1.36328125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:38 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Ran submitter in 345.275390625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Running poller on 20 transfers
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: http://vsnet:9000 "GET /connections/15c7e0571fe1472c90fe942276ba34cc_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Ran poller in 44.2744140625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:38 PM] DEBUG: Ran finisher in 1.7666015625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Starting heartbeat 10
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Ran preparer in 82.9384765625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Ran throttler in 1.349609375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:43 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Ran submitter in 268.5537109375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 47
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: 2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test not yet finished; 200000.0 left
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Ran poller in 23.5419921875 virtual seconds
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Running finisher on 6 transfers
-(RunnerThread) [11-10-2022 23:13:43 PM] DEBUG: Ran finisher in 153.5224609375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Starting heartbeat 11
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Ran preparer in 134.53515625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Ran throttler in 1.42578125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:48 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Ran submitter in 273.70703125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Running poller on 14 transfers
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Ran poller in 20.9541015625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:48 PM] DEBUG: Ran finisher in 1.5703125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Starting heartbeat 12
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Ran preparer in 109.90234375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Running throttler on 6 transfers
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Ran throttler in 1.5146484375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:13:53 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Ran submitter in 330.7587890625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Ran poller in 1.4765625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Running finisher on 14 transfers
-(RunnerThread) [11-10-2022 23:13:53 PM] DEBUG: Ran finisher in 228.6083984375 virtual seconds
-(RunnerThread) [11-10-2022 23:13:58 PM] DEBUG: Starting heartbeat 13
-(RunnerThread) [11-10-2022 23:13:58 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:13:58 PM] DEBUG: Ran preparer in 81.9345703125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:58 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:13:58 PM] DEBUG: Ran throttler in 1.8916015625 virtual seconds
-(RunnerThread) [11-10-2022 23:13:58 PM] DEBUG: Running submitter on 6 transfers
-(RunnerThread) [11-10-2022 23:13:59 PM] INFO: {'2ce0cbff800d492595242dc27e6b81a4': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:113::300]:1096', 'T2_US_Caltech_Test': 'sense-origin-03.ultralight.org:1096'}}}
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: http://vsnet:9000 "PUT /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: Ran submitter in 368.3798828125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: Ran poller in 1.80078125 virtual seconds
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:13:59 PM] DEBUG: Ran finisher in 1.6328125 virtual seconds
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Starting heartbeat 14
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Ran preparer in 81.8046875 virtual seconds
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Ran throttler in 1.412109375 virtual seconds
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:14:04 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Ran submitter in 294.490234375 virtual seconds
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Running poller on 6 transfers
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Starting new HTTP connection (1): vsnet:9000
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: http://vsnet:9000 "GET /connections/2ce0cbff800d492595242dc27e6b81a4_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 46
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Ran poller in 21.79296875 virtual seconds
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Running finisher on 0 transfers
-(RunnerThread) [11-10-2022 23:14:04 PM] DEBUG: Ran finisher in 1.5185546875 virtual seconds
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Starting heartbeat 15
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Running preparer on 0 transfers
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Ran preparer in 107.310546875 virtual seconds
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Running throttler on 0 transfers
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Ran throttler in 1.791015625 virtual seconds
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Running submitter on 0 transfers
-(RunnerThread) [11-10-2022 23:14:09 PM] INFO: {}
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Ran submitter in 266.876953125 virtual seconds
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Running poller on 0 transfers
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Ran poller in 1.794921875 virtual seconds
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Running finisher on 6 transfers
-(RunnerThread) [11-10-2022 23:14:09 PM] DEBUG: Ran finisher in 174.869140625 virtual seconds
-(RunnerThread) [11-10-2022 23:14:14 PM] DEBUG: Starting heartbeat 16
-(RunnerThread) [11-10-2022 23:14:14 PM] DEBUG: Running preparer on 0 transfers
+(MainThread) [01-18-2023 08:44:22 AM] INFO: Starting Burro
+(StagerThread) [01-18-2023 08:44:22 AM] DEBUG: Starting rule stager; 1 rules to stage
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Starting heartbeat 0
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Running preparer on 0 transfers
+(StagerThread) [01-18-2023 08:44:22 AM] DEBUG: Stopping rule stager; no more rules to stage
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Ran preparer in 84.4423828125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Ran throttler in 1.890625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:44:22 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Ran submitter in 412.53125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Ran poller in 1.6708984375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:44:22 AM] DEBUG: Ran finisher in 1.689453125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Starting heartbeat 1
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Running preparer on 10 transfers
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Starting new HTTP connection (1): vsnet:9000
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: http://vsnet:9000 "POST /connections?burro_id=a8ae5ac141bc460dae211a53aa4b1822&src=T2_US_SDSC&dst=T2_US_Caltech_Test&total_data=1000000000.0 HTTP/1.1" 200 4
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Ran preparer in 163.8623046875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Ran throttler in 1.732421875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:27 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:44:31 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:44:31 AM] DEBUG: Ran submitter in 20581.203125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:31 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:44:31 AM] DEBUG: Ran poller in 1.8466796875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:31 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:44:31 AM] DEBUG: Ran finisher in 1.845703125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Starting heartbeat 2
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Ran preparer in 81.51171875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Running throttler on 5 transfers
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Ran throttler in 1.5537109375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:44:36 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Ran submitter in 265.771484375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Ran poller in 1.751953125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:44:36 AM] DEBUG: Ran finisher in 1.6357421875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Starting heartbeat 3
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Ran preparer in 82.2578125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Running throttler on 5 transfers
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Ran throttler in 1.7587890625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Running submitter on 5 transfers
+(RunnerThread) [01-18-2023 08:44:41 AM] INFO: {'a8ae5ac141bc460dae211a53aa4b1822': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:111::300]:1094', 'T2_US_Caltech_Test': 'sense-origin-01.ultralight.org:1094'}}}
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Starting new HTTP connection (1): vsnet:9000
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: http://vsnet:9000 "PUT /connections/a8ae5ac141bc460dae211a53aa4b1822_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Ran submitter in 342.3203125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Ran poller in 1.765625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:44:41 AM] DEBUG: Ran finisher in 1.990234375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Starting heartbeat 4
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Ran preparer in 81.9658203125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Ran throttler in 2.005859375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Running submitter on 5 transfers
+(RunnerThread) [01-18-2023 08:44:46 AM] INFO: {'a8ae5ac141bc460dae211a53aa4b1822': {'T2_US_SDSC&T2_US_Caltech_Test': {'T2_US_SDSC': '[2001:48d0:3001:111::300]:1094', 'T2_US_Caltech_Test': 'sense-origin-01.ultralight.org:1094'}}}
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Starting new HTTP connection (1): vsnet:9000
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: http://vsnet:9000 "PUT /connections/a8ae5ac141bc460dae211a53aa4b1822_T2_US_SDSC_T2_US_Caltech_Test/start HTTP/1.1" 200 4
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Ran submitter in 282.8115234375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Running poller on 5 transfers
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Starting new HTTP connection (1): vsnet:9000
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: http://vsnet:9000 "GET /connections/a8ae5ac141bc460dae211a53aa4b1822_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Ran poller in 19.5302734375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:44:46 AM] DEBUG: Ran finisher in 1.5712890625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Starting heartbeat 5
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Ran preparer in 81.900390625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Ran throttler in 1.2763671875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:44:51 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Ran submitter in 315.603515625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Running poller on 5 transfers
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Starting new HTTP connection (1): vsnet:9000
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: http://vsnet:9000 "GET /connections/a8ae5ac141bc460dae211a53aa4b1822_T2_US_SDSC_T2_US_Caltech_Test/check HTTP/1.1" 200 42
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Ran poller in 20.970703125 virtual seconds
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Running finisher on 5 transfers
+(RunnerThread) [01-18-2023 08:44:51 AM] DEBUG: Ran finisher in 156.5654296875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Starting heartbeat 6
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Ran preparer in 82.2822265625 virtual seconds
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Ran throttler in 1.8974609375 virtual seconds
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:44:56 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Ran submitter in 316.576171875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Ran poller in 1.9951171875 virtual seconds
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Running finisher on 5 transfers
+(RunnerThread) [01-18-2023 08:44:56 AM] DEBUG: Ran finisher in 199.4765625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Starting heartbeat 7
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Ran preparer in 82.2978515625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Ran throttler in 1.9013671875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:01 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Ran submitter in 361.4130859375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Ran poller in 1.6484375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:01 AM] DEBUG: Ran finisher in 1.689453125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Starting heartbeat 8
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Ran preparer in 82.4189453125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Ran throttler in 1.859375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:06 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Ran submitter in 385.4580078125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Ran poller in 1.8203125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:06 AM] DEBUG: Ran finisher in 2.0400390625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:11 AM] DEBUG: Starting heartbeat 9
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Ran preparer in 82.9580078125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Ran throttler in 1.9482421875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:12 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Ran submitter in 439.896484375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Ran poller in 2.2373046875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:12 AM] DEBUG: Ran finisher in 2.1494140625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Starting heartbeat 10
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Ran preparer in 82.166015625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Ran throttler in 1.625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:17 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Ran submitter in 361.7431640625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Ran poller in 1.7587890625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:17 AM] DEBUG: Ran finisher in 1.6416015625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Starting heartbeat 11
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Ran preparer in 108.619140625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Ran throttler in 1.931640625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:22 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Ran submitter in 361.748046875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Ran poller in 1.8388671875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:22 AM] DEBUG: Ran finisher in 1.59375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Starting heartbeat 12
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Ran preparer in 81.6337890625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Ran throttler in 1.4052734375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:27 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Ran submitter in 361.505859375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Ran poller in 1.8203125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:27 AM] DEBUG: Ran finisher in 1.6123046875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Starting heartbeat 13
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Ran preparer in 81.275390625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Ran throttler in 1.5400390625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:32 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Ran submitter in 386.8251953125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Ran poller in 1.8798828125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:32 AM] DEBUG: Ran finisher in 1.9541015625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Starting heartbeat 14
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Ran preparer in 82.1162109375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Ran throttler in 1.88671875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:37 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Ran submitter in 413.1201171875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Ran poller in 1.92578125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:37 AM] DEBUG: Ran finisher in 1.892578125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Starting heartbeat 15
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Ran preparer in 82.4111328125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Ran throttler in 1.3974609375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:42 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Ran submitter in 360.6494140625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Ran poller in 1.5810546875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:42 AM] DEBUG: Ran finisher in 1.9697265625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Starting heartbeat 16
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Ran preparer in 83.25 virtual seconds
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Ran throttler in 1.9912109375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:47 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Ran submitter in 360.0537109375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Ran poller in 1.75 virtual seconds
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:47 AM] DEBUG: Ran finisher in 1.9482421875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Starting heartbeat 17
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Ran preparer in 81.7568359375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Ran throttler in 1.75390625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:52 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Ran submitter in 360.7734375 virtual seconds
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Ran poller in 1.6279296875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:52 AM] DEBUG: Ran finisher in 1.75 virtual seconds
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Starting heartbeat 18
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Ran preparer in 82.7783203125 virtual seconds
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Ran throttler in 1.5791015625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:45:57 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Ran submitter in 362.8310546875 virtual seconds
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Ran poller in 1.78515625 virtual seconds
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:45:57 AM] DEBUG: Ran finisher in 1.873046875 virtual seconds
+(RunnerThread) [01-18-2023 08:46:02 AM] DEBUG: Starting heartbeat 19
+(RunnerThread) [01-18-2023 08:46:02 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:46:02 AM] DEBUG: Ran preparer in 81.9248046875 virtual seconds
+(RunnerThread) [01-18-2023 08:46:02 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:46:02 AM] DEBUG: Ran throttler in 1.384765625 virtual seconds
+(RunnerThread) [01-18-2023 08:46:02 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:46:03 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:46:03 AM] DEBUG: Ran submitter in 387.2626953125 virtual seconds
+(RunnerThread) [01-18-2023 08:46:03 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:46:03 AM] DEBUG: Ran poller in 1.5126953125 virtual seconds
+(RunnerThread) [01-18-2023 08:46:03 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:46:03 AM] DEBUG: Ran finisher in 1.8486328125 virtual seconds
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Starting heartbeat 20
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Ran preparer in 81.8974609375 virtual seconds
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Ran throttler in 1.5830078125 virtual seconds
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:46:08 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Ran submitter in 361.7421875 virtual seconds
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Ran poller in 1.607421875 virtual seconds
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:46:08 AM] DEBUG: Ran finisher in 1.8798828125 virtual seconds
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Starting heartbeat 21
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Running preparer on 0 transfers
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Ran preparer in 81.4853515625 virtual seconds
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Running throttler on 0 transfers
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Ran throttler in 1.5107421875 virtual seconds
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Running submitter on 0 transfers
+(RunnerThread) [01-18-2023 08:46:13 AM] INFO: {}
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Ran submitter in 388.865234375 virtual seconds
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Running poller on 0 transfers
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Ran poller in 1.4423828125 virtual seconds
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Running finisher on 0 transfers
+(RunnerThread) [01-18-2023 08:46:13 AM] DEBUG: Ran finisher in 1.7724609375 virtual seconds
+(MainThread) [01-18-2023 08:46:16 AM] INFO: Stopping Burro (received SIGINT)

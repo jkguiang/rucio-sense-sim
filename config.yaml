@@ -10,22 +10,6 @@ burro:
       size_GB: 1
       n_transfers: 10
       priority: 2
-    - delay: 10
-      src_rse: T2_US_SDSC
-      dst_rse: T2_US_Caltech_Test
-      src_limit: 10
-      dst_limit: 7
-      size_GB: 2
-      n_transfers: 20
-      priority: 0
-    - delay: 15
-      src_rse: T2_US_SDSC
-      dst_rse: T2_US_Caltech_Test
-      src_limit: 10
-      dst_limit: 7
-      size_GB: 2
-      n_transfers: 20
-      priority: 1
 nonsense:
   profile_uuid: ddd1dec0-83ab-4d08-bca6-9a83334cd6db
   sites:
