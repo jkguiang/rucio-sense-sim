@@ -1,7 +1,8 @@
 from utils.vtime import now
 from northbound.vsnet.network import Promise, BestEffort
+import json
 
-class Connection:
+class Connection():
     def __init__(self, connection_id, total_data):
         self.total_data = total_data
         self.id = connection_id
@@ -20,11 +21,9 @@ class Connection:
         else:
             return self.end_time - self.start_time
     
-    #def history(self):
-    #    for prom in self.promises:
+    def history(self):
+        return json.loads(json.dumps(self, default=lambda o: o.as_dict()))
             
-
-
     def compute_remaining_time(self):
         if self.is_active:
             remaining_data = self.total_data
@@ -63,3 +62,12 @@ class Connection:
         self.promises[-1].start()
         self.start_time = self.promises[-1].start_time
         self.is_active = True
+    
+    def asdict(self):
+        return {"total_data":self.total_data,
+        "id":self.id,
+        "promises":json.loads(json.dumps(self.promises, default=lambda o: o.asdict())),
+        "is_active":self.is_active,
+        "is_finished":self.is_finished,
+        "start_time":self.start_time,
+        "end_time":self.end_time}

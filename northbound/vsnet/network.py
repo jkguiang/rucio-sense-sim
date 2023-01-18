@@ -47,6 +47,11 @@ class Promise:
     def end(self, t=None):
         self.end_time = t or now()
         self.network.release_promise(self)
+    def asdict(self):
+        return {"route":self.route.asdict(),
+        "bandwidth":self.bandwidth,
+        "start_time":self.start_time,
+        "end_time":self.end_time}
 
 class BestEffort(Promise):
     def __init__(self, network, route):
@@ -105,6 +110,10 @@ class Route:
                 return min([link.prio_bandwidth for link in self.links])
         else:
             return 0
+    def asdict(self):
+        return {"links":self.link_names,
+        "start_node":self.start_node.__str__(),
+        "end_node":self.end_node.__str__()}
 
 class Link:
     def __init__(self, name, node_1, node_2, bandwidth, beff_frac, igp_metric):
@@ -151,6 +160,16 @@ class Link:
                 self.beff_bandwidth += bandwidth
             else:
                 self.prio_bandwidth += bandwidth
+    def asdict(self):
+        return {"name":self.name, "nodes":[self.nodes[0].name, self.nodes[1].name],
+        "total_bandwidth":self.total_bandwidth,
+        "beff_frac":self.beff_frac,
+        "prio_bandwidth":self.prio_bandwidth,
+        "beff_bandwidth":self.beff_bandwidth,
+        "igp_metric":self.igp_metric,
+        "n_besteffs":self.n_besteffs,
+        "is_spur":self.is_spur,
+        "length":self.length}
 
 class Node:
     def __init__(self, name, lat, lon):
@@ -161,6 +180,9 @@ class Node:
         
     def __str__(self):
         return f"Node({self.name})"
+    
+    def asdict(self):
+        return json.loads(json.dumps(self, default=lambda o: o.__str__()))
 
 class Network:
     def __init__(self, network_json, coordinates_json, max_beff_passes=100, beff_frac=0.25):
@@ -492,3 +514,9 @@ class Network:
         shortest_routes.sort(key=lambda route: sum([link.length for link in route.links]))
 
         return shortest_routes
+
+    def asdict(self):
+        return {"nodes": json.loads(json.dumps(self.__nodes, default=lambda o: o.asdict())), 
+        "links": json.loads(json.dumps(self.__links, default=lambda o: o.asdict())), 
+        "besteffs":json.loads(json.dumps(self.besteffs, default=lambda o: o.asdict())), 
+        "max_beff_passes":self.max_beff_passes}

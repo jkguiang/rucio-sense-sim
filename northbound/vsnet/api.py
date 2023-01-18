@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from northbound.vsnet.connection import Connection
 from northbound.vsnet.network import Network
 
+import json
+
 with open("config.yaml", "r") as config_yaml:
     config = yaml.safe_load(config_yaml)
     vsnet_config = config["vsnet"]
@@ -17,7 +19,7 @@ vsnet = Network(
 )
 api = FastAPI()
 
-connections = {"1":Connection("1", 1000)}
+connections = {}
 
 def find_connection(connection_id):
     if connection_id not in connections:
@@ -29,7 +31,9 @@ def find_connection(connection_id):
         return connections[connection_id]
 
 async def construct_history():
-    return [connection.__dict__ for connection in connections.values()]
+    history = vsnet.asdict()
+    return {"vsnet":history,
+    "connections":json.loads(json.dumps(connections, default=lambda o: o.asdict()))}
 
 @api.get("/history")
 async def get_history():
